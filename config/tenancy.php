@@ -6,12 +6,11 @@ return [
 
     'domain_model' => \Stancl\Tenancy\Database\Models\Domain::class,
 
-    'central_domains' => [
-        '127.0.0.1',
-        'localhost',
-        env('CENTRAL_DOMAIN', 'yourdomain.com'),
-    ],
-
+   'central_domains' => [
+    '127.0.0.1',
+    'localhost',
+    env('CENTRAL_DOMAIN', 'yourdomain.com'),
+],
     'exempt_domains' => [],
 
     'database' => [

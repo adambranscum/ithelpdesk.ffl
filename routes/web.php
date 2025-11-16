@@ -11,12 +11,21 @@ use App\Http\Controllers\TicketStatsController;
 use App\Http\Controllers\DeviceStatsController;
 use App\Http\Controllers\SoftwareStatsController;
 use App\Http\Controllers\CreateTicketController;
-use App\Http\Controllers\Tenant\TenantRegistrationController;
-use App\Http\Controllers\SuperAdmin\TenantManagementController;
-use App\Http\Controllers\TenantAdmin\UserManagementController;
+use App\Http\Controllers\TenantRegistrationController;
+use App\Http\Controllers\TenantManagementController;
+use App\Http\Controllers\UserManagementController;
 use Illuminate\Support\Facades\Route;
-use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
-use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
+
+/*
+|--------------------------------------------------------------------------
+| Tenant Detection Helper
+|--------------------------------------------------------------------------
+*/
+function isTenantDomain() {
+    $currentHost = request()->getHost();
+    $centralDomains = config('tenancy.central_domains', ['127.0.0.1', 'localhost']);
+    return !in_array($currentHost, $centralDomains);
+}
 
 /*
 |--------------------------------------------------------------------------
@@ -24,37 +33,51 @@ use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 |--------------------------------------------------------------------------
 */
 
-// Homepage (public)
-Route::get('/', [HomeController::class, 'index'])->name('home');
+if (!isTenantDomain()) {
+    // CENTRAL DOMAIN ROUTES ONLY
+    
+    // Homepage (public)
+    Route::get('/', function() {
+        return view('welcome');
+    })->name('home');
 
-// Tenant Registration Routes (Public)
-Route::middleware('guest')->group(function () {
-    Route::get('/register-library', [TenantRegistrationController::class, 'create'])->name('tenant.register');
-    Route::post('/register-library', [TenantRegistrationController::class, 'store']);
-    Route::get('/registration-pending', [TenantRegistrationController::class, 'pending'])->name('tenant.pending');
-});
+    // Tenant Registration Routes (Public)
+    Route::middleware('guest')->group(function () {
+        Route::get('/register-library', [TenantRegistrationController::class, 'create'])->name('tenant.register');
+        Route::post('/register-library', [TenantRegistrationController::class, 'store']);
+        Route::get('/registration-pending', [TenantRegistrationController::class, 'pending'])->name('tenant.pending');
+    });
 
-// Super Admin Routes (Central Domain Only)
-Route::middleware(['auth', 'central'])->prefix('super-admin')->name('super-admin.')->group(function () {
-    Route::get('/tenants', [TenantManagementController::class, 'index'])->name('tenants.index');
-    Route::get('/tenants/{tenant}', [TenantManagementController::class, 'show'])->name('tenants.show');
-    Route::post('/tenants/{tenant}/approve', [TenantManagementController::class, 'approve'])->name('tenants.approve');
-    Route::post('/tenants/{tenant}/suspend', [TenantManagementController::class, 'suspend'])->name('tenants.suspend');
-    Route::post('/tenants/{tenant}/activate', [TenantManagementController::class, 'activate'])->name('tenants.activate');
-    Route::delete('/tenants/{tenant}', [TenantManagementController::class, 'destroy'])->name('tenants.destroy');
-});
+    // Super Admin Routes (Central Domain Only)
+    Route::middleware(['auth', 'super.admin'])->prefix('super-admin')->name('super-admin.')->group(function () {
+        Route::get('/tenants', [TenantManagementController::class, 'index'])->name('tenants.index');
+        Route::get('/tenants/{tenant}', [TenantManagementController::class, 'show'])->name('tenants.show');
+        Route::post('/tenants/{tenant}/approve', [TenantManagementController::class, 'approve'])->name('tenants.approve');
+        Route::post('/tenants/{tenant}/suspend', [TenantManagementController::class, 'suspend'])->name('tenants.suspend');
+        Route::post('/tenants/{tenant}/activate', [TenantManagementController::class, 'activate'])->name('tenants.activate');
+        Route::delete('/tenants/{tenant}', [TenantManagementController::class, 'destroy'])->name('tenants.destroy');
+    });
 
-/*
-|--------------------------------------------------------------------------
-| Tenant Routes (Subdomain Access)
-|--------------------------------------------------------------------------
-*/
-
-Route::middleware([
-    'web',
-    InitializeTenancyByDomain::class,
-    PreventAccessFromCentralDomains::class,
-])->group(function () {
+    // Auth routes for central domain
+    require __DIR__.'/auth.php';
+    
+} else {
+    /*
+    |--------------------------------------------------------------------------
+    | Tenant Routes (Subdomain Access)
+    |--------------------------------------------------------------------------
+    */
+    
+    // Auth routes for tenant (login/register)
+    require __DIR__.'/auth.php';
+    
+    // Redirect root to login if not authenticated
+    Route::get('/', function () {
+        if (auth()->check()) {
+            return redirect('/tickets');
+        }
+        return redirect('/login');
+    })->name('home');
     
     Route::middleware(['auth'])->group(function () {
         // Profile Routes
@@ -84,7 +107,7 @@ Route::middleware([
         Route::get('/create', [CreateTicketController::class, 'create'])->name('tickets.create');
         Route::post('/store', [CreateTicketController::class, 'store'])->name('tickets.store');
 
-        // Admin Ticket Routes (for users with admin access)
+        // Admin Ticket Routes
         Route::middleware('can.admin')->group(function () {
             Route::get('/admin/tickets', [AdminController::class, 'index'])->name('admin.index');
             Route::get('/admin/tickets/{ticket}', [AdminController::class, 'show'])->name('admin.show');
@@ -111,14 +134,9 @@ Route::middleware([
             return redirect('/tickets');
         });
     });
-
-    // Auth routes (include for tenant domains)
-    require __DIR__.'/auth.php';
-});
+}
 
 // Error Pages (available on all domains)
-Route::get('/403', fn() => response()->view('errors.403', [], 403))->name('error.403');
-Route::get('/404', fn() => response()->view('errors.404', [], 404))->name('error.404');
-Route::get('/419', fn() => response()->view('errors.419', [], 419))->name('error.419');
-Route::get('/500', fn() => response()->view('errors.500', [], 500))->name('error.500');
-Route::get('/503', fn() => response()->view('errors.503', [], 503))->name('error.503');
+Route::fallback(function () {
+    return response()->view('errors.404', [], 404);
+});
