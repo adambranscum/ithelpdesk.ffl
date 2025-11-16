@@ -44,7 +44,7 @@ if (!isTenantDomain()) {
     // Tenant Registration Routes (Public)
     Route::middleware('guest')->group(function () {
         Route::get('/register-library', [TenantRegistrationController::class, 'create'])->name('tenant.register');
-        Route::post('/register-library', [TenantRegistrationController::class, 'store']);
+        Route::post('/register-library', [TenantRegistrationController::class, 'store'])->name('tenant.store');
         Route::get('/registration-pending', [TenantRegistrationController::class, 'pending'])->name('tenant.pending');
     });
 
