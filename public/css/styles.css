@@ -1,0 +1,208 @@
+/*navbar link */
+/* Full Width Menu Options */
+.menu-large {
+  position: static !important;
+}
+
+.megamenu {
+  padding: 20px 20px;
+  width: 100%;
+  color:white !important;
+}
+
+.megamenu > div > li > ul {
+  padding: 0;
+  margin: 0;
+}
+
+.border-biteme {
+border-style: solid;
+border-color: #11518C;
+}
+
+.bg-form-blue-o50 {
+  background-color: #11518C !important;
+  opacity: .75 !important;
+}
+
+
+.megamenu > div > li > ul > li {
+  list-style: none;
+}
+
+.megamenu > div > li > ul > li > a {
+  display: block;
+  padding: 3px 20px;
+  clear: both;
+  font-weight: thick;
+  line-height: 1.428571429;
+  color: #11518C;
+  white-space: normal;
+  text-decoration: none;
+}
+
+.megamenu > div > li > ul > li > a:hover,
+.megamenu > div > li > ul > li > a:focus {
+  text-decoration: none;
+  color: #262626;
+  background-color: #f5f5f5;
+}
+
+.megamenu.disabled > a,
+.megamenu.disabled > a:hover,
+.megamenu.disabled > a:focus {
+  color: white;
+}
+
+.megamenu.disabled > a:hover,
+.megamenu.disabled > a:focus {
+  text-decoration: none;
+  background-color: transparent;
+  background-image: none;
+  filter: progid: DXImageTransform.Microsoft.gradient(enabled=false);
+  cursor: not-allowed;
+}
+
+.megamenu.dropdown-header {
+  color: #11518CFF ;
+}
+
+@media (max-width: 768px) {
+  .megamenu {
+    margin-left: 0;
+    margin-right: 0;
+  }
+  .megamenu > li {
+    margin-bottom: 30px;
+  }
+  .megamenu > li:last-child {
+    margin-bottom: 0;
+  }
+  .megamenu.dropdown-header {
+    padding: 3px 15px !important;
+  }
+  .navbar-nav .open .dropdown-menu .dropdown-header {
+    color: #fff;
+  }
+}
+
+#infoi {
+  position: absolute;
+  top: 5 !important;
+  left: 0;
+}
+#infoi {
+  z-index: 10;
+}
+
+@media print {
+  .np{
+    display:none !important;
+  }
+}
+
+.navbar-nav .nav-item.active .nav-link,
+.navbar-nav .nav-item:hover .nav-link {
+color: #11518C !important;
+background-color: whitesmoke;
+border-radius: 5px;
+}
+
+/* end of mega menu */
+/*Colors for bg and text */
+.bg-gold {
+background-color: #FFBF10 !important;
+}
+.bg-form-blue {
+background-color: #11518C !important;
+}
+
+.text-form-blue {
+color: #11518C !important;
+}
+
+.text-gold {
+color: #FFBF10 !important;
+}
+
+.text-form-body-blue {
+  color: #002A4F !important;
+}
+
+.text-cals {
+color: #BF4726 !important;
+}
+
+.bg-div {
+  background-color: rgba(250, 154, 0, .25);
+}
+
+.bg-nav-blue {
+  background-color:#11518C  !important;
+}
+
+.bg-events-blue {
+  background-color: #57A3E5 !important;
+}
+
+.border-gold {
+  border:15px solid rgba(250, 154, 0, .25) !important;
+}
+
+.border-blue {
+  border: 2px solid #11518C !important;
+}
+
+.bg-dark-gold {
+background-color: #FFBF10 !important;
+}
+
+.text-dark-gold {
+  color: #FFBF10 !important;
+}
+
+.bg-lblue {
+  background-color: #3089D9 !important;
+  }
+
+  .text-lblue {
+    color: #3089D9 !important;
+    }
+
+
+/*dropshadows*/
+.dropshadow{
+  -ms-box-shadow: 0px 3px 5px #444444 !important;
+-moz-box-shadow: 0px 3px 5px #444444 !important;
+-webkit-box-shadow: 0px 3px 5px #444444 !important;
+box-shadow: 0px 3px 5px #444444 !important;
+}
+
+/*Font for site */
+html body {
+  font-family: 'Arvo', serif;
+}
+
+.header-font {
+  font-family: 'Arvo', serif;
+}
+
+.body-font {
+  font-family: 'Montserrat', sans-serif !important;
+                                              
+}
+
+/*Laman Color Outline Button */
+
+.btn-outline-blue{color:#11518C;border-color:#11518C}
+.btn-outline-blue:hover{color:#fff;background-color:#11518C;border-color:#11518C}
+.btn-outline-blue.focus,
+.btn-outline-blue:focus{box-shadow:0 0 0 .2rem rgba(0,123,255,.5)}
+.btn-outline-blue.disabled,
+.btn-outline-blue:disabled{color:#11518C;background-color:transparent}
+.btn-outline-blue:not(:disabled):not(.disabled).active,
+.btn-outline-blue:not(:disabled):not(.disabled):active,.show>
+.btn-outline-blue.dropdown-toggle{color:#fff;background-color:#11518C;border-color:#11518C}
+.btn-outline-blue:not(:disabled):not(.disabled).active:focus,
+.btn-outline-blue:not(:disabled):not(.disabled):active:focus,.show>
+.btn-outline-blue.dropdown-toggle:focus{box-shadow:0 0 0 .2rem rgba(0,123,255,.5)}
