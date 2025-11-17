@@ -17,55 +17,49 @@ class TenantRegistrationController extends Controller
         return view('tenant.register');
     }
 
-    public function store(Request $request)
-    {
-        $request->validate([
-            'library_name' => ['required', 'string', 'max:255'],
-            'subdomain' => ['required', 'string', 'max:63', 'alpha_dash', 'unique:tenants,domain'],
-            'admin_name' => ['required', 'string', 'max:255'],
-            'admin_email' => ['required', 'string', 'email', 'max:255', 'unique:tenants,admin_email'],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+   public function store(Request $request)
+{
+    $request->validate([
+        'library_name' => ['required', 'string', 'max:255'],
+        'subdomain' => ['required', 'string', 'max:63', 'alpha_dash', 'unique:tenants,domain'],
+        'admin_name' => ['required', 'string', 'max:255'],
+        'admin_email' => ['required', 'string', 'email', 'max:255', 'unique:tenants,admin_email'],
+        'password' => ['required', 'confirmed', Rules\Password::defaults()],
+    ]);
+
+    DB::beginTransaction();
+
+    try {
+        $tenant = Tenant::create([
+            'name' => $request->library_name,
+            'domain' => $request->subdomain,
+            'database' => 'tenant_' . Str::slug($request->subdomain),
+            'status' => 'pending',
+            'admin_email' => $request->admin_email,
+            'admin_name' => $request->admin_name,
         ]);
 
-        DB::beginTransaction();
+        $tenant->domains()->create([
+            'domain' => $request->subdomain . '.' . config('app.domain'),
+        ]);
 
-        try {
-            // Create tenant
-            $tenant = Tenant::create([
-                'name' => $request->library_name,
-                'domain' => $request->subdomain,
-                'database' => 'tenant_' . Str::slug($request->subdomain),
-                'status' => 'pending',
-                'admin_email' => $request->admin_email,
-                'admin_name' => $request->admin_name,
-            ]);
+        cache()->put(
+            'tenant_admin_password_' . $tenant->id,
+            Hash::make($request->password),
+            now()->addDays(30)
+        );
 
-            // Create domain
-            $tenant->domains()->create([
-                'domain' => $request->subdomain . '.' . config('app.domain'),
-            ]);
+        DB::commit();
 
-            // Store temporary admin credentials (encrypted)
-            cache()->put(
-                'tenant_admin_password_' . $tenant->id,
-                Hash::make($request->password),
-                now()->addDays(30)
-            );
+        return redirect()->route('tenant.pending')
+            ->with('tenant_id', $tenant->id)
+            ->with('success', 'Registration submitted! Your account is pending approval.');
 
-            DB::commit();
-
-            // Notify super admin (you can implement email notification here)
-            // Mail::to(config('app.super_admin_email'))->send(new NewTenantRegistration($tenant));
-
-            return redirect()->route('tenant.pending')
-                ->with('tenant_id', $tenant->id)
-                ->with('success', 'Registration submitted! Your account is pending approval.');
-
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return back()->withErrors(['error' => 'Registration failed: ' . $e->getMessage()])->withInput();
-        }
+    } catch (\Exception $e) {
+        DB::rollBack();
+        return back()->withErrors(['error' => 'Registration failed: ' . $e->getMessage()])->withInput();
     }
+}
 
     public function pending()
     {
