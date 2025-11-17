@@ -9,24 +9,30 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('tenants', function (Blueprint $table) {
-            $table->id();
-            $table->string('name'); // Library name
-            $table->string('domain')->unique(); // subdomain.yourdomain.com
-            $table->string('database')->unique(); // tenant database name
+            $table->string('id', 255)->primary(); // Explicitly set length to 255
+            $table->string('name');
+            $table->string('domain')->unique();
+            $table->string('database')->unique();
             $table->enum('status', ['pending', 'active', 'suspended'])->default('pending');
             $table->string('admin_email')->unique();
             $table->string('admin_name');
             $table->text('notes')->nullable();
             $table->timestamp('approved_at')->nullable();
-            $table->json('data')->nullable(); 
+            $table->json('data')->nullable();
             $table->timestamps();
         });
 
         Schema::create('domains', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('tenant_id')->constrained()->onDelete('cascade');
-            $table->string('domain')->unique();
+            $table->increments('id');
+            $table->string('domain', 255)->unique();
+            $table->string('tenant_id', 255); // Match the length of tenants.id
             $table->timestamps();
+
+            $table->foreign('tenant_id')
+                  ->references('id')
+                  ->on('tenants')
+                  ->onUpdate('cascade')
+                  ->onDelete('cascade');
         });
     }
 
