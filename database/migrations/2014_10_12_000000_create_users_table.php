@@ -17,13 +17,18 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
-            $table->string('role')->default('tech')->after('password'); // tech, admin, super_admin
-            $table->boolean('is_tenant_admin')->default(false)->after('role');
-            $table->string('status')->default('active')->after('is_tenant_admin'); // active, suspended, pending
-            $table->string('admin')->default('no')->after('status'); // yes, no (legacy)
-            $table->string('usertype')->default('TECH')->after('admin'); // ADMIN, TECH, etc (legacy)
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            
+            // New role-based system
+            $table->string('role')->default('tech'); // tech, admin, super_admin
+            $table->boolean('is_tenant_admin')->default(false);
+            $table->string('status')->default('active'); // active, suspended, pending
+            
+            // Legacy fields for backwards compatibility
+            $table->string('admin')->default('no'); // yes, no
+            $table->string('usertype')->default('TECH'); // ADMIN, TECH, etc
+            
             $table->rememberToken();
             $table->timestamps();
         });
