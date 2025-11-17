@@ -30,6 +30,7 @@ class TenantRegistrationController extends Controller
     DB::beginTransaction();
 
     try {
+        // Create tenant
         $tenant = Tenant::create([
             'name' => $request->library_name,
             'domain' => $request->subdomain,
@@ -37,12 +38,15 @@ class TenantRegistrationController extends Controller
             'status' => 'pending',
             'admin_email' => $request->admin_email,
             'admin_name' => $request->admin_name,
+            'data' => [], // Add this line - empty array for now
         ]);
 
+        // Create domain
         $tenant->domains()->create([
             'domain' => $request->subdomain . '.' . config('app.domain'),
         ]);
 
+        // Store temporary admin credentials (encrypted)
         cache()->put(
             'tenant_admin_password_' . $tenant->id,
             Hash::make($request->password),

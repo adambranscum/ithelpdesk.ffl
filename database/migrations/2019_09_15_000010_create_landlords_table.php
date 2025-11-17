@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('admin_name');
             $table->text('notes')->nullable();
             $table->timestamp('approved_at')->nullable();
+            $table->json('data')->nullable(); 
             $table->timestamps();
         });
 
