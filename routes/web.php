@@ -48,6 +48,12 @@ if (!isTenantDomain()) {
         Route::get('/registration-pending', [TenantRegistrationController::class, 'pending'])->name('tenant.pending');
     });
 
+     Route::middleware(['auth', 'super.admin'])->group(function () {
+        // Profile Routes for Super Admin
+        Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+        Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+        Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+     });
     // Super Admin Routes (Central Domain Only)
     Route::middleware(['auth', 'super.admin'])->prefix('super-admin')->name('super-admin.')->group(function () {
         Route::get('/tenants', [TenantManagementController::class, 'index'])->name('tenants.index');
