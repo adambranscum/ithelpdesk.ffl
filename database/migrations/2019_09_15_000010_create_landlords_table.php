@@ -15,6 +15,7 @@ return new class extends Migration
             $table->string('database')->unique();
             $table->enum('status', ['pending', 'active', 'suspended'])->default('pending');
             $table->string('admin_email')->unique();
+            $table->string('password');
             $table->string('admin_name');
             $table->text('notes')->nullable();
             $table->timestamp('approved_at')->nullable();

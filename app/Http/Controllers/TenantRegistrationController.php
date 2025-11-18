@@ -39,6 +39,7 @@ class TenantRegistrationController extends Controller
             'admin_email' => $request->admin_email,
             'admin_name' => $request->admin_name,
             'data' => [], // Add this line - empty array for now
+            'password' => Hash::make($request->password), // hashed password
         ]);
 
         // Create domain
