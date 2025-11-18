@@ -29,7 +29,10 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(RouteServiceProvider::HOME);
+        // Use the dynamic redirect based on user role
+        return redirect()->intended(
+            RouteServiceProvider::redirectTo($request->user())
+        );
     }
 
     /**
@@ -43,5 +46,6 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerateToken();
 
-      return redirect('/login')->with('status', 'You have been logged out successfully.');    }
+        return redirect('/login')->with('status', 'You have been logged out successfully.');
+    }
 }
