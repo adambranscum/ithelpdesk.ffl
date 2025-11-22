@@ -70,6 +70,8 @@ class RouteServiceProvider extends ServiceProvider
     protected function centralDomains()
     {
         return config('tenancy.central_domains', [
+             'thecommunityhelpdesk.org',
+            'www.thecommunityhelpdesk.org',
             '127.0.0.1',
             'localhost',
         ]);
