@@ -28,53 +28,17 @@ class RouteServiceProvider extends ServiceProvider
                 ->prefix('api')
                 ->group(base_path('routes/api.php'));
 
-            // Central Domain Routes - restricted to central domains only
-            $this->mapCentralRoutes();
-            
-            // Tenant Routes - only loaded for tenant subdomains
-            // The InitializeTenancyByDomain middleware handles tenant identification
-            $this->mapTenantRoutes();
-        });
-    }
-
-    /**
-     * Define the "central" routes for the application.
-     *
-     * These routes are restricted to central domains defined in config/tenancy.php
-     */
-    protected function mapCentralRoutes()
-    {
-        foreach ($this->centralDomains() as $domain) {
+            // Central Domain Routes
+            // Load web.php but tenant middleware will block these on subdomains
             Route::middleware('web')
-                ->domain($domain)
                 ->group(base_path('routes/web.php'));
-        }
-    }
-
-    /**
-     * Define the "tenant" routes for the application.
-     *
-     * These routes are only accessible on tenant subdomains.
-     */
-    protected function mapTenantRoutes()
-    {
-        Route::middleware('web')
-            ->group(base_path('routes/tenant.php'));
-    }
-
-    /**
-     * Get the list of central domains from the tenancy config.
-     *
-     * @return array
-     */
-    protected function centralDomains()
-    {
-        return config('tenancy.central_domains', [
-             'thecommunityhelpdesk.org',
-            'www.thecommunityhelpdesk.org',
-            '127.0.0.1',
-            'localhost',
-        ]);
+            
+            // Tenant Routes
+            // These have InitializeTenancyByDomain and PreventAccessFromCentralDomains
+            // middleware which ensures they only work on tenant subdomains
+            Route::middleware('web')
+                ->group(base_path('routes/tenant.php'));
+        });
     }
 
     /**
