@@ -49,7 +49,6 @@ return [
         // \Stancl\Tenancy\Features\UserImpersonation::class,
         \Stancl\Tenancy\Features\TenantConfig::class,
         \Stancl\Tenancy\Features\UniversalRoutes::class,
-        \Stancl\Tenancy\Features\TenantRedirect::class,
     ],
 
     'bootstrappers' => [
