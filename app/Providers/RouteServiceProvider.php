@@ -7,6 +7,8 @@ use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvi
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
+use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
+use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -19,27 +21,27 @@ class RouteServiceProvider extends ServiceProvider
      * Define your route model bindings, pattern filters, and other route configuration.
      */
     public function boot()
-    {
-        $this->configureRateLimiting();
+{
+    $this->configureRateLimiting();
 
-        $this->routes(function () {
-            // API Routes
-            Route::middleware('api')
-                ->prefix('api')
-                ->group(base_path('routes/api.php'));
+    $this->routes(function () {
+        // API Routes
+        Route::middleware('api')
+            ->prefix('api')
+            ->group(base_path('routes/api.php'));
 
-            // Central Domain Routes
-            // Load web.php but tenant middleware will block these on subdomains
-            Route::middleware('web')
-                ->group(base_path('routes/web.php'));
-            
-            // Tenant Routes
-            // These have InitializeTenancyByDomain and PreventAccessFromCentralDomains
-            // middleware which ensures they only work on tenant subdomains
-            Route::middleware('web')
-                ->group(base_path('routes/tenant.php'));
-        });
-    }
+        // Central Domain Routes - NO tenant middleware
+        Route::middleware('web')
+            ->group(base_path('routes/web.php'));
+        
+        // Tenant Routes - WITH tenant middleware
+        Route::middleware([
+            'web',
+            InitializeTenancyByDomain::class,
+            PreventAccessFromCentralDomains::class,
+        ])->group(base_path('routes/tenant.php'));
+    });
+}
 
     /**
      * Configure the rate limiters for the application.
