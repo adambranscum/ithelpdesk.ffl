@@ -29,7 +29,6 @@ use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 */
 
 Route::middleware([
-    'web',
     InitializeTenancyByDomain::class,
     PreventAccessFromCentralDomains::class,
 ])->group(function () {
@@ -40,6 +39,9 @@ Route::middleware([
     |--------------------------------------------------------------------------
     */
     
+    // Include auth routes for tenant domains (login, register, etc.)
+    require __DIR__.'/auth.php';
+    
     // Root - redirect based on auth status
     Route::get('/', function () {
         if (auth()->check()) {
@@ -47,8 +49,6 @@ Route::middleware([
         }
         return redirect('/login');
     })->name('tenant.home');
-    
-    // Auth routes are included from routes/auth.php via the web middleware
     
     /*
     |--------------------------------------------------------------------------

@@ -9,6 +9,11 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 | Central Domain Routes
 |--------------------------------------------------------------------------
+| 
+| These routes are ONLY for central domains (127.0.0.1, localhost, 
+| thecommunityhelpdesk.org). They are automatically restricted to central
+| domains by the RouteServiceProvider.
+|
 */
 
 // Homepage
@@ -38,6 +43,6 @@ Route::middleware(['auth', 'super.admin'])->prefix('super-admin')->name('super-a
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-// Auth routes
+// Auth routes (login, register, password reset)
+// These are loaded here so they work on central domain
 require __DIR__.'/auth.php';
-

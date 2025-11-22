@@ -34,27 +34,27 @@ class RouteServiceProvider extends ServiceProvider
                 ->prefix('api')
                 ->group(base_path('routes/api.php'));
 
-            // Central Domain Routes (NO tenancy middleware!)
-            Route::middleware('web')
-                ->group(base_path('routes/web.php'));
+            // Central Domain Routes
+            // Register these ONLY for central domains to avoid conflicts
+            foreach ($this->centralDomains() as $domain) {
+                Route::middleware('web')
+                    ->domain($domain)
+                    ->group(base_path('routes/web.php'));
+            }
             
-            // Tenant Routes - The tenancy middleware is defined INSIDE routes/tenant.php
-            // DO NOT add tenancy middleware here - it's already in the tenant.php file
-            $this->mapTenantRoutes();
+            // Tenant Routes
+            // These will be loaded separately and will handle their own middleware
+            Route::middleware('web')
+                ->group(base_path('routes/tenant.php'));
         });
     }
 
     /**
-     * Map tenant routes
-     * The middleware is applied inside the routes/tenant.php file itself
+     * Get central domains from config
      */
-    protected function mapTenantRoutes()
+    protected function centralDomains(): array
     {
-        // Simply include the tenant routes file
-        // The middleware is handled inside that file
-        if (file_exists(base_path('routes/tenant.php'))) {
-            require base_path('routes/tenant.php');
-        }
+        return config('tenancy.central_domains', ['127.0.0.1', 'localhost']);
     }
 
     /**
