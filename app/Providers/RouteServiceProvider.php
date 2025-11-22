@@ -12,17 +12,11 @@ class RouteServiceProvider extends ServiceProvider
 {
     /**
      * The path to the "home" route for your application.
-     *
-     * Typically, users are redirected here after authentication.
-     *
-     * @var string
      */
     public const HOME = '/tickets';
 
     /**
      * Define your route model bindings, pattern filters, and other route configuration.
-     *
-     * @return void
      */
     public function boot()
     {
@@ -35,32 +29,17 @@ class RouteServiceProvider extends ServiceProvider
                 ->group(base_path('routes/api.php'));
 
             // Central Domain Routes
-            // Register these ONLY for central domains to avoid conflicts
-            foreach ($this->centralDomains() as $domain) {
-                Route::middleware('web')
-                    ->domain($domain)
-                    ->group(base_path('routes/web.php'));
-            }
+            Route::middleware('web')
+                ->group(base_path('routes/web.php'));
             
             // Tenant Routes
-            // These will be loaded separately and will handle their own middleware
             Route::middleware('web')
                 ->group(base_path('routes/tenant.php'));
         });
     }
 
     /**
-     * Get central domains from config
-     */
-    protected function centralDomains(): array
-    {
-        return config('tenancy.central_domains', ['127.0.0.1', 'localhost']);
-    }
-
-    /**
      * Configure the rate limiters for the application.
-     *
-     * @return void
      */
     protected function configureRateLimiting()
     {
@@ -71,23 +50,17 @@ class RouteServiceProvider extends ServiceProvider
     
     /**
      * Get the home path based on user role.
-     *
-     * @param  \App\Models\User  $user
-     * @return string
      */
     public static function redirectTo($user)
     {
-        // Check if user is super admin
         if ($user->isSuperAdmin()) {
             return '/super-admin/tenants';
         }
         
-        // Check if user is tenant admin
         if ($user->isTenantAdmin()) {
             return '/manage-users';
         }
         
-        // Default redirect for regular users
         return self::HOME;
     }
 }
