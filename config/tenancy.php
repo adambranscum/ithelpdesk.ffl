@@ -6,11 +6,11 @@ return [
 
     'domain_model' => \Stancl\Tenancy\Database\Models\Domain::class,
 
-   'central_domains' => [
+    'central_domains' => [
+    'thecommunityhelpdesk.org',
+    'www.thecommunityhelpdesk.org',
     '127.0.0.1',
     'localhost',
-    'www.thecommunityhelpdesk.org',
-    'thecommunityhelpdesk.org',
 ],
     'exempt_domains' => [],
 
