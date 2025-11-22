@@ -9,6 +9,7 @@ return [
    'central_domains' => [
     '127.0.0.1',
     'localhost',
+    'www.thecommunityhelpdesk.org'
     env('CENTRAL_DOMAIN', 'thecommunityhelpdesk.org'),
 ],
     'exempt_domains' => [],
