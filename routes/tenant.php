@@ -35,28 +35,16 @@ Route::middleware([
     
     /*
     |--------------------------------------------------------------------------
-    | Public Tenant Routes (No Auth Required)
-    |--------------------------------------------------------------------------
-    */
-    
-    // Include auth routes for tenant domains (login, register, etc.)
-    require __DIR__.'/auth.php';
-    
-    // Root - redirect based on auth status
-    Route::get('/', function () {
-        if (auth()->check()) {
-            return redirect('/tickets');
-        }
-        return redirect('/login');
-    })->name('tenant.home');
-    
-    /*
-    |--------------------------------------------------------------------------
     | Authenticated Tenant Routes
     |--------------------------------------------------------------------------
     */
     
     Route::middleware(['auth'])->group(function () {
+        
+        // Root - redirect based on auth status
+        Route::get('/', function () {
+            return redirect('/tickets');
+        })->name('tenant.home');
         
         // Dashboard (redirects to tickets)
         Route::get('/dashboard', function () {
