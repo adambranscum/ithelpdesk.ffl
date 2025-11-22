@@ -36,6 +36,7 @@ Route::middleware(['auth', 'super.admin'])->prefix('super-admin')->name('super-a
     Route::post('/tenants/{tenant}/suspend', [TenantManagementController::class, 'suspend'])->name('tenants.suspend');
     Route::post('/tenants/{tenant}/activate', [TenantManagementController::class, 'activate'])->name('tenants.activate');
     Route::delete('/tenants/{tenant}', [TenantManagementController::class, 'destroy'])->name('tenants.destroy');
+    Route::patch('/tenants/{tenant}/notes', [TenantManagementController::class, 'updateNotes'])->name('tenants.update-notes');
     
     // Profile routes for super admin
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
