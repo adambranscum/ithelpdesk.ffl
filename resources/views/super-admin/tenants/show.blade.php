@@ -31,7 +31,11 @@
                                         <td>
                                             <code>{{ $tenant->domain }}.{{ config('app.domain') }}</code>
                                             @if($tenant->isActive())
-                                                <a href="https://{{ $tenant->domain }}.{{ config('app.domain') }}" 
+                                                @php
+                                                    $protocol = config('app.env') === 'local' ? 'http://' : 'https://';
+                                                    $tenantUrl = $protocol . $tenant->domain . '.' . config('app.domain');
+                                                @endphp
+                                                <a href="{{ $tenantUrl }}" 
                                                    target="_blank" 
                                                    class="btn btn-sm btn-link">
                                                     Visit <i class="bi bi-box-arrow-up-right"></i>
