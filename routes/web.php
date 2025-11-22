@@ -15,17 +15,8 @@ use App\Http\Controllers\TenantRegistrationController;
 use App\Http\Controllers\TenantManagementController;
 use App\Http\Controllers\UserManagementController;
 use Illuminate\Support\Facades\Route;
-
-/*
-|--------------------------------------------------------------------------
-| Tenant Detection Helper
-|--------------------------------------------------------------------------
-*/
-function isTenantDomain() {
-    $currentHost = request()->getHost();
-    $centralDomains = config('tenancy.central_domains', ['127.0.0.1', 'localhost']);
-    return !in_array($currentHost, $centralDomains);
-}
+use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
+use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,10 +24,8 @@ function isTenantDomain() {
 |--------------------------------------------------------------------------
 */
 
-if (!isTenantDomain()) {
-    // CENTRAL DOMAIN ROUTES ONLY
-    
-    // Homepage (public)
+// Homepage (public) - Central domain only
+Route::middleware('central')->group(function () {
     Route::get('/', function() {
         return view('welcome');
     })->name('home');
@@ -58,18 +47,25 @@ if (!isTenantDomain()) {
         Route::delete('/tenants/{tenant}', [TenantManagementController::class, 'destroy'])->name('tenants.destroy');
     });
 
-    // Auth routes for central domain
-    require __DIR__.'/auth.php';
-    
-} else {
-    /*
-    |--------------------------------------------------------------------------
-    | Tenant Routes (Subdomain Access)
-    |--------------------------------------------------------------------------
-    */
-    
-    // Auth routes for tenant (login/register)
-    require __DIR__.'/auth.php';
+    // Profile routes for super admin
+    Route::middleware(['auth'])->group(function () {
+        Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+        Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+        Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    });
+});
+
+/*
+|--------------------------------------------------------------------------
+| Tenant Routes (Subdomain Access)
+|--------------------------------------------------------------------------
+*/
+
+Route::middleware([
+    'web',
+    InitializeTenancyByDomain::class,
+    PreventAccessFromCentralDomains::class,
+])->group(function () {
     
     // Redirect root to login if not authenticated
     Route::get('/', function () {
@@ -77,7 +73,7 @@ if (!isTenantDomain()) {
             return redirect('/tickets');
         }
         return redirect('/login');
-    })->name('home');
+    })->name('tenant.home');
     
     Route::middleware(['auth'])->group(function () {
         // Profile Routes
@@ -134,9 +130,7 @@ if (!isTenantDomain()) {
             return redirect('/tickets');
         });
     });
-}
-
-// Error Pages (available on all domains)
-Route::fallback(function () {
-    return response()->view('errors.404', [], 404);
 });
+
+// Auth routes (available on both central and tenant domains)
+require __DIR__.'/auth.php';

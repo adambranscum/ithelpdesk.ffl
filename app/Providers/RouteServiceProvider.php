@@ -49,4 +49,26 @@ class RouteServiceProvider extends ServiceProvider
             return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
         });
     }
+    
+    /**
+     * Get the home path based on user role.
+     *
+     * @param  \App\Models\User  $user
+     * @return string
+     */
+    public static function redirectTo($user)
+    {
+        // Check if user is super admin
+        if ($user->isSuperAdmin()) {
+            return '/super-admin/tenants';
+        }
+        
+        // Check if user is tenant admin
+        if ($user->isTenantAdmin()) {
+            return '/manage-users';
+        }
+        
+        // Default redirect for regular users
+        return self::HOME;
+    }
 }

@@ -18,8 +18,10 @@ class Tenant extends BaseTenant implements TenantWithDatabase
         'status',
         'admin_email',
         'admin_name',
+        'password',
         'notes',
         'approved_at',
+        'data',
     ];
 
     protected $casts = [
@@ -38,6 +40,7 @@ class Tenant extends BaseTenant implements TenantWithDatabase
             'admin_name',
             'notes',
             'approved_at',
+            'data',
         ];
     }
 
