@@ -21,27 +21,31 @@ class RouteServiceProvider extends ServiceProvider
      * Define your route model bindings, pattern filters, and other route configuration.
      */
     public function boot()
-{
-    $this->configureRateLimiting();
+    {
+        $this->configureRateLimiting();
 
-    $this->routes(function () {
-        // API Routes
-        Route::middleware('api')
-            ->prefix('api')
-            ->group(base_path('routes/api.php'));
+        $this->routes(function () {
+            // API Routes
+            Route::middleware('api')
+                ->prefix('api')
+                ->group(base_path('routes/api.php'));
 
-        // Central Domain Routes - NO tenant middleware
-        Route::middleware('web')
-            ->group(base_path('routes/web.php'));
-        
-        // Tenant Routes - WITH tenant middleware
-        Route::middleware([
-            'web',
-            InitializeTenancyByDomain::class,
-            PreventAccessFromCentralDomains::class,
-        ])->group(base_path('routes/tenant.php'));
-    });
-}
+            // Central Domain Routes (explicitly bound to central domains only)
+            foreach (config('tenancy.central_domains') as $domain) {
+                Route::middleware('web')
+                    ->domain($domain)
+                    ->group(base_path('routes/web.php'));
+            }
+            
+            // Tenant Routes - match any subdomain
+            Route::middleware([
+                'web',
+                InitializeTenancyByDomain::class,
+                PreventAccessFromCentralDomains::class,
+            ])
+            ->group(base_path('routes/tenant.php'));
+        });
+    }
 
     /**
      * Configure the rate limiters for the application.
