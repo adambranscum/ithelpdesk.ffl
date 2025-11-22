@@ -30,13 +30,13 @@ Route::middleware('guest')->group(function () {
 
 // Super Admin Routes
 Route::middleware(['auth', 'super.admin'])->prefix('super-admin')->name('super-admin.')->group(function () {
-    Route::get('/tenants', [TenantManagementController::class, 'index'])->name('tenants.index');
-    Route::get('/tenants/{tenant}', [TenantManagementController::class, 'show'])->name('tenants.show');
-    Route::post('/tenants/{tenant}/approve', [TenantManagementController::class, 'approve'])->name('tenants.approve');
-    Route::post('/tenants/{tenant}/suspend', [TenantManagementController::class, 'suspend'])->name('tenants.suspend');
-    Route::post('/tenants/{tenant}/activate', [TenantManagementController::class, 'activate'])->name('tenants.activate');
-    Route::delete('/tenants/{tenant}', [TenantManagementController::class, 'destroy'])->name('tenants.destroy');
-    Route::patch('/tenants/{tenant}/notes', [TenantManagementController::class, 'updateNotes'])->name('tenants.update-notes');
+    Route::get('/super-admin/tenants', [TenantManagementController::class, 'index'])->name('tenants.index');
+    Route::get('/super-admin/tenants/{tenant}', [TenantManagementController::class, 'show'])->name('tenants.show');
+    Route::post('/super-admin/tenants/{tenant}/approve', [TenantManagementController::class, 'approve'])->name('tenants.approve');
+    Route::post('/super-admin/tenants/{tenant}/suspend', [TenantManagementController::class, 'suspend'])->name('tenants.suspend');
+    Route::post('/super-admin/tenants/{tenant}/activate', [TenantManagementController::class, 'activate'])->name('tenants.activate');
+    Route::delete('/super-admin/tenants/{tenant}', [TenantManagementController::class, 'destroy'])->name('tenants.destroy');
+    Route::patch('/super-admin/tenants/{tenant}/notes', [TenantManagementController::class, 'updateNotes'])->name('tenants.update-notes');
     
     // Profile routes for super admin
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
