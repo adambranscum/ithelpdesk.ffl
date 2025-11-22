@@ -22,8 +22,9 @@ use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 | Tenant Routes
 |--------------------------------------------------------------------------
 |
-| Here you can register the tenant routes for your application.
-| These routes are loaded by the TenantRouteServiceProvider.
+| These routes are ONLY accessible on tenant domains (subdomains).
+| The middleware ensures tenancy is initialized and prevents access
+| from central domains.
 |
 */
 
@@ -33,7 +34,13 @@ Route::middleware([
     PreventAccessFromCentralDomains::class,
 ])->group(function () {
     
-    // Redirect root to login if not authenticated
+    /*
+    |--------------------------------------------------------------------------
+    | Public Tenant Routes (No Auth Required)
+    |--------------------------------------------------------------------------
+    */
+    
+    // Root - redirect based on auth status
     Route::get('/', function () {
         if (auth()->check()) {
             return redirect('/tickets');
@@ -41,59 +48,115 @@ Route::middleware([
         return redirect('/login');
     })->name('tenant.home');
     
+    // Auth routes are included from routes/auth.php via the web middleware
+    
+    /*
+    |--------------------------------------------------------------------------
+    | Authenticated Tenant Routes
+    |--------------------------------------------------------------------------
+    */
+    
     Route::middleware(['auth'])->group(function () {
-        // Profile Routes
-        Route::get('/profile', [ProfileController::class, 'edit'])->name('tenant.profile.edit');
-        Route::patch('/profile', [ProfileController::class, 'update'])->name('tenant.profile.update');
-        Route::delete('/profile', [ProfileController::class, 'destroy'])->name('tenant.profile.destroy');
-
-        // Tenant Admin - User Management Routes
-        Route::middleware('tenant.admin')->prefix('manage-users')->name('tenant-admin.')->group(function () {
-            Route::get('/', [UserManagementController::class, 'index'])->name('users.index');
-            Route::get('/create', [UserManagementController::class, 'create'])->name('users.create');
-            Route::post('/', [UserManagementController::class, 'store'])->name('users.store');
-            Route::get('/{user}/edit', [UserManagementController::class, 'edit'])->name('users.edit');
-            Route::patch('/{user}', [UserManagementController::class, 'update'])->name('users.update');
-            Route::delete('/{user}', [UserManagementController::class, 'destroy'])->name('users.destroy');
-            Route::post('/{user}/reset-password', [UserManagementController::class, 'resetPassword'])->name('users.reset-password');
-        });
-
-        // Ticket Routes
-        Route::get('/tickets/stats', [TicketStatsController::class, 'index'])->name('tickets.stats');
-        Route::get('/tickets', [TicketController::class, 'index'])->name('tickets.index');
-        Route::get('/tickets/{ticket}', [TicketController::class, 'show'])->name('tickets.show');
-        Route::patch('/tickets/{ticket}/status', [TicketController::class, 'updateStatus'])->name('tickets.updateStatus');
-        Route::patch('/tickets/{ticket}/transfer', [TicketController::class, 'transfer'])->name('tickets.transfer');
-        Route::patch('/tickets/{ticket}', [TicketController::class, 'update'])->name('tickets.update');
-        Route::post('/tickets/{ticket}/comment', [TicketController::class, 'addComment'])->name('tickets.addComment');
-        Route::get('/create', [CreateTicketController::class, 'create'])->name('tickets.create');
-        Route::post('/store', [CreateTicketController::class, 'store'])->name('tickets.store');
-
-        // Admin Ticket Routes
-        Route::middleware('can.admin')->group(function () {
-            Route::get('/admin/tickets', [AdminController::class, 'index'])->name('admin.index');
-            Route::get('/admin/tickets/{ticket}', [AdminController::class, 'show'])->name('admin.show');
-            Route::patch('/admin/tickets/{ticket}/status', [AdminController::class, 'updateStatus'])->name('admin.updateStatus');
-            Route::patch('/admin/tickets/{ticket}', [AdminController::class, 'update'])->name('admin.update');
-            Route::post('/admin/tickets/{ticket}/comment', [AdminController::class, 'addComment'])->name('admin.addComment');
-            Route::patch('/admin/tickets/{ticket}/transfer', [AdminController::class, 'transfer'])->name('admin.transfer');
-        });
-
-        // Device Routes
-        Route::get('/devices/statistics', [DeviceStatsController::class, 'index'])->name('devices.stats');
-        Route::resource('devices', DeviceController::class);
-
-        // Software Routes
-        Route::get('/software/statistics', [SoftwareStatsController::class, 'index'])->name('software.stats');
-        Route::resource('software', SoftwareController::class);
-
-        // SOP Routes
-        Route::resource('sops', SopController::class);
-        Route::post('sops/{sop}/link-ticket', [SopController::class, 'linkToTicket'])->name('sops.linkTicket');
-
-        // Dashboard redirect
+        
+        // Dashboard (redirects to tickets)
         Route::get('/dashboard', function () {
             return redirect('/tickets');
         })->name('dashboard');
+        
+        /*
+        |--------------------------------------------------------------------------
+        | Profile Management
+        |--------------------------------------------------------------------------
+        */
+        
+        Route::prefix('profile')->name('tenant.profile.')->group(function () {
+            Route::get('/', [ProfileController::class, 'edit'])->name('edit');
+            Route::patch('/', [ProfileController::class, 'update'])->name('update');
+            Route::delete('/', [ProfileController::class, 'destroy'])->name('destroy');
+        });
+        
+        /*
+        |--------------------------------------------------------------------------
+        | Tenant Admin - User Management
+        |--------------------------------------------------------------------------
+        */
+        
+        Route::middleware('tenant.admin')
+            ->prefix('manage-users')
+            ->name('tenant-admin.')
+            ->group(function () {
+                Route::get('/', [UserManagementController::class, 'index'])->name('users.index');
+                Route::get('/create', [UserManagementController::class, 'create'])->name('users.create');
+                Route::post('/', [UserManagementController::class, 'store'])->name('users.store');
+                Route::get('/{user}/edit', [UserManagementController::class, 'edit'])->name('users.edit');
+                Route::patch('/{user}', [UserManagementController::class, 'update'])->name('users.update');
+                Route::delete('/{user}', [UserManagementController::class, 'destroy'])->name('users.destroy');
+                Route::post('/{user}/reset-password', [UserManagementController::class, 'resetPassword'])->name('users.reset-password');
+            });
+        
+        /*
+        |--------------------------------------------------------------------------
+        | Tickets - Regular User Access
+        |--------------------------------------------------------------------------
+        */
+        
+        Route::prefix('tickets')->name('tickets.')->group(function () {
+            Route::get('/stats', [TicketStatsController::class, 'index'])->name('stats');
+            Route::get('/', [TicketController::class, 'index'])->name('index');
+            Route::get('/{ticket}', [TicketController::class, 'show'])->name('show');
+            Route::patch('/{ticket}/status', [TicketController::class, 'updateStatus'])->name('updateStatus');
+            Route::patch('/{ticket}/transfer', [TicketController::class, 'transfer'])->name('transfer');
+            Route::patch('/{ticket}', [TicketController::class, 'update'])->name('update');
+            Route::post('/{ticket}/comment', [TicketController::class, 'addComment'])->name('addComment');
+        });
+        
+        // Ticket Creation (separate routes for clarity)
+        Route::get('/create', [CreateTicketController::class, 'create'])->name('tickets.create');
+        Route::post('/store', [CreateTicketController::class, 'store'])->name('tickets.store');
+        
+        /*
+        |--------------------------------------------------------------------------
+        | Admin Ticket Management
+        |--------------------------------------------------------------------------
+        */
+        
+        Route::middleware('can.admin')
+            ->prefix('admin/tickets')
+            ->name('admin.')
+            ->group(function () {
+                Route::get('/', [AdminController::class, 'index'])->name('index');
+                Route::get('/{ticket}', [AdminController::class, 'show'])->name('show');
+                Route::patch('/{ticket}/status', [AdminController::class, 'updateStatus'])->name('updateStatus');
+                Route::patch('/{ticket}', [AdminController::class, 'update'])->name('update');
+                Route::post('/{ticket}/comment', [AdminController::class, 'addComment'])->name('addComment');
+                Route::patch('/{ticket}/transfer', [AdminController::class, 'transfer'])->name('transfer');
+            });
+        
+        /*
+        |--------------------------------------------------------------------------
+        | Device Management
+        |--------------------------------------------------------------------------
+        */
+        
+        Route::get('/devices/statistics', [DeviceStatsController::class, 'index'])->name('devices.stats');
+        Route::resource('devices', DeviceController::class);
+        
+        /*
+        |--------------------------------------------------------------------------
+        | Software Management
+        |--------------------------------------------------------------------------
+        */
+        
+        Route::get('/software/statistics', [SoftwareStatsController::class, 'index'])->name('software.stats');
+        Route::resource('software', SoftwareController::class);
+        
+        /*
+        |--------------------------------------------------------------------------
+        | Standard Operating Procedures (SOPs)
+        |--------------------------------------------------------------------------
+        */
+        
+        Route::resource('sops', SopController::class);
+        Route::post('sops/{sop}/link-ticket', [SopController::class, 'linkToTicket'])->name('sops.linkTicket');
     });
 });

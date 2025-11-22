@@ -41,8 +41,3 @@ Route::middleware(['auth', 'super.admin'])->prefix('super-admin')->name('super-a
 // Auth routes
 require __DIR__.'/auth.php';
 
-// REMOVE OR REPLACE the fallback - it was causing the error
-// The 404 handler should be automatic, or use a simple one:
-Route::fallback(function () {
-    return response()->view('errors.404', [], 404);
-});

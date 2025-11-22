@@ -29,20 +29,32 @@ class RouteServiceProvider extends ServiceProvider
         $this->configureRateLimiting();
 
         $this->routes(function () {
+            // API Routes
             Route::middleware('api')
                 ->prefix('api')
                 ->group(base_path('routes/api.php'));
 
+            // Central Domain Routes (NO tenancy middleware!)
             Route::middleware('web')
                 ->group(base_path('routes/web.php'));
             
-            // ADD THIS - Tenant routes with middleware
-            Route::middleware([
-                'web',
-                \Stancl\Tenancy\Middleware\InitializeTenancyByDomain::class,
-                \Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains::class,
-            ])->group(base_path('routes/tenant.php'));
+            // Tenant Routes - The tenancy middleware is defined INSIDE routes/tenant.php
+            // DO NOT add tenancy middleware here - it's already in the tenant.php file
+            $this->mapTenantRoutes();
         });
+    }
+
+    /**
+     * Map tenant routes
+     * The middleware is applied inside the routes/tenant.php file itself
+     */
+    protected function mapTenantRoutes()
+    {
+        // Simply include the tenant routes file
+        // The middleware is handled inside that file
+        if (file_exists(base_path('routes/tenant.php'))) {
+            require base_path('routes/tenant.php');
+        }
     }
 
     /**
