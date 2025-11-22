@@ -24,7 +24,7 @@ class TenantRegistrationController extends Controller
         'subdomain' => ['required', 'string', 'max:63', 'alpha_dash', 'unique:tenants,domain'],
         'admin_name' => ['required', 'string', 'max:255'],
         'admin_email' => ['required', 'string', 'email', 'max:255', 'unique:tenants,admin_email'],
-        'password' => ['required', 'confirmed', Rules\Password::defaults()],
+        'password' => ['required'],
     ]);
 
     DB::beginTransaction();
