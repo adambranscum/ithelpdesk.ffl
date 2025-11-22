@@ -16,7 +16,7 @@
          alt="Morty Smith" class="error-img portal">
     <h1 class="display-4">503 — Service Unavailable!</h1>
     <p class="lead">“Server’s taking a portal break, Morty. It’ll be back soon!”</p>
-        <a href="{{ route('tickets.index') }}" class="btn btn-home">
+        <a href="" class="btn btn-home">
             Take Me Back to the Dashboard
         </a>
     </div>

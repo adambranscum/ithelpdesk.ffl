@@ -91,7 +91,7 @@
                                     </li>
                                 @endif
                                 <li>
-                                    <a class="dropdown-item" href="{{ route('profile.edit') }}">
+                                    <a class="dropdown-item" href="{{ route('tenant.profile.edit') }}">
                                         Change Password
                                     </a>
                                 </li>
@@ -114,7 +114,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white d-flex align-items-center" href="{{ route('profile.edit') }}">
+                        <a class="nav-link text-white d-flex align-items-center" href="{{ route('super-admin.profile.edit') }}">
                             Settings
                         </a>
                     </li>

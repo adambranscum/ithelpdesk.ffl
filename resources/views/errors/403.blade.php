@@ -25,7 +25,7 @@
             Either you’re not authorized, or someone needs to turn your permissions portal gun back on.
         </p>
 
-        <a href="{{ route('tickets.index') }}" class="btn btn-home">
+        <a href="" class="btn btn-home">
             Take Me Back to the Dashboard
         </a>
     </div>

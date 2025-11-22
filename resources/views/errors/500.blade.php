@@ -16,7 +16,7 @@
          alt="Rick Sanchez" class="error-img portal">
     <h1 class="display-4">500 — Internal Server Error!</h1>
     <p class="lead">“Alright Morty, I may have just blown up the backend dimension.”</p>
-        <a href="{{ route('tickets.index') }}" class="btn btn-home">
+        <a href="" class="btn btn-home">
             Take Me Back to the Dashboard
         </a>
     </div>

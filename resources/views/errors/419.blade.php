@@ -16,7 +16,7 @@
          alt="Rick Sanchez" class="error-img portal">
     <h1 class="display-4">419 — Session Expired!</h1>
     <p class="lead">“Morty... your CSRF token evaporated in the time vortex!”</p>
-        <a href="{{ route('login') }}" class="btn btn-home">
+        <a href="" class="btn btn-home">
             Take Me Back to login
         </a>
     </div>
