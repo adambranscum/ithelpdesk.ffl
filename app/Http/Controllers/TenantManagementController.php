@@ -21,6 +21,19 @@ class TenantManagementController extends Controller
         });
     }
 
+    public function updateNotes(Request $request, Tenant $tenant)
+{
+    $request->validate([
+        'notes' => 'nullable|string'
+    ]);
+
+    $tenant->update([
+        'notes' => $request->notes
+    ]);
+
+    return back()->with('success', 'Notes updated successfully!');
+}
+
     public function index(Request $request)
     {
         $query = Tenant::query();
