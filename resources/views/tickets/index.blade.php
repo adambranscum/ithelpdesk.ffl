@@ -106,7 +106,7 @@
                                         <span class="badge bg-secondary">{{ ucfirst($ticket->status) }}</span>
                                     @endif
                                 </td>
-                                <td>{{ $ticket->updated_at->diffForHumans() }}</td>
+                                <td>{{ $ticket->updated_at?->diffForHumans() ?? 'N/A' }}</td>
                             </tr>
                         @endforeach
                     </tbody>
