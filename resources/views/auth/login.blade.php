@@ -88,8 +88,8 @@
                             <!-- Register Link -->
                             <div class="text-center">
                                 <p class="text-muted mb-0">
-                                    Don't have an account? 
-                                    <a href="{{ route('register') }}" class="text-decoration-none fw-semibold">
+                                    Don't have an account?
+                                    <a href="{{ route('library.register.form') }}" class="text-decoration-none fw-semibold">
                                         Create one now
                                     </a>
                                 </p>
