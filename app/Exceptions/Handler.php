@@ -4,8 +4,6 @@ namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
-use Stancl\Tenancy\Exceptions\TenantCouldNotBeIdentifiedOnDomainException;
-use Symfony\Component\Routing\Exception\RouteNotFoundException;
 
 class Handler extends ExceptionHandler
 {
@@ -24,7 +22,7 @@ class Handler extends ExceptionHandler
      * @var array<int, class-string<\Throwable>>
      */
     protected $dontReport = [
-        TenantCouldNotBeIdentifiedOnDomainException::class,
+        //
     ];
 
     /**
@@ -47,39 +45,6 @@ class Handler extends ExceptionHandler
     {
         $this->reportable(function (Throwable $e) {
             //
-        });
-        
-        // Handle tenant identification errors
-        $this->renderable(function (TenantCouldNotBeIdentifiedOnDomainException $e, $request) {
-            // If on central domain, redirect to home
-            $currentHost = $request->getHost();
-            $centralDomains = config('tenancy.central_domains', []);
-            
-            if (in_array($currentHost, $centralDomains)) {
-                return redirect('/')->with('error', 'This feature is only available on tenant subdomains.');
-            }
-            
-            // Otherwise show 404
-            return response()->view('errors.404', [], 404);
-        });
-        
-        // Handle route not found errors (like tickets.index on central domain)
-        $this->renderable(function (RouteNotFoundException $e, $request) {
-            // Check if we're on central domain
-            $currentHost = $request->getHost();
-            $centralDomains = config('tenancy.central_domains', []);
-            
-            if (in_array($currentHost, $centralDomains)) {
-                // If authenticated, show a helpful message
-                if (auth()->check()) {
-                    return redirect('/')->with('info', 'Please access tenant features through your library subdomain.');
-                }
-                // Otherwise just redirect to home
-                return redirect('/');
-            }
-            
-            // For tenant domains, show normal 404
-            return response()->view('errors.404', [], 404);
         });
     }
 }

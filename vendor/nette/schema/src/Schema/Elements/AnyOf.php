@@ -13,17 +13,21 @@ use Nette;
 use Nette\Schema\Context;
 use Nette\Schema\Helpers;
 use Nette\Schema\Schema;
-use function array_merge, array_unique, implode, is_array;
 
 
 final class AnyOf implements Schema
 {
 	use Base;
+	use Nette\SmartObject;
 
-	private array $set;
+	/** @var array */
+	private $set;
 
 
-	public function __construct(mixed ...$set)
+	/**
+	 * @param  mixed|Schema  ...$set
+	 */
+	public function __construct(...$set)
 	{
 		if (!$set) {
 			throw new Nette\InvalidStateException('The enumeration must not be empty.');
@@ -57,13 +61,13 @@ final class AnyOf implements Schema
 	/********************* processing ****************d*g**/
 
 
-	public function normalize(mixed $value, Context $context): mixed
+	public function normalize($value, Context $context)
 	{
 		return $this->doNormalize($value, $context);
 	}
 
 
-	public function merge(mixed $value, mixed $base): mixed
+	public function merge($value, $base)
 	{
 		if (is_array($value) && isset($value[Helpers::PreventMerging])) {
 			unset($value[Helpers::PreventMerging]);
@@ -74,7 +78,7 @@ final class AnyOf implements Schema
 	}
 
 
-	public function complete(mixed $value, Context $context): mixed
+	public function complete($value, Context $context)
 	{
 		$isOk = $context->createChecker();
 		$value = $this->findAlternative($value, $context);
@@ -83,7 +87,7 @@ final class AnyOf implements Schema
 	}
 
 
-	private function findAlternative(mixed $value, Context $context): mixed
+	private function findAlternative($value, Context $context)
 	{
 		$expecteds = $innerErrors = [];
 		foreach ($this->set as $item) {
@@ -121,20 +125,18 @@ final class AnyOf implements Schema
 				[
 					'value' => $value,
 					'expected' => implode('|', array_unique($expecteds)),
-				],
+				]
 			);
 		}
-
-		return null;
 	}
 
 
-	public function completeDefault(Context $context): mixed
+	public function completeDefault(Context $context)
 	{
 		if ($this->required) {
 			$context->addError(
 				'The mandatory item %path% is missing.',
-				Nette\Schema\Message::MissingItem,
+				Nette\Schema\Message::MissingItem
 			);
 			return null;
 		}

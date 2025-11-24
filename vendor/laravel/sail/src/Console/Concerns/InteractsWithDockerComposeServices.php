@@ -35,7 +35,6 @@ trait InteractsWithDockerComposeServices
         'meilisearch',
         'typesense',
         'minio',
-        'rustfs',
         'mailpit',
         'rabbitmq',
         'selenium',
@@ -108,7 +107,7 @@ trait InteractsWithDockerComposeServices
         // Merge volumes...
         collect($services)
             ->filter(function ($service) {
-                return in_array($service, ['mysql', 'pgsql', 'mariadb', 'mongodb', 'redis', 'valkey', 'meilisearch', 'typesense', 'minio', 'rustfs', 'rabbitmq']);
+                return in_array($service, ['mysql', 'pgsql', 'mariadb', 'mongodb', 'redis', 'valkey', 'meilisearch', 'typesense', 'minio', 'rabbitmq']);
             })->filter(function ($service) use ($compose) {
                 return ! array_key_exists($service, $compose['volumes'] ?? []);
             })->each(function ($service) use (&$compose) {
@@ -222,8 +221,6 @@ trait InteractsWithDockerComposeServices
         if (in_array('rabbitmq', $services)) {
             $environment = str_replace('RABBITMQ_HOST=127.0.0.1', 'RABBITMQ_HOST=rabbitmq', $environment);
         }
-
-        $environment = str_replace('# PHP_CLI_SERVER_WORKERS=4', 'PHP_CLI_SERVER_WORKERS=4', $environment);
 
         file_put_contents($this->laravel->basePath('.env'), $environment);
     }

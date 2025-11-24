@@ -57,21 +57,14 @@
 
                             <!-- Make -->
                             <div class="col-md-6">
-                                <label for="make" class="form-label fw-semibold">Make</label>
-                                <select class="form-select @error('make') is-invalid @enderror" 
-                                        id="make" 
-                                        name="make">
-                                    <option value="">Select make...</option>
-                                    <option value="Dell" {{ old('make') == 'Dell' ? 'selected' : '' }}>Dell</option>
-                                    <option value="HP" {{ old('make') == 'HP' ? 'selected' : '' }}>HP</option>
-                                    <option value="Lenovo" {{ old('make') == 'Lenovo' ? 'selected' : '' }}>Lenovo</option>
-                                    <option value="Apple" {{ old('make') == 'Apple' ? 'selected' : '' }}>Apple</option>
-                                    <option value="Microsoft" {{ old('make') == 'Microsoft' ? 'selected' : '' }}>Microsoft</option>
-                                    <option value="Asus" {{ old('make') == 'Asus' ? 'selected' : '' }}>Asus</option>
-                                    <option value="Acer" {{ old('make') == 'Acer' ? 'selected' : '' }}>Acer</option>
-                                    <option value="Other" {{ old('make') == 'Other' ? 'selected' : '' }}>Other</option>
-                                </select>
-                                @error('make')
+                                <label for="make" class="form-label fw-semibold">Manufacturer</label>
+                                <input type="text" 
+                                       class="form-control @error('model') is-invalid @enderror" 
+                                       id="make" 
+                                       name="make" 
+                                       value="{{ old('make') }}" 
+                                       placeholder="e.g., Dell..">
+                                @error('model')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>

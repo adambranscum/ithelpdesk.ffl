@@ -54,17 +54,10 @@ return [
     |
     */
 
-    'url' => env('APP_URL'),
+    'url' => env('APP_URL', 'http://localhost'),
 
     'asset_url' => env('ASSET_URL'),
 
-    'url' => env('APP_URL'),
-
-    'asset_url' => env('ASSET_URL'),
-
-    // Add this line
-    'domain' => env('APP_DOMAIN'),
-    
     /*
     |--------------------------------------------------------------------------
     | Application Timezone
