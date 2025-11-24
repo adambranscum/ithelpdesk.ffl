@@ -72,12 +72,12 @@
                         </svg>
                         Login
                     </a>
-                    <a href="{{ route('register') }}" class="btn btn-light">
+                    <a href="/library/register" class="btn btn-light">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="me-1" viewBox="0 0 16 16">
                             <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
                             <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
                         </svg>
-                        Register
+                        Register Library
                     </a>
                 @endauth
             </div>
@@ -89,9 +89,9 @@
         <div class="container position-relative" style="z-index: 1;">
             <div class="row min-vh-100 align-items-center">
                 <div class="col-lg-6 text-white">
-                    <h1 class="display-3 fw-bold mb-4">NLRPLS IT Support Ticketing System</h1>
+                    <h1 class="display-3 fw-bold mb-4">Multi-Library IT Support Platform</h1>
                     <p class="lead mb-4">
-                       
+                        Streamline your library's IT support with our comprehensive ticketing system. Register your library, manage staff, and deliver exceptional support to your patrons—all in one place.
                     </p>
                     <div class="d-flex gap-3 mb-5">
                         @auth
@@ -102,8 +102,8 @@
                                 </svg>
                             </a>
                         @else
-                            <a href="{{ route('register') }}" class="btn btn-light btn-lg px-4">
-                                Register
+                            <a href="/library/register" class="btn btn-light btn-lg px-4">
+                                Register Your Library
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="ms-2" viewBox="0 0 16 16">
                                     <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
                                 </svg>
