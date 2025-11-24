@@ -1,6 +1,5 @@
-@extends('layouts.app')
+<x-guest-layout>
 
-@section('content')
 <div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
     <div class="max-w-2xl w-full bg-white rounded-lg shadow-md p-8">
         <h1 class="text-3xl font-bold text-gray-900 mb-2">Library Account Registration</h1>
@@ -150,4 +149,4 @@
         </form>
     </div>
 </div>
-@endsection
+</x-guest-layout>
