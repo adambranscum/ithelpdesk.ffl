@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
     <div class="container-fluid">
-        <a class="navbar-brand fw-bold d-flex align-items-center" href="https://ithelpdesk.nlrlibrary.org">
-            NLRPLS IT Support
+        <a class="navbar-brand fw-bold d-flex align-items-center" href="https://ithelpdesk.thecommunityhelpdesk.org">
+            The Community Helpdesk
         </a>
 
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"

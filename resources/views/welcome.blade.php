@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>NLRPLS IT Support Ticketing System</title>
+    <title>Community Helpdesk Ticketing System</title>
     
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -58,7 +58,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark position-absolute w-100" style="z-index: 1000;">
         <div class="container">
             <a class="navbar-brand fw-bold d-flex align-items-center" href="/">
-              NLRPLS IT Support
+              The Community Helpdesk
             </a>
             
             <div class="ms-auto d-flex gap-2">
@@ -88,8 +88,8 @@
     <section class="hero-section">
         <div class="container position-relative" style="z-index: 1;">
             <div class="row min-vh-100 align-items-center">
-                <div class="col-lg-6 text-white">
-                    <h1 class="display-3 fw-bold mb-4">Multi-Library IT Support Platform</h1>
+                <div class="col-lg-12 text-white text-center">
+                    <h1 class="display-3 fw-bold mb-4">Community Helpdesk</h1>
                     <p class="lead mb-4">
                         Streamline your library's IT support with our comprehensive ticketing system. Register your library, manage staff, and deliver exceptional support to your patrons—all in one place.
                     </p>
@@ -115,46 +115,6 @@
                     </div>
                 </div>
 
-                <div class="col-lg-6">
-                    <!-- Live Statistics -->
-                    <div class="row g-3">
-                        <div class="col-6">
-                            <div class="card border-0 shadow-lg stat-card h-100 d-flex">
-                                <div class="card-body text-center p-4 mx-auto my-auto">
-                                    <h2 class="display-4 fw-bold mb-2 text-dark">{{ $stats['total'] ?? 0 }}</h2>
-                                    <p class="text-dark fw-bold mb-0 fw-bold h2">Total Tickets</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-6">
-                            <div class="card border-0 shadow-lg stat-card h-100 bg-warning bg-opacity-10 d-flex">
-                                <div class="text-center p-4 mx-auto my-auto">
-                                    <h2 class="display-4 fw-bold mb-2 text-white">{{ $stats['new'] ?? 0 }}</h2>
-                                    <p class="text-white fw-bold mb-0 h2">New Tickets</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-6">
-                            <div class="card border-0 shadow-lg stat-card h-100 bg-info bg-opacity-10 d-flex">
-                                <div class="card-body text-center p-4 text-white mx-auto">
-                                    <h2 class="display-4 fw-bold mb-2">{{ $stats['in_progress'] ?? 0 }}</h2>
-                                    <p class="mb-0 h2 fw-bold">In Progress</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-6">
-                            <div class="card border-0 shadow-lg stat-card h-100 bg-success bg-opacity-10 d-flex">
-                                <div class="card-body text-center p-4 mx-auto my-auto">
-                                    <h2 class="display-4 fw-bold mb-2 text-white">{{ $stats['resolved'] ?? 0 }}</h2>
-                                    <p class="fw-bold text-white mb-0 h2">Resolved</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </section>
@@ -162,7 +122,7 @@
     <!-- Footer -->
     <footer class="bg-dark text-white py-4">
         <div class="container text-center">
-            <p class="mb-0">www.nlrlibrary.org</p>
+            <p class="mb-0">www.thecommunityhelpdesk.org</p>
         </div>
     </footer>
 
