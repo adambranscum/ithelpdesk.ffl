@@ -29,6 +29,11 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
+        // Redirect library admins to their dashboard
+        if (Auth::user()->role === 'admin') {
+            return redirect()->intended(route('library.admin.dashboard'));
+        }
+
         return redirect()->intended(RouteServiceProvider::HOME);
     }
 
