@@ -23,6 +23,7 @@ class Software extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        'library_uid',
         'software',
         'licence_quantity',
         'renewal_date',
@@ -41,6 +42,18 @@ class Software extends Model
         'unlimited' => 'boolean',
         'forever' => 'boolean',
     ];
+
+    // Relationships
+    public function library()
+    {
+        return $this->belongsTo(Library::class, 'library_uid', 'uid');
+    }
+
+    // Scopes for library context
+    public function scopeForLibrary($query, $libraryUid)
+    {
+        return $query->where('library_uid', $libraryUid);
+    }
 
     /**
      * Check if the software license is expiring soon

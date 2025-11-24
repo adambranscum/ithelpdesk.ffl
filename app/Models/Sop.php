@@ -16,6 +16,7 @@ class Sop extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        'library_uid',
         'title',
         'category',
         'description',
@@ -38,12 +39,21 @@ class Sop extends Model
         'estimated_time' => 'integer',
     ];
 
-    /**
-     * Get the tickets associated with this SOP
-     */
+    // Relationships
+    public function library()
+    {
+        return $this->belongsTo(Library::class, 'library_uid', 'uid');
+    }
+
     public function tickets()
     {
         return $this->belongsToMany(Ticket::class)->withTimestamps();
+    }
+
+    // Scopes for library context
+    public function scopeForLibrary($query, $libraryUid)
+    {
+        return $query->where('library_uid', $libraryUid);
     }
 
     /**

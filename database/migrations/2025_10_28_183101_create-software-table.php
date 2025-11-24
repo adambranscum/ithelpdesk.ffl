@@ -13,12 +13,19 @@ return new class extends Migration
     {
         Schema::create('software', function (Blueprint $table) {
             $table->id();
+            $table->string('library_uid')->nullable()->comment('Associated library');
             $table->string('software');
             $table->integer('licence_quantity')->nullable();
             $table->date('renewal_date')->nullable();
             $table->string('unlimited')->nullable();
             $table->string('forever')->nullable();
             $table->timestamps();
+
+            $table->foreign('library_uid')
+                ->references('uid')
+                ->on('libraries')
+                ->onDelete('cascade');
+            $table->index('library_uid');
         });
     }
 

@@ -16,6 +16,7 @@ class Ticket extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        'library_uid',
         'subject',
         'body',
         'from_email',
@@ -44,6 +45,23 @@ class Ticket extends Model
     protected $casts = [
         'received_time' => 'datetime',
     ];
+
+    // Relationships
+    public function library()
+    {
+        return $this->belongsTo(Library::class, 'library_uid', 'uid');
+    }
+
+    public function sops()
+    {
+        return $this->belongsToMany(Sop::class, 'sop_ticket');
+    }
+
+    // Scopes for library context
+    public function scopeForLibrary($query, $libraryUid)
+    {
+        return $query->where('library_uid', $libraryUid);
+    }
 
     /**
      * Get the formatted ticket number

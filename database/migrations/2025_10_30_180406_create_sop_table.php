@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('sops', function (Blueprint $table) {
             $table->id();
+            $table->string('library_uid')->nullable()->comment('Associated library');
             $table->string('title');
             $table->string('category')->nullable()->index();
             $table->text('description')->nullable();
@@ -23,6 +24,12 @@ return new class extends Migration
             $table->boolean('is_active')->default(true)->index();
             $table->integer('view_count')->default(0);
             $table->timestamps();
+
+            $table->foreign('library_uid')
+                ->references('uid')
+                ->on('libraries')
+                ->onDelete('cascade');
+            $table->index('library_uid');
         });
         
         // Pivot table for linking SOPs to tickets

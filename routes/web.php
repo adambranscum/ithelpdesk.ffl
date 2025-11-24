@@ -71,4 +71,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/500', fn() => response()->view('errors.500', [], 500))->name('errpr/500');
     Route::get('/503', fn() => response()->view('errors.503', [], 503))->name('errpr/503');
 
+// Library routes (multi-tenancy)
+require __DIR__.'/library.php';
+
 require __DIR__.'/auth.php';

@@ -21,6 +21,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'library_uid',
+        'role',
+        'is_active',
     ];
 
     /**
@@ -40,5 +43,44 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'is_active' => 'boolean',
     ];
+
+    // Relationships
+    public function library()
+    {
+        return $this->belongsTo(Library::class, 'library_uid', 'uid');
+    }
+
+    // Scopes
+    public function scopeActive($query)
+    {
+        return $query->where('is_active', true);
+    }
+
+    public function scopeByLibrary($query, $libraryUid)
+    {
+        return $query->where('library_uid', $libraryUid);
+    }
+
+    public function scopeAdmins($query)
+    {
+        return $query->where('role', 'admin');
+    }
+
+    public function scopeStaff($query)
+    {
+        return $query->where('role', 'staff');
+    }
+
+    // Helper methods
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
+    }
+
+    public function isStaff(): bool
+    {
+        return $this->role === 'staff';
+    }
 }

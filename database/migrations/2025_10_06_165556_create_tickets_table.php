@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('tickets', function (Blueprint $table) {
             $table->id();
+            $table->string('library_uid')->nullable()->comment('Associated library');
             $table->text('subject')->nullable();
             $table->longText('body')->nullable();
             $table->string('from_email')->nullable()->index();
@@ -32,6 +33,12 @@ return new class extends Migration
             $table->string('assigned_to')->nullable()->index();
             $table->string('email_id')->nullable()->unique();
             $table->timestamps();
+
+            $table->foreign('library_uid')
+                ->references('uid')
+                ->on('libraries')
+                ->onDelete('cascade');
+            $table->index('library_uid');
         });
     }
 

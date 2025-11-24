@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('devices', function (Blueprint $table) {
             $table->id();
+            $table->string('library_uid')->nullable()->comment('Associated library');
             $table->text('device_name')->nullable();
             $table->date('purchased')->nullable();
             $table->date('warranty_end')->nullable()->index();
@@ -22,6 +23,12 @@ return new class extends Migration
             $table->string('serial')->nullable();
             $table->string('branch')->nullable();
             $table->timestamps();
+
+            $table->foreign('library_uid')
+                ->references('uid')
+                ->on('libraries')
+                ->onDelete('cascade');
+            $table->index('library_uid');
         });
     }
 

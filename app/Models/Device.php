@@ -16,6 +16,7 @@ class Device extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        'library_uid',
         'device_name',
         'purchased',
         'warranty_end',
@@ -35,6 +36,18 @@ class Device extends Model
         'purchased' => 'date',
         'warranty_end' => 'date',
     ];
+
+    // Relationships
+    public function library()
+    {
+        return $this->belongsTo(Library::class, 'library_uid', 'uid');
+    }
+
+    // Scopes for library context
+    public function scopeForLibrary($query, $libraryUid)
+    {
+        return $query->where('library_uid', $libraryUid);
+    }
 
     /**
      * Check if the device warranty is expiring soon
