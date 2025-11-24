@@ -1,6 +1,5 @@
-@extends('layouts.app')
+<x-app-layout>
 
-@section('content')
 <div class="py-12 bg-gray-50">
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <!-- Header -->
@@ -131,4 +130,6 @@
         </div>
     </div>
 </div>
-@endsection
+
+
+</x-app-layout>
