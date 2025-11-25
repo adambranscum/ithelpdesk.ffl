@@ -28,11 +28,16 @@ class SetTenant
                     session(['tenant_library' => $library]);
                     app()->bind('tenant_library', fn() => $library);
 
-                    // On a library subdomain, only allow access to root and submit-ticket
+                    // On a library subdomain, only allow access to submit-ticket
                     $path = $request->getPathInfo();
 
-                    // Allow root and submit-ticket paths
-                    if ($path !== '/' && $path !== '/submit-ticket' && strpos($path, '/submit-ticket/') !== 0) {
+                    // Redirect root to submit-ticket, block everything else
+                    if ($path === '/') {
+                        return redirect('/submit-ticket');
+                    }
+
+                    // Allow submit-ticket paths
+                    if ($path !== '/submit-ticket' && strpos($path, '/submit-ticket/') !== 0) {
                         return redirect('/submit-ticket');
                     }
                 }
