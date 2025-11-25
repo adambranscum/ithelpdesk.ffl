@@ -59,7 +59,7 @@ class TicketController extends Controller
 
         $devices = Device::where('library_uid', $user->library_uid)->orderBy('device_name', 'asc')->get();
         $users = User::where('library_uid', $user->library_uid)
-            ->whereIn('usertype', ['staff', 'admin'])
+            ->whereIn('role', ['staff', 'admin'])
             ->orderBy('name', 'asc')
             ->get();
         $softwares = Software::where('library_uid', $user->library_uid)->orderBy('software', 'asc')->get();
