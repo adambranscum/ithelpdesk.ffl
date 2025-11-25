@@ -14,15 +14,15 @@ class SoftwareStatsController extends Controller
     {
         $user = Auth::user();
 
-        // Get date range from request or default to all time
+        // Let users pick a date range, or show everything by default
         $startDate = $request->input('start_date', Software::where('library_uid', $user->library_uid)->min('created_at'));
         $endDate = $request->input('end_date', now());
-        
-        // Convert to Carbon instances if they're strings
+
+        // Make sure the dates are proper Carbon objects
         $startDate = $startDate ? Carbon::parse($startDate) : now()->subYears(10);
         $endDate = Carbon::parse($endDate);
-        
-        // License status distribution (SOFTWARE COUNT - excludes forever licenses)
+
+        // Count how many software titles are in each license state (doesn't include forever licenses)
         $licensesExpired = Software::where('library_uid', $user->library_uid)->expired()->count();
         $licensesExpiringSoon = Software::where('library_uid', $user->library_uid)->expiringSoon()->count();
         $licensesActive = Software::where('library_uid', $user->library_uid)
@@ -35,7 +35,7 @@ class SoftwareStatsController extends Controller
             ->whereNull('renewal_date')
             ->count();
 
-        // Total licenses by status (LICENSE QUANTITY - excludes unlimited and forever)
+        // Add up the total number of licenses by status (we skip unlimited and forever licenses)
         $totalLicensesExpired = Software::where('library_uid', $user->library_uid)
             ->expired()
             ->where('unlimited', '!=', 1)
@@ -56,7 +56,7 @@ class SoftwareStatsController extends Controller
             ->whereNull('renewal_date')
             ->sum('licence_quantity');
 
-        // Software by license quantity (top 10) - exclude unlimited
+        // Show the top 10 software by license count so we can see what we have the most of
         $softwareByLicenses = Software::where('library_uid', $user->library_uid)
             ->select('software', 'licence_quantity', 'renewal_date')
             ->where('unlimited', '!=', 1)
@@ -65,7 +65,7 @@ class SoftwareStatsController extends Controller
             ->limit(10)
             ->get();
         
-        // Renewals by month (next 12 months) - exclude forever licenses
+        // See what licenses are coming up for renewal in the next year
         $renewalsByMonth = Software::where('library_uid', $user->library_uid)
             ->select(
                 DB::raw('DATE_FORMAT(renewal_date, "%Y-%m") as month'),
@@ -79,7 +79,7 @@ class SoftwareStatsController extends Controller
             ->orderBy('month', 'asc')
             ->get();
 
-        // Renewals by year - exclude forever licenses
+        // Look at renewal dates across all years to spot trends
         $renewalsByYear = Software::where('library_uid', $user->library_uid)
             ->select(
                 DB::raw('YEAR(renewal_date) as year'),
@@ -92,7 +92,7 @@ class SoftwareStatsController extends Controller
             ->orderBy('year', 'asc')
             ->get();
 
-        // Software added by month (last 12 months)
+        // Track when we added new software to see our growth
         $softwareAddedByMonth = Software::where('library_uid', $user->library_uid)
             ->select(
                 DB::raw('DATE_FORMAT(created_at, "%Y-%m") as month'),
@@ -103,7 +103,7 @@ class SoftwareStatsController extends Controller
             ->orderBy('month', 'asc')
             ->get();
 
-        // License distribution ranges - exclude unlimited
+        // Group software by how many licenses they have (buckets like 1-10, 11-50, etc.)
         $licenseRanges = [
             '1-10' => Software::where('library_uid', $user->library_uid)
                 ->where('unlimited', '!=', 1)
@@ -132,13 +132,13 @@ class SoftwareStatsController extends Controller
                 ->count(),
         ];
 
-        // Average licenses per software - exclude unlimited
+        // Calculate the average number of licenses across all software
         $avgLicensesPerSoftware = Software::where('library_uid', $user->library_uid)
             ->where('unlimited', '!=', 1)
             ->whereNotNull('licence_quantity')
             ->avg('licence_quantity');
 
-        // Upcoming renewals (next 30, 60, 90 days) - exclude forever licenses
+        // Find renewals coming up so we can plan ahead
         $renewalsNext30Days = Software::where('library_uid', $user->library_uid)
             ->where('forever', '!=', 1)
             ->whereNotNull('renewal_date')
@@ -161,7 +161,7 @@ class SoftwareStatsController extends Controller
             ->whereDate('renewal_date', '<=', now()->addDays(90))
             ->count();
 
-        // Most and least licensed software - exclude unlimited
+        // Find which software we have the most and least licenses for
         $mostLicensed = Software::where('library_uid', $user->library_uid)
             ->where('unlimited', '!=', 1)
             ->whereNotNull('licence_quantity')
@@ -174,7 +174,7 @@ class SoftwareStatsController extends Controller
             ->orderBy('licence_quantity', 'asc')
             ->first();
 
-        // Software with upcoming renewals (detailed) - exclude forever licenses
+        // Get detailed info on software with renewals coming up in the next 3 months
         $upcomingRenewals = Software::where('library_uid', $user->library_uid)
             ->where('forever', '!=', 1)
             ->whereNotNull('renewal_date')
@@ -183,7 +183,7 @@ class SoftwareStatsController extends Controller
             ->orderBy('renewal_date', 'asc')
             ->get();
 
-        // Overall statistics
+        // Calculate some big picture numbers
         $totalSoftware = Software::where('library_uid', $user->library_uid)->count();
         $totalLicenses = Software::where('library_uid', $user->library_uid)
             ->where('unlimited', '!=', 1)
@@ -193,7 +193,7 @@ class SoftwareStatsController extends Controller
             ->whereNotNull('renewal_date')
             ->count();
 
-        // Oldest and newest renewal dates - exclude forever licenses
+        // Find the oldest and newest renewal dates to see our timeline
         $oldestRenewal = Software::where('library_uid', $user->library_uid)
             ->where('forever', '!=', 1)
             ->whereNotNull('renewal_date')

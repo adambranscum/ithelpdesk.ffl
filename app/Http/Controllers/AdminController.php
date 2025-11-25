@@ -15,7 +15,7 @@ use Mail;
 class AdminController extends Controller
 {
     /**
-     * Check if user has admin role
+     * Make sure the user is actually an admin before letting them do anything
      */
     protected function authorizeAdmin()
     {
@@ -26,7 +26,7 @@ class AdminController extends Controller
     }
 
     /**
-     * Display a listing of all tickets for the library
+     * Show the admin dashboard with all their library's tickets
      */
     public function index(Request $request)
     {
@@ -61,14 +61,14 @@ class AdminController extends Controller
     }
     
     /**
-     * Display the specified ticket
+     * Open up a specific ticket so the admin can see all the details
      */
     public function show(Ticket $ticket)
     {
         $this->authorizeAdmin();
         $user = Auth::user();
 
-        // Check if ticket belongs to user's library
+   
         if ($ticket->library_uid !== $user->library_uid) {
             abort(403, 'Unauthorized');
         }
@@ -80,7 +80,6 @@ class AdminController extends Controller
             ->get();
         $softwares = Software::where('library_uid', $user->library_uid)->orderBy('software', 'asc')->get();
 
-        // Fetch active categories for this library grouped by type
         $categories = Category::where('library_uid', $user->library_uid)
             ->where('is_active', true)
             ->get()
@@ -90,14 +89,14 @@ class AdminController extends Controller
     }
     
     /**
-     * Transfer ticket from one assigned tech to another
+     * Reassign a ticket to a different team member
      */
     public function transfer(Request $request, Ticket $ticket)
     {
         $this->authorizeAdmin();
         $user = Auth::user();
 
-        // Check if ticket belongs to user's library
+
         if ($ticket->library_uid !== $user->library_uid) {
             abort(403, 'Unauthorized');
         }
@@ -106,7 +105,6 @@ class AdminController extends Controller
             'assigned_to' => 'required|exists:users,id',
         ]);
 
-        // Get the assigned user to verify they belong to this library
         $assignedUser = User::findOrFail($request->assigned_to);
         if ($assignedUser->library_uid !== $user->library_uid) {
             abort(403, 'Unauthorized');
@@ -120,14 +118,13 @@ class AdminController extends Controller
     }
     
     /**
-     * Update status of ticket
+     * Change a ticket's status and send emails to the user if needed
      */
     public function updateStatus(Request $request, Ticket $ticket)
     {
         $this->authorizeAdmin();
         $user = Auth::user();
 
-        // Check if ticket belongs to user's library
         if ($ticket->library_uid !== $user->library_uid) {
             abort(403, 'Unauthorized');
         }
@@ -161,14 +158,13 @@ class AdminController extends Controller
     
     
     /**
-     * Add a comment to the ticket
+     * Add a note to the ticket with a timestamp so we can track what happened
      */
     public function addComment(Request $request, Ticket $ticket)
     {
         $this->authorizeAdmin();
         $user = Auth::user();
 
-        // Check if ticket belongs to user's library
         if ($ticket->library_uid !== $user->library_uid) {
             abort(403, 'Unauthorized');
         }
@@ -188,14 +184,13 @@ class AdminController extends Controller
     }
     
     /**
-     * Update ticket details
+     * Update the problem details like which device, software, or network is involved
      */
     public function update(Request $request, Ticket $ticket)
     {
         $this->authorizeAdmin();
         $user = Auth::user();
 
-        // Check if ticket belongs to user's library
         if ($ticket->library_uid !== $user->library_uid) {
             abort(403, 'Unauthorized');
         }

@@ -20,7 +20,7 @@ class LibraryAdminController extends Controller
     }
 
     /**
-     * Library admin dashboard
+     * Show the admin's main dashboard with quick stats about their library
      */
     public function dashboard()
     {
@@ -35,7 +35,7 @@ class LibraryAdminController extends Controller
     }
 
     /**
-     * Show library settings
+     * Display the library's settings page so they can customize their profile
      */
     public function editSettings()
     {
@@ -47,7 +47,7 @@ class LibraryAdminController extends Controller
     }
 
     /**
-     * Update library settings
+     * Save changes to the library's settings (colors, address, logo, etc.)
      */
     public function updateSettings(Request $request)
     {
@@ -71,9 +71,9 @@ class LibraryAdminController extends Controller
             'logo' => ['nullable', 'image', 'max:2048', 'dimensions:min_width=100,min_height=100'],
         ]);
 
-        // Handle logo upload
+        // Handle uploading and storing the library's logo
         if ($request->hasFile('logo')) {
-            // Delete old logo if exists
+            // Clean up the old logo so we don't clutter storage
             if ($library->logo_path) {
                 Storage::disk('public')->delete($library->logo_path);
             }
@@ -86,7 +86,7 @@ class LibraryAdminController extends Controller
     }
 
     /**
-     * Show staff management page
+     * Show all the staff members and let the admin manage them
      */
     public function manageStaff()
     {
@@ -100,7 +100,7 @@ class LibraryAdminController extends Controller
     }
 
     /**
-     * Show form to create staff
+     * Show the form to add a new staff member to the library
      */
     public function showCreateStaff()
     {
@@ -111,7 +111,7 @@ class LibraryAdminController extends Controller
     }
 
     /**
-     * Create new staff account
+     * Actually create the new staff account with their login details
      */
     public function createStaff(Request $request)
     {
@@ -138,7 +138,7 @@ class LibraryAdminController extends Controller
     }
 
     /**
-     * Show edit staff form
+     * Open up the form to edit a specific staff member's details
      */
     public function editStaff($id)
     {
@@ -153,7 +153,7 @@ class LibraryAdminController extends Controller
     }
 
     /**
-     * Update staff member
+     * Save changes made to a staff member's account
      */
     public function updateStaff(Request $request, $id)
     {
@@ -169,14 +169,14 @@ class LibraryAdminController extends Controller
             'email' => ['required', 'email', 'max:255', 'unique:users,email,' . $id],
         ];
 
-        // Add password validation only if password is provided
+        // Check if they're trying to change the password
         if ($request->filled('password')) {
             $rules['password'] = ['required', 'confirmed', Password::defaults()];
         }
 
         $validated = $request->validate($rules);
 
-        // Only update password if provided
+        // Only hash and save the password if they actually provided one
         if (isset($validated['password'])) {
             $validated['password'] = Hash::make($validated['password']);
         }
@@ -187,7 +187,7 @@ class LibraryAdminController extends Controller
     }
 
     /**
-     * Deactivate a staff member
+     * Disable a staff member's account so they can't log in anymore
      */
     public function deactivateStaff(Request $request, $memberId)
     {
@@ -204,7 +204,7 @@ class LibraryAdminController extends Controller
     }
 
     /**
-     * Reactivate a staff member
+     * Turn a staff member's account back on so they can log in again
      */
     public function reactivateStaff(Request $request, $memberId)
     {
@@ -221,7 +221,7 @@ class LibraryAdminController extends Controller
     }
 
     /**
-     * View library branding preview
+     * Show a preview of how the library's custom branding looks
      */
     public function brandingPreview()
     {

@@ -14,15 +14,15 @@ class DeviceStatsController extends Controller
     {
         $user = Auth::user();
 
-        // Get date range from request or default to all time
+        // Get the date range from the request, or use all available data
         $startDate = $request->input('start_date', Device::where('library_uid', $user->library_uid)->min('purchased'));
         $endDate = $request->input('end_date', now());
-        
-        // Convert to Carbon instances if they're strings
+
+        // Make sure we have valid Carbon date objects
         $startDate = $startDate ? Carbon::parse($startDate) : now()->subYears(10);
         $endDate = Carbon::parse($endDate);
-        
-        // Get devices by branch
+
+        // Group devices by their branch/location
         $devicesByBranch = Device::where('library_uid', $user->library_uid)
             ->select('branch', DB::raw('COUNT(*) as count'))
             ->whereNotNull('branch')
@@ -31,7 +31,7 @@ class DeviceStatsController extends Controller
             ->orderBy('count', 'desc')
             ->get();
 
-        // Get devices by make
+        // Count devices by manufacturer
         $devicesByMake = Device::where('library_uid', $user->library_uid)
             ->select('make', DB::raw('COUNT(*) as count'))
             ->whereNotNull('make')
@@ -40,7 +40,7 @@ class DeviceStatsController extends Controller
             ->orderBy('count', 'desc')
             ->get();
 
-        // Get devices by model (top 10)
+        // Get the top 10 device models to see what we have the most of
         $devicesByModel = Device::where('library_uid', $user->library_uid)
             ->select('model', 'make', DB::raw('COUNT(*) as count'))
             ->whereNotNull('model')
@@ -50,13 +50,13 @@ class DeviceStatsController extends Controller
             ->limit(10)
             ->get();
 
-        // Warranty status distribution
+        // Warranty status
         $warrantyExpired = Device::where('library_uid', $user->library_uid)->warrantyExpired()->count();
         $warrantyExpiringSoon = Device::where('library_uid', $user->library_uid)->warrantyExpiringSoon()->count();
         $warrantyActive = Device::where('library_uid', $user->library_uid)->whereDate('warranty_end', '>', now()->addMonths(3))->count();
         $noWarrantyInfo = Device::where('library_uid', $user->library_uid)->whereNull('warranty_end')->count();
         
-        // Devices purchased by year
+        // See how many devices we bought each year
         $devicesByYear = Device::where('library_uid', $user->library_uid)
             ->select(
                 DB::raw('YEAR(purchased) as year'),
@@ -67,7 +67,7 @@ class DeviceStatsController extends Controller
             ->orderBy('year', 'asc')
             ->get();
 
-        // Devices purchased by month (last 12 months)
+        // Devices purchased by month
         $devicesByMonth = Device::where('library_uid', $user->library_uid)
             ->select(
                 DB::raw('DATE_FORMAT(purchased, "%Y-%m") as month'),
@@ -79,7 +79,7 @@ class DeviceStatsController extends Controller
             ->orderBy('month', 'asc')
             ->get();
 
-        // Warranty expiring by month (next 12 months)
+        // Warranty expiring
         $warrantyExpiringByMonth = Device::where('library_uid', $user->library_uid)
             ->select(
                 DB::raw('DATE_FORMAT(warranty_end, "%Y-%m") as month'),
@@ -129,7 +129,7 @@ class DeviceStatsController extends Controller
             ->orderBy('total', 'desc')
             ->get();
 
-        // Overall statistics
+        // Get some overall stats about the device collection
         $totalDevices = Device::where('library_uid', $user->library_uid)->count();
         $devicesWithWarranty = Device::where('library_uid', $user->library_uid)->whereNotNull('warranty_end')->count();
         $avgDeviceAge = Device::where('library_uid', $user->library_uid)
