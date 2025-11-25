@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\LibraryRegistrationController;
 use App\Http\Controllers\LibraryAdminController;
+use App\Http\Controllers\LibraryCategoryController;
 use Illuminate\Support\Facades\Route;
 
 // Public library registration routes
@@ -30,4 +31,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Branding preview
     Route::get('admin/branding-preview', [LibraryAdminController::class, 'brandingPreview'])->name('library.admin.branding-preview');
+
+    // Category management
+    Route::get('admin/categories', [LibraryCategoryController::class, 'index'])->name('library.admin.categories.index');
+    Route::post('admin/categories', [LibraryCategoryController::class, 'store'])->name('library.admin.categories.store');
+    Route::patch('admin/categories/{category}/toggle-active', [LibraryCategoryController::class, 'toggleActive'])->name('library.admin.categories.toggleActive');
+    Route::delete('admin/categories/{category}', [LibraryCategoryController::class, 'destroy'])->name('library.admin.categories.destroy');
 });

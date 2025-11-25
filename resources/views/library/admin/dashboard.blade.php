@@ -87,6 +87,11 @@
                         Preview Branding
                     </a>
                 </div>
+                <div class="col-md-4">
+                    <a href="{{ route('library.admin.categories.index') }}" class="btn btn-outline-primary w-100">
+                        Category Settings
+                    </a>
+                </div>
             </div>
         </div>
     </div>
