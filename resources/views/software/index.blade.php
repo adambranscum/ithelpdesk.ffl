@@ -4,13 +4,11 @@
     <!-- Page Header -->
     <div class="row mb-4 mt-4">
         <div class="col-md-8">
-            <h1 class="display-6 fw-bold">Software Management</h1>
+            <h1 class="display-6 fw-bold text-gradient-primary">Software Management</h1>
             <p class="text-muted">Track software licenses and renewal dates</p>
         </div>
         <div class="col-md-4 text-end">
-            <a href="{{ route('software.create') }}" class="btn btn-primary">
-                Add Software
-            </a>
+            <a href="{{ route('software.create') }}" class="ms-auto btn btn-outline-info mb-4">Add Software</a>
         </div>
     </div>
 
