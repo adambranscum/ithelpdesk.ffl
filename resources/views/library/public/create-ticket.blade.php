@@ -7,37 +7,71 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
-            background-color: #f8f9fa;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
         }
         .header {
             background-color: {{ $library->primary_color ?? '#0d6efd' }};
             color: white;
-            padding: 3rem 0;
-            margin-bottom: 2rem;
+            padding: 2.5rem 0;
+            margin-bottom: 3rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
         .logo-section {
             display: flex;
             align-items: center;
-            gap: 1rem;
+            gap: 2rem;
         }
         .logo {
             max-height: 80px;
+            object-fit: contain;
         }
         .form-section {
             background: white;
-            padding: 2rem;
-            border-radius: 0.5rem;
-            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+            padding: 2.5rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+        .form-section-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid {{ $library->brand_color ?? '#0d6efd' }};
+        }
+        .form-row-group {
+            margin-bottom: 1.5rem;
+        }
+        .form-control {
+            border: 1px solid #e0e0e0;
+            transition: all 0.3s ease;
+        }
+        .form-control:focus {
+            border-color: {{ $library->brand_color ?? '#0d6efd' }};
+            box-shadow: 0 0 0 0.2rem rgba({{ (str_replace('#', '', $library->brand_color ?? '#0d6efd')) }}, 0.25);
         }
         .btn-submit {
             background-color: {{ $library->brand_color ?? '#0d6efd' }};
             border-color: {{ $library->brand_color ?? '#0d6efd' }};
             color: white;
+            font-weight: 600;
+            padding: 0.75rem 2rem;
+            transition: all 0.3s ease;
         }
         .btn-submit:hover {
             background-color: {{ $library->brand_color ?? '#0c63e4' }};
             border-color: {{ $library->brand_color ?? '#0c63e4' }};
             color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        .required-note {
+            color: #666;
+            font-size: 0.9rem;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #e0e0e0;
         }
     </style>
 </head>
@@ -86,25 +120,66 @@
                     <form method="POST" action="{{ route('library.public.store') }}">
                         @csrf
 
-                        <div class="mb-3">
-                            <label for="name" class="form-label">Your Name <span class="text-danger">*</span></label>
-                            <input type="text" id="name" name="name" value="{{ old('name') }}" required
-                                class="form-control @error('name') is-invalid @enderror"
-                                placeholder="John Doe">
-                            @error('name')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
+                        <!-- Contact Information Section -->
+                        <div class="form-section-title">Contact Information</div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="name" class="form-label">Your Name <span class="text-danger">*</span></label>
+                                    <input type="text" id="name" name="name" value="{{ old('name') }}" required
+                                        class="form-control @error('name') is-invalid @enderror"
+                                        placeholder="John Doe">
+                                    @error('name')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="email" class="form-label">Email Address <span class="text-danger">*</span></label>
+                                    <input type="email" id="email" name="email" value="{{ old('email') }}" required
+                                        class="form-control @error('email') is-invalid @enderror"
+                                        placeholder="john@example.com">
+                                    @error('email')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="mb-3">
-                            <label for="email" class="form-label">Email Address <span class="text-danger">*</span></label>
-                            <input type="email" id="email" name="email" value="{{ old('email') }}" required
-                                class="form-control @error('email') is-invalid @enderror"
-                                placeholder="john@example.com">
-                            @error('email')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
+                        <!-- Location Information Section -->
+                        <div class="form-section-title">Location Information</div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="office" class="form-label">Office <span class="text-secondary">(Optional)</span></label>
+                                    <input type="text" id="office" name="office" value="{{ old('office') }}"
+                                        class="form-control @error('office') is-invalid @enderror"
+                                        placeholder="e.g., Main Office, Branch Location">
+                                    @error('office')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="department" class="form-label">Department <span class="text-secondary">(Optional)</span></label>
+                                    <input type="text" id="department" name="department" value="{{ old('department') }}"
+                                        class="form-control @error('department') is-invalid @enderror"
+                                        placeholder="e.g., HR, Finance, Operations">
+                                    @error('department')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
                         </div>
+
+                        <!-- Issue Information Section -->
+                        <div class="form-section-title">Issue Details</div>
 
                         <div class="mb-3">
                             <label for="subject" class="form-label">Subject <span class="text-danger">*</span></label>
@@ -116,7 +191,7 @@
                             @enderror
                         </div>
 
-                        <div class="mb-4">
+                        <div class="mb-3">
                             <label for="description" class="form-label">Description <span class="text-danger">*</span></label>
                             <textarea id="description" name="description" rows="6" required
                                 class="form-control @error('description') is-invalid @enderror"
@@ -126,14 +201,17 @@
                             @enderror
                         </div>
 
+                        <!-- Form Actions -->
                         <div class="d-flex gap-2 justify-content-end">
                             <button type="reset" class="btn btn-outline-secondary">
-                                Clear
+                                Clear Form
                             </button>
                             <button type="submit" class="btn btn-submit">
                                 Submit Ticket
                             </button>
                         </div>
+
+                        <p class="required-note"><span class="text-danger">*</span> Required fields</p>
                     </form>
                 </div>
 

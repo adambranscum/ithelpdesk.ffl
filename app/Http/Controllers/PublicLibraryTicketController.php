@@ -38,6 +38,8 @@ class PublicLibraryTicketController extends Controller
             'email' => ['required', 'email', 'max:255'],
             'subject' => ['required', 'string', 'max:500'],
             'description' => ['required', 'string', 'max:5000'],
+            'office' => ['nullable', 'string', 'max:255'],
+            'department' => ['nullable', 'string', 'max:255'],
         ]);
 
         Ticket::create([
@@ -46,6 +48,8 @@ class PublicLibraryTicketController extends Controller
             'email' => $validated['email'],
             'subject' => $validated['subject'],
             'body' => $validated['description'],
+            'office_location' => $validated['office'] ?? null,
+            'department' => $validated['department'] ?? null,
             'status' => 'new',
             'received_time' => now(),
         ]);
