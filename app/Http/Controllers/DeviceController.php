@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Device;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class DeviceController extends Controller
 {
@@ -12,19 +13,20 @@ class DeviceController extends Controller
      
     public function index(Request $request)
     {
-        $query = Device::query();
-        
-       
+        $user = Auth::user();
+        $query = Device::where('library_uid', $user->library_uid);
+
+
         if ($request->filled('branch')) {
             $query->where('branch', $request->branch);
         }
-        
-      
+
+
         if ($request->filled('make')) {
             $query->where('make', $request->make);
         }
-        
-        
+
+
         if ($request->filled('search')) {
             $search = $request->search;
             $query->where(function($q) use ($search) {
@@ -33,20 +35,20 @@ class DeviceController extends Controller
                   ->orWhere('model', 'LIKE', "%{$search}%");
             });
         }
-        
+
         $devices = $query->orderBy('warranty_end', 'asc')->paginate(15);
-        
-        
+
+
         $stats = [
-            'total' => Device::count(),
-            'warranty_expiring' => Device::warrantyExpiringSoon()->count(),
-            'warranty_expired' => Device::warrantyExpired()->count(),
+            'total' => Device::where('library_uid', $user->library_uid)->count(),
+            'warranty_expiring' => Device::where('library_uid', $user->library_uid)->warrantyExpiringSoon()->count(),
+            'warranty_expired' => Device::where('library_uid', $user->library_uid)->warrantyExpired()->count(),
         ];
-        
-        
-        $branches = Device::distinct()->pluck('branch')->filter()->sort();
-        $makes = Device::distinct()->pluck('make')->filter()->sort();
-        
+
+
+        $branches = Device::where('library_uid', $user->library_uid)->distinct()->pluck('branch')->filter()->sort();
+        $makes = Device::where('library_uid', $user->library_uid)->distinct()->pluck('make')->filter()->sort();
+
         return view('devices.index', compact('devices', 'stats', 'branches', 'makes'));
     }
 
@@ -72,6 +74,7 @@ class DeviceController extends Controller
             'model' => 'nullable|string|max:255',
             'serial' => 'nullable|string|max:255',
             'branch' => 'nullable|string|max:255',
+            'library_uid' => 'required|string',
         ]);
 
         Device::create($validated);
@@ -110,6 +113,7 @@ class DeviceController extends Controller
             'model' => 'nullable|string|max:255',
             'serial' => 'nullable|string|max:255',
             'branch' => 'nullable|string|max:255',
+            'library_uid' => 'required|string',
         ]);
 
         $device->update($validated);

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Software;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class SoftwareController extends Controller
 {
@@ -13,18 +14,22 @@ class SoftwareController extends Controller
      */
     public function index()
     {
-        $software = Software::orderBy('renewal_date', 'asc')->paginate(15);
-        
+        $user = Auth::user();
+        $software = Software::where('library_uid', $user->library_uid)->orderBy('renewal_date', 'asc')->paginate(15);
+
         // Calculate statistics - handle unlimited licenses
         $stats = [
-            'total' => Software::count(),
-            'expiring_soon' => Software::expiringSoon()->count(),
-            'expired' => Software::expired()->count(),
-            'total_licenses' => Software::where('unlimited', '!=', 1)
-                                       ->orWhereNull('unlimited')
+            'total' => Software::where('library_uid', $user->library_uid)->count(),
+            'expiring_soon' => Software::where('library_uid', $user->library_uid)->expiringSoon()->count(),
+            'expired' => Software::where('library_uid', $user->library_uid)->expired()->count(),
+            'total_licenses' => Software::where('library_uid', $user->library_uid)
+                                       ->where(function($q) {
+                                           $q->where('unlimited', '!=', 1)
+                                             ->orWhereNull('unlimited');
+                                       })
                                        ->sum('licence_quantity'),
         ];
-        
+
         return view('software.index', compact('software', 'stats'));
     }
 
@@ -49,17 +54,18 @@ class SoftwareController extends Controller
             'renewal_date' => 'nullable|date',
             'unlimited' => 'nullable|boolean',
             'forever' => 'nullable|boolean',
+            'library_uid' => 'required|string',
         ]);
 
         // Convert checkbox values
         $validated['unlimited'] = $request->has('unlimited') ? 1 : 0;
         $validated['forever'] = $request->has('forever') ? 1 : 0;
-        
+
         // Set licence_quantity to null if unlimited is checked
         if ($validated['unlimited']) {
             $validated['licence_quantity'] = null;
         }
-        
+
         // Set renewal_date to null if forever is checked
         if ($validated['forever']) {
             $validated['renewal_date'] = null;
@@ -101,17 +107,18 @@ class SoftwareController extends Controller
             'renewal_date' => 'nullable|date',
             'unlimited' => 'nullable|boolean',
             'forever' => 'nullable|boolean',
+            'library_uid' => 'required|string',
         ]);
 
         // Convert checkbox values
         $validated['unlimited'] = $request->has('unlimited') ? 1 : 0;
         $validated['forever'] = $request->has('forever') ? 1 : 0;
-        
+
         // Set licence_quantity to null if unlimited is checked
         if ($validated['unlimited']) {
             $validated['licence_quantity'] = null;
         }
-        
+
         // Set renewal_date to null if forever is checked
         if ($validated['forever']) {
             $validated['renewal_date'] = null;

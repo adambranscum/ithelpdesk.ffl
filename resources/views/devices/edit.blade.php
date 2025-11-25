@@ -24,6 +24,7 @@
                     <form action="{{ route('devices.update', $device) }}" method="POST">
                         @csrf
                         @method('PUT')
+                        <input type="hidden" name="library_uid" value="{{ Auth::user()->library_uid }}">
 
                         <div class="row g-3">
                             <!-- Device Name -->

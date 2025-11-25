@@ -21,6 +21,7 @@
                     <form action="{{ route('software.update', $software) }}" method="POST">
                         @csrf
                         @method('PUT')
+                        <input type="hidden" name="library_uid" value="{{ Auth::user()->library_uid }}">
 
                         <!-- Software Name -->
                         <div class="mb-4">

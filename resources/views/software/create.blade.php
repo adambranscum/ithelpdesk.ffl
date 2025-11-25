@@ -20,6 +20,7 @@
                 <div class="card-body p-4">
                     <form action="{{ route('software.store') }}" method="POST">
                         @csrf
+                        <input type="hidden" name="library_uid" value="{{ Auth::user()->library_uid }}">
 
                         <!-- Software Name -->
                         <div class="mb-4">

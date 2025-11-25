@@ -23,6 +23,7 @@
                 <div class="card-body p-4">
                     <form action="{{ route('devices.store') }}" method="POST">
                         @csrf
+                        <input type="hidden" name="library_uid" value="{{ Auth::user()->library_uid }}">
 
                         <div class="row g-3">
                             <!-- Device Name -->
