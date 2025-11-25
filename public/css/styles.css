@@ -653,12 +653,20 @@ body {
 
 .btn-outline-light {
   border: 2px solid white;
+  color: white;
+  background: transparent;
 }
 
 .btn-outline-light:hover {
   background: white;
   color: var(--primary);
   transform: translateY(-2px);
+}
+
+.btn-outline-light:focus {
+  color: white;
+  border-color: white;
+  box-shadow: 0 0 0 0.25rem rgba(255, 255, 255, 0.5);
 }
 
 .btn-register-library:hover {
