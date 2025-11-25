@@ -3,7 +3,7 @@
 <div class="container shadow mt-4 pt-4 pb-4 my-5">
     <div class="d-flex">
         <h2 class="mb-4 fw-bolder me-auto text-gradient-primary">Ticket Statistics</h2>
-        <a href="{{ route('tickets.index') }}" class="ms-auto btn btn-outline-primary mb-4">
+        <a href="{{ route('tickets.index') }}" class="ms-auto btn logout-btn mb-4">
             Back to Tickets
         </a>
     </div>
