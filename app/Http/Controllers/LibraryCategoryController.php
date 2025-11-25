@@ -12,7 +12,7 @@ class LibraryCategoryController extends Controller
     public function index()
     {
         $user = Auth::user();
-        if (!$user->hasRole('admin') || !$user->library_uid) {
+        if (!$user->isAdmin() || !$user->library_uid) {
             abort(403, 'Unauthorized');
         }
 
@@ -39,7 +39,7 @@ class LibraryCategoryController extends Controller
     public function store(Request $request)
     {
         $user = Auth::user();
-        if (!$user->hasRole('admin') || !$user->library_uid) {
+        if (!$user->isAdmin() || !$user->library_uid) {
             abort(403, 'Unauthorized');
         }
 
@@ -61,7 +61,7 @@ class LibraryCategoryController extends Controller
     public function toggleActive(Category $category)
     {
         $user = Auth::user();
-        if (!$user->hasRole('admin') || $user->library_uid !== $category->library_uid) {
+        if (!$user->isAdmin() || $user->library_uid !== $category->library_uid) {
             abort(403, 'Unauthorized');
         }
 
@@ -74,7 +74,7 @@ class LibraryCategoryController extends Controller
     public function destroy(Category $category)
     {
         $user = Auth::user();
-        if (!$user->hasRole('admin') || $user->library_uid !== $category->library_uid) {
+        if (!$user->isAdmin() || $user->library_uid !== $category->library_uid) {
             abort(403, 'Unauthorized');
         }
 
