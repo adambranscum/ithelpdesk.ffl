@@ -82,6 +82,12 @@
                             </li>
                         </ul>
                     </li>
+                @else
+                    <li class="nav-item">
+                        <a class="nav-link text-white d-flex align-items-center" href="{{ route('profile.edit') }}">
+                            Change Password
+                        </a>
+                    </li>
                 @endif
 
                 <li class="nav-item">
