@@ -6,6 +6,7 @@ use App\Models\Ticket;
 use App\Models\Device;
 use App\Models\User;
 use App\Models\Software;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Mail\TicketResolved;
