@@ -7,7 +7,7 @@
     </div>
 
     <div class="card shadow-sm">
-        <div class="card-header bg-primary text-white">
+        <div class="card-header" style="background: linear-gradient(90deg, #a855f7, #7c3aed); color: white;">
             <h4 class="mb-0">Ticket Information</h4>
         </div>
 
@@ -234,10 +234,10 @@
 
 
                         <div class="mt-4 d-flex gap-2">
-                            <button type="submit" class="btn btn-primary btn-lg px-4">
+                            <button type="submit" class="btn btn-sm d-flex align-items-center logout-btn px-4">
                                 Submit Ticket
                             </button>
-                            <a href="{{ route('tickets.index') }}" class="btn btn-outline-secondary btn-lg px-4">
+                            <a href="{{ route('tickets.index') }}" class="btn btn-sm d-flex align-items-center logout-btn px-4">
                                 Cancel
                             </a>
                         </div>

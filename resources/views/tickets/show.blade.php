@@ -32,7 +32,7 @@
 
   {{-- Update Status --}}
 <div class="card shadow-sm mb-4">
-    <div class="card-header bg-info text-dark fw-bold">Update Status</div>
+    <div class="card-header" style="background: linear-gradient(90deg, #a855f7, #7c3aed); color: white;" class="fw-bold">Update Status</div>
     <div class="card-body">
         <form method="POST" action="{{ route('tickets.updateStatus', $ticket->id) }}" class="row g-3 align-items-end">
             @csrf
@@ -47,7 +47,7 @@
                 </select>
             </div>
             <div class="col-md-3">
-                <button type="submit" class="btn btn-info w-100">Update</button>
+                <button type="submit" class="btn btn-sm d-flex align-items-center logout-btn w-100 justify-content-center">Update</button>
             </div>
         </form>
     </div>
@@ -55,7 +55,7 @@
 
 {{-- Update Tech --}}
 <div class="card shadow-sm mb-4">
-    <div class="card-header bg-success text-white fw-bold">Change Tech</div>
+    <div class="card-header" style="background: linear-gradient(90deg, #a855f7, #7c3aed); color: white;" class="fw-bold">Change Tech</div>
     <div class="card-body">
         <form method="POST" action="{{ route('tickets.transfer', $ticket->id) }}" class="row g-3 align-items-end">
             @csrf
@@ -76,7 +76,7 @@
             </div>
 
             <div class="col-md-3">
-                <button type="submit" class="btn btn-success w-100">Update</button>
+                <button type="submit" class="btn btn-sm d-flex align-items-center logout-btn w-100 justify-content-center">Update</button>
             </div>
         </form>
     </div>
@@ -85,7 +85,7 @@
 
     {{-- Update Ticket Details --}}
     <div class="card shadow-sm mb-4">
-        <div class="card-header bg-warning text-dark fw-bold">Update Ticket Details</div>
+        <div class="card-header" style="background: linear-gradient(90deg, #a855f7, #7c3aed); color: white;" class="fw-bold">Update Ticket Details</div>
         <div class="card-body">
             <form method="POST" action="{{ route('tickets.update', $ticket->id) }}" class="row g-3">
                 @csrf
@@ -173,7 +173,7 @@
                             </select>
                         </div>
                 <div class="col-md-3">
-                    <button type="submit" class="btn btn-warning w-100 mt-2">Save Details</button>
+                    <button type="submit" class="btn btn-sm d-flex align-items-center logout-btn w-100 justify-content-center mt-2">Save Details</button>
                 </div>
             </form>
         </div>
@@ -181,7 +181,7 @@
 
     {{-- Comments Section --}}
     <div class="card shadow-sm">
-        <div class="card-header bg-secondary text-white fw-bold">Comments</div>
+        <div class="card-header" style="background: linear-gradient(90deg, #a855f7, #7c3aed); color: white;" class="fw-bold">Comments</div>
         <div class="card-body">
             @if($ticket->comment)
                 <div class="bg-light p-3 rounded mb-3" style="white-space: pre-wrap; font-family: monospace;">
@@ -197,7 +197,7 @@
                     <label class="form-label">Add Comment</label>
                     <textarea name="comment" class="form-control" rows="3" placeholder="Enter your comment here..." required></textarea>
                 </div>
-                <button type="submit" class="btn btn-secondary">Add Comment</button>
+                <button type="submit" class="btn btn-sm d-flex align-items-center logout-btn">Add Comment</button>
             </form>
         </div>
     </div>
