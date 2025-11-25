@@ -40,6 +40,9 @@ class SetTenant
                     if ($path !== '/submit-ticket' && strpos($path, '/submit-ticket/') !== 0) {
                         return redirect('/submit-ticket');
                     }
+                } else {
+                    // Subdomain doesn't exist in libraries table - return 404
+                    abort(404, 'Library not found');
                 }
             }
         }
