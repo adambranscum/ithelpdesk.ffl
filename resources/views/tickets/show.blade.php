@@ -113,14 +113,13 @@
                             <label class="form-label small">Network Name</label>
                             <select name="network_name" class="form-select form-select-sm">
                                 <option value="">Select network...</option>
-                                <option value="Staff WiFi" {{ $ticket->network_name == 'Staff WiFi' ? 'selected' : '' }}>Staff WiFi</option>
-                                <option value="Public WiFi" {{ $ticket->network_name == 'Public WiFi' ? 'selected' : '' }}>Public WiFi</option>
-                                <option value="Guest WiFi" {{ $ticket->network_name == 'Guest WiFi' ? 'selected' : '' }}>Guest WiFi</option>
-                                <option value="Wired Network" {{ $ticket->network_name == 'Wired Network' ? 'selected' : '' }}>Wired Network</option>
-                                <option value="VPN Connection" {{ $ticket->network_name == 'VPN Connection' ? 'selected' : '' }}>VPN Connection</option>
-                                <option value="Printer Network" {{ $ticket->network_name == 'Printer Network' ? 'selected' : '' }}>Printer Network</option>
-                                <option value="Fax Network" {{ $ticket->network_name == 'Fax Network' ? 'selected' : '' }}>Fax Network</option>
-                                <option value="Other" {{ $ticket->network_name == 'Other' ? 'selected' : '' }}>Other</option>
+                                @forelse($categories['network'] ?? [] as $category)
+                                    <option value="{{ $category->name }}" {{ $ticket->network_name == $category->name ? 'selected' : '' }}>
+                                        {{ $category->name }}
+                                    </option>
+                                @empty
+                                    <option disabled>No networks available</option>
+                                @endforelse
                             </select>
                         </div>
 
@@ -152,27 +151,26 @@
                             <label class="form-label small">Security</label>
                             <select name="security_name" class="form-select form-select-sm">
                                 <option value="">Select issue...</option>
-                                <option value="PHISHING" {{ $ticket->security_name == 'PHISHING' ? 'selected' : '' }}>Phishing</option>
-                                <option value="ALLOWLIST" {{ $ticket->security_name == 'ALLOWLIST' ? 'selected' : '' }}>Allow List</option>
-                                <option value="DENYLIST" {{ $ticket->security_name == 'DENYLIST' ? 'selected' : '' }}>Deny List</option>
-                                <option value="EMAIL ALLOWLIST" {{ $ticket->security_name == 'EMAIL ALLOWLIST' ? 'selected' : '' }}>Email Allow List</option>
-                                <option value="EMAIL DENYLIST" {{ $ticket->security_name == 'EMAIL DENYLIST' ? 'selected' : '' }}>Email Deny List</option>
-                                <option value="ALARM PANEL" {{ $ticket->security_name == 'ALARM PANEL' ? 'selected' : '' }}>Alarm Panel</option>
-                                <option value="SECURITY CAMERA" {{ $ticket->security_name == 'SECURITY CAMERA' ? 'selected' : '' }}>Security Camera</option>
-                                <option value="ADMIN BYPASS" {{ $ticket->security_name == 'ADMIN BYPASS' ? 'selected' : '' }}>Admin Bypass</option>
+                                @forelse($categories['security'] ?? [] as $category)
+                                    <option value="{{ $category->name }}" {{ $ticket->security_name == $category->name ? 'selected' : '' }}>
+                                        {{ $category->name }}
+                                    </option>
+                                @empty
+                                    <option disabled>No security issues available</option>
+                                @endforelse
                             </select>
                         </div>
                  <div class="col-md-6">
                             <label class="form-label small">Website Name</label>
                             <select name="website_name" class="form-select form-select-sm">
                                 <option value="">Select website...</option>
-                                <option value="nlrlibrary.org" {{ $ticket->website_name == 'nlrlibrary.org' ? 'selected' : '' }}>nlrlibrary.org</option>
-                                <option value="blog.nlrlibrary.org" {{ $ticket->website_name == 'blog.nlrlibrary.org' ? 'selected' : '' }}>blog.nlrlibrary.org</option>
-                                <option value="selaonline.org" {{ $ticket->website_name == 'selaonline.org' ? 'selected' : '' }}>selaonline.org</option>
-                                <option value="hub.nlrlibrary.org" {{ $ticket->website_name == 'hub.nlrlibrary.org' ? 'selected' : '' }}>hub.nlrlibrary.org</option>
-                                <option value="arhub.org" {{ $ticket->website_name == 'arhub.org' ? 'selected' : '' }}>arhub.org</option>
-								<option value="ithelpdesk.nlrlibrary.org" {{ $ticket->website_name == 'ithelpdesk.nlrlibrary.org' ? 'selected' : '' }}>ithelpdesk.nlrlibrary.org</option>
-								<option value="ms365-conn.nlrlibrary.org" {{ $ticket->website_name == 'ms365-conn.nlrlibrary.org' ? 'selected' : '' }}>ms365-conn.nlrlibrary.org</option>
+                                @forelse($categories['website'] ?? [] as $category)
+                                    <option value="{{ $category->name }}" {{ $ticket->website_name == $category->name ? 'selected' : '' }}>
+                                        {{ $category->name }}
+                                    </option>
+                                @empty
+                                    <option disabled>No websites available</option>
+                                @endforelse
                             </select>
                         </div>
                 <div class="col-md-3">
