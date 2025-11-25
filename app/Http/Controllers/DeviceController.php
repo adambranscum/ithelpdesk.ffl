@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Device;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -57,7 +58,13 @@ class DeviceController extends Controller
      
     public function create()
     {
-        return view('devices.create');
+        $user = Auth::user();
+        $branches = Category::where('library_uid', $user->library_uid)
+            ->where('type', 'branch')
+            ->where('is_active', true)
+            ->get();
+
+        return view('devices.create', compact('branches'));
     }
 
     
@@ -96,7 +103,13 @@ class DeviceController extends Controller
      
     public function edit(Device $device)
     {
-        return view('devices.edit', compact('device'));
+        $user = Auth::user();
+        $branches = Category::where('library_uid', $user->library_uid)
+            ->where('type', 'branch')
+            ->where('is_active', true)
+            ->get();
+
+        return view('devices.edit', compact('device', 'branches'));
     }
 
     /**

@@ -44,13 +44,17 @@
                             <!-- Branch -->
                             <div class="col-md-6">
                                 <label for="branch" class="form-label fw-semibold">Branch</label>
-                                <select class="form-select @error('branch') is-invalid @enderror" 
-                                        id="branch" 
+                                <select class="form-select @error('branch') is-invalid @enderror"
+                                        id="branch"
                                         name="branch">
                                     <option value="">Select branch...</option>
-                                    <option value="Laman Branch" {{ old('branch', $device->branch) == 'Laman Branch' ? 'selected' : '' }}>Laman Branch</option>
-                                    <option value="Argenta Branch" {{ old('branch', $device->branch) == 'Argenta Branch' ? 'selected' : '' }}>Argenta Branch</option>
-                                    <option value="The Hub" {{ old('branch', $device->branch) == 'The Hub' ? 'selected' : '' }}>The Hub</option>
+                                    @forelse($branches as $branch)
+                                        <option value="{{ $branch->name }}" {{ old('branch', $device->branch) == $branch->name ? 'selected' : '' }}>
+                                            {{ $branch->name }}
+                                        </option>
+                                    @empty
+                                        <option disabled>No branches available</option>
+                                    @endforelse
                                 </select>
                                 @error('branch')
                                     <div class="invalid-feedback">{{ $message }}</div>
