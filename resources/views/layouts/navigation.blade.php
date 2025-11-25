@@ -58,31 +58,31 @@
                     </ul>
                 </li>
 
+                @if(Auth::user() && Auth::user()->role === 'admin')
                     <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle text-white d-flex align-items-center" href="#" id="inventoryDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Admin Tools
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="inventoryDropdown">
-                        @if(Auth::user() && Auth::user()->role === 'admin')
+                        <a class="nav-link dropdown-toggle text-white d-flex align-items-center" href="#" id="adminToolsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Admin Tools
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="adminToolsDropdown">
                             <li>
                                 <a class="nav-link text-white d-flex align-items-center" href="{{ route('library.admin.dashboard') }}">
                             Library Admin
                         </a>
                             </li>
                             <li><hr class="dropdown-divider"></li>
-                        @endif
-                        <li>
-                            <a class="nav-link text-white d-flex align-items-center" href="{{ route('admin.index') }}">
-                        Admin Ticket Db
-                    </a>
-                        </li>
-                        <li>
-                            <a class="nav-link text-white d-flex align-items-center" href="{{ route('profile.edit') }}">
-                        Change Password
-                    </a>
-                        </li>
-                    </ul>
-                </li>
+                            <li>
+                                <a class="nav-link text-white d-flex align-items-center" href="{{ route('admin.index') }}">
+                            Admin Ticket Db
+                        </a>
+                            </li>
+                            <li>
+                                <a class="nav-link text-white d-flex align-items-center" href="{{ route('profile.edit') }}">
+                            Change Password
+                        </a>
+                            </li>
+                        </ul>
+                    </li>
+                @endif
 
                 <li class="nav-item">
                     <a class="nav-link text-white d-flex align-items-center" href="{{ route('sops.index') }}">
