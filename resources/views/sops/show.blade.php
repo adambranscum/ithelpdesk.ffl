@@ -4,24 +4,24 @@
     <div class="row justify-content-center">
         <div class="col-md-10">
             <div class="mb-4">
-                <a href="{{ route('sops.index') }}" class="btn btn-outline-secondary">
+                <a href="{{ route('sops.index') }}" class="btn btn-sm logout-btn">
                     Back to SOPs
                 </a>
             </div>
 
             <div class="card border-0 shadow-sm">
-                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-                    <h4 class="mb-0">
+                <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0" style="background: linear-gradient(90deg, #a855f7, #7c3aed); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
                         Standard Operating Procedure
                     </h4>
                     <div class="d-flex gap-2">
-                        <a href="{{ route('sops.edit', $sop) }}" class="btn btn-light btn-sm"> 
+                        <a href="{{ route('sops.edit', $sop) }}" class="btn btn-sm logout-btn">
                             Edit
                         </a>
                         <form action="{{ route('sops.destroy', $sop) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this SOP?');">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="btn btn-danger btn-sm">
+                            <button type="submit" class="btn btn-outline-danger btn-sm">
                                 Delete
                             </button>
                         </form>
