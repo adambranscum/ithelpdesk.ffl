@@ -100,7 +100,7 @@
                 <div class="card-body">
                     <!-- Category Badge -->
                     @if($sop->category)
-                    <span class="badge logout-btn mb-2">{{ $sop->category }}</span>
+                    <span class="badge mb-2" style="background: linear-gradient(90deg, #a855f7, #7c3aed); color: white;">{{ $sop->category }}</span>
                     @endif
                     
                     <!-- Title -->
