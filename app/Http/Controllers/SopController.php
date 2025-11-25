@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Sop;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class SopController extends Controller
 {
@@ -12,28 +13,29 @@ class SopController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Sop::query();
-        
+        $user = Auth::user();
+        $query = Sop::where('library_uid', $user->library_uid);
+
         // Search
         if ($request->filled('search')) {
             $query->search($request->search);
         }
-        
+
         // Filter by category
         if ($request->filled('category')) {
             $query->category($request->category);
         }
-        
+
         // Filter by difficulty
         if ($request->filled('difficulty')) {
             $query->difficulty($request->difficulty);
         }
-        
+
         // Filter active only
         if (!$request->has('show_inactive')) {
             $query->active();
         }
-        
+
         // Sort
         $sort = $request->get('sort', 'recent');
         if ($sort === 'popular') {
@@ -41,20 +43,20 @@ class SopController extends Controller
         } else {
             $query->recent();
         }
-        
+
         $sops = $query->paginate(15);
-        
+
         // Statistics
         $stats = [
-            'total' => Sop::active()->count(),
-            'categories' => Sop::active()->distinct()->count('category'),
-            'total_views' => Sop::sum('view_count'),
+            'total' => Sop::where('library_uid', $user->library_uid)->active()->count(),
+            'categories' => Sop::where('library_uid', $user->library_uid)->active()->distinct()->count('category'),
+            'total_views' => Sop::where('library_uid', $user->library_uid)->sum('view_count'),
         ];
-        
+
         // Get unique categories and difficulties for filters
-        $categories = Sop::distinct()->pluck('category')->filter()->sort();
+        $categories = Sop::where('library_uid', $user->library_uid)->distinct()->pluck('category')->filter()->sort();
         $difficulties = ['Easy', 'Moderate', 'Advanced'];
-        
+
         return view('sops.index', compact('sops', 'stats', 'categories', 'difficulties'));
     }
 
@@ -84,6 +86,7 @@ class SopController extends Controller
             'difficulty' => 'nullable|in:Easy,Moderate,Advanced',
             'estimated_time' => 'nullable|integer|min:1',
             'is_active' => 'boolean',
+            'library_uid' => 'required|string',
         ]);
 
         Sop::create($validated);
@@ -128,6 +131,7 @@ class SopController extends Controller
             'difficulty' => 'nullable|in:Easy,Moderate,Advanced',
             'estimated_time' => 'nullable|integer|min:1',
             'is_active' => 'boolean',
+            'library_uid' => 'required|string',
         ]);
 
         $sop->update($validated);

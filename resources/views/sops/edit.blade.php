@@ -21,6 +21,7 @@
                     <form action="{{ route('sops.update', $sop) }}" method="POST">
                         @csrf
                         @method('PUT')
+                        <input type="hidden" name="library_uid" value="{{ Auth::user()->library_uid }}">
 
                         <div class="row g-3">
                            
