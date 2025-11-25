@@ -4,13 +4,11 @@
     <!-- Page Header -->
     <div class="row mb-4">
         <div class="col-md-8">
-            <h1 class="display-6 fw-bold">Standard Operating Procedures</h1>
+            <h1 class="display-6 fw-bold text-gradient-primary">Standard Operating Procedures</h1>
             <p class="text-muted">Knowledge base and step-by-step guides for IT support</p>
         </div>
         <div class="col-md-4 text-end">
-            <a href="{{ route('sops.create') }}" class="btn btn-primary">
-                Add SOP
-            </a>
+            <a href="{{ route('sops.create') }}" class="ms-auto btn btn-outline-info mb-4">Add SOP</a>
         </div>
     </div>
 

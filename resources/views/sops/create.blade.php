@@ -5,13 +5,13 @@
         <div class="col-md-10">
             <!-- Back Button -->
             <div class="mb-4">
-                <a href="{{ route('sops.index') }}" class="btn btn-outline-secondary">
+                <a href="{{ route('sops.index') }}" class="btn btn-sm logout-btn">
                     Back to SOPs
                 </a>
             </div>
 
             <div class="card border-0 shadow-sm">
-                <div class="card-header bg-primary text-white">
+                <div class="card-header" style="background: linear-gradient(90deg, #a855f7, #7c3aed); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;" class="fw-bold">
                     <h4 class="mb-0">
                         Create Standard Operating Procedure
                     </h4>
@@ -146,10 +146,10 @@
 
                         <!-- Submit Buttons -->
                         <div class="mt-4 d-flex gap-2">
-                            <button type="submit" class="btn btn-primary btn-lg px-4">
+                            <button type="submit" class="btn btn-sm d-flex align-items-center logout-btn">
                                 Create SOP
                             </button>
-                            <a href="{{ route('sops.index') }}" class="btn btn-outline-secondary btn-lg px-4">
+                            <a href="{{ route('sops.index') }}" class="btn btn-outline-danger btn-sm">
                                 Cancel
                             </a>
                         </div>

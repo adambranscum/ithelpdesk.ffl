@@ -5,13 +5,13 @@
         <div class="col-md-10">
           
             <div class="mb-4">
-                <a href="{{ route('sops.show', $sop) }}" class="btn btn-outline-secondary">
+                <a href="{{ route('sops.show', $sop) }}" class="btn btn-sm logout-btn">
                     Back to SOP
                 </a>
             </div>
 
             <div class="card border-0 shadow-sm">
-                <div class="card-header bg-primary text-white">
+                <div class="card-header" style="background: linear-gradient(90deg, #a855f7, #7c3aed); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;" class="fw-bold">
                     <h4 class="mb-0">
                         Edit Standard Operating Procedure
                     </h4>
@@ -150,10 +150,10 @@
                         </div>
 
                         <div class="mt-4 d-flex gap-2">
-                            <button type="submit" class="btn btn-primary btn-lg px-4">
+                            <button type="submit" class="btn btn-sm d-flex align-items-center logout-btn">
                                 Update SOP
                             </button>
-                            <a href="{{ route('sops.show', $sop) }}" class="btn btn-outline-secondary btn-lg px-4">
+                            <a href="{{ route('sops.show', $sop) }}" class="btn btn-outline-danger btn-sm">
                                 Cancel
                             </a>
                         </div>
