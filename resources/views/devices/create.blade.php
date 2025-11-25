@@ -5,7 +5,7 @@
         <div class="col-md-10">
             <!-- Back Button -->
             <div class="mb-4">
-                <a href="{{ route('devices.index') }}" class="btn btn-sm d-flex align-items-center logout-btn">
+                <a href="{{ route('devices.index') }}" class="btn btn-sm logout-btn">
                     Back to Devices
                 </a>
             </div>
