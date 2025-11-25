@@ -70,8 +70,8 @@
     <div class="card shadow-sm">
         <div class="card-body">
             @if($tickets->count())
-                <table class="table table-hover align-middle">
-                    <thead class="table-light">
+                <table class="table table-hover table-striped align-middle">
+                    <thead>
                         <tr>
                             <th scope="col">#</th>
                             <th scope="col">Subject</th>
@@ -94,9 +94,9 @@
                                 <td>{{ $ticket->from_email }}</td>
                                 <td>
                                     @if($ticket->status == 'new')
-                                        <span class="badge bg-info text-dark">New</span>
+                                        <span class="badge bg-info">New</span>
                                     @elseif($ticket->status == 'in_progress')
-                                        <span class="badge bg-warning text-dark">In Progress</span>
+                                        <span class="badge bg-warning">In Progress</span>
                                     @elseif($ticket->status == 'resolved')
                                         <span class="badge bg-success">Resolved</span>
                                     @else
