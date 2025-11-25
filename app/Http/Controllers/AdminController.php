@@ -13,30 +13,31 @@ use App\Mail\TicketInProgress;
 use Mail;
 class AdminController extends Controller
 {
-      
-     //Display a listing of all tickets
-     
-    public function index(Request $request)
+    /**
+     * Check if user has admin role
+     */
+    protected function authorizeAdmin()
     {
         $user = Auth::user();
-        $isAdmin = $user->admin;
-        
-        
-        $userType = $user->usertype;
+        if ($user->role !== 'admin') {
+            abort(403, 'Unauthorized');
+        }
+    }
 
-        
-        if ($isAdmin === 'yes'){
+    /**
+     * Display a listing of all tickets for the library
+     */
+    public function index(Request $request)
+    {
+        $this->authorizeAdmin();
+        $user = Auth::user();
 
-      
-        $query = Ticket::query();
-        
-        
-        
-        
+        $query = Ticket::where('library_uid', $user->library_uid);
+
         if ($request->filled('status')) {
             $query->where('status', $request->status);
         }
-        
+
         if ($request->filled('search')) {
             $search = $request->search;
             $query->where(function($q) use ($search) {
@@ -45,189 +46,172 @@ class AdminController extends Controller
                   ->orWhere('from_name', 'LIKE', "%{$search}%");
             });
         }
-        
-        
+
         $tickets = $query->recent()->paginate(15)->appends($request->except('page'));
-        
-        
+
         $stats = [
-            'total' => Ticket::count(),
-            'new' => Ticket::where('status', 'new')->count(),
-            'in_progress' => Ticket::where('status', 'in_progress')->count(),
-            'resolved' => Ticket::where('status', 'resolved')->count(),
+            'total' => Ticket::where('library_uid', $user->library_uid)->count(),
+            'new' => Ticket::where('library_uid', $user->library_uid)->where('status', 'new')->count(),
+            'in_progress' => Ticket::where('library_uid', $user->library_uid)->where('status', 'in_progress')->count(),
+            'resolved' => Ticket::where('library_uid', $user->library_uid)->where('status', 'resolved')->count(),
         ];
-        
-        return view('admin.index', compact('tickets', 'stats', 'userType'));
+
+        return view('admin.index', compact('tickets', 'stats'));
     }
-
-    else {
-
-        return view('errors.403');
-
-}
-
-}
     
-     //Display the specified ticket
-     
+    /**
+     * Display the specified ticket
+     */
     public function show(Ticket $ticket)
     {
+        $this->authorizeAdmin();
         $user = Auth::user();
-       $isAdmin = $user->admin;
-        $userType = $user->usertype;
-        $devices = Device::orderBy('device_name', 'asc')->get();
-        $users = User::orderBy('usertype', 'asc')->get();
-        $softwares =Software::orderBy('software', 'asc')->get();
-        
-        
 
-        if ($isAdmin === 'yes') {
-            return view('admin.show', compact('ticket', 'devices', 'users', 'softwares'));
+        // Check if ticket belongs to user's library
+        if ($ticket->library_uid !== $user->library_uid) {
+            abort(403, 'Unauthorized');
         }
-        else {
-            return view('errors.403');
-        }
-        
+
+        $devices = Device::where('library_uid', $user->library_uid)->orderBy('device_name', 'asc')->get();
+        $users = User::where('library_uid', $user->library_uid)
+            ->whereIn('role', ['staff', 'admin'])
+            ->orderBy('name', 'asc')
+            ->get();
+        $softwares = Software::where('library_uid', $user->library_uid)->orderBy('software', 'asc')->get();
+
+        return view('admin.show', compact('ticket', 'devices', 'users', 'softwares'));
     }
     
-    //Transfer ticket from one assigned tech to another
+    /**
+     * Transfer ticket from one assigned tech to another
+     */
     public function transfer(Request $request, Ticket $ticket)
-{
-    $user = Auth::user();
-    $isAdmin = $user->admin;
-    
-    if ($isAdmin === 'yes') {
+    {
+        $this->authorizeAdmin();
+        $user = Auth::user();
+
+        // Check if ticket belongs to user's library
+        if ($ticket->library_uid !== $user->library_uid) {
+            abort(403, 'Unauthorized');
+        }
+
         $request->validate([
-        'transfer_to' => 'required',
-    ]);
+            'assigned_to' => 'required|exists:users,id',
+        ]);
 
-    $oldAssignee = $ticket->assigned_to;
-    $newAssignee = $request->transfer_to;
+        // Get the assigned user to verify they belong to this library
+        $assignedUser = User::findOrFail($request->assigned_to);
+        if ($assignedUser->library_uid !== $user->library_uid) {
+            abort(403, 'Unauthorized');
+        }
 
-    if ($oldAssignee == $newAssignee) {
-        return view('errors.403');
-    }
+        $ticket->update([
+            'assigned_to' => $request->assigned_to,
+        ]);
 
-    $ticket->update([
-        'assigned_to' => $newAssignee,
-    ]);
-
-       return redirect()->route('admin.index')->with('success', 'Ticket transferred successfully.');
-       
-    }
-
-    else {
-    return view('errors.403');
+        return redirect()->route('admin.index')->with('success', 'Ticket transferred successfully.');
     }
     
-}
-    
-      // Update status of ticket 
+    /**
+     * Update status of ticket
+     */
     public function updateStatus(Request $request, Ticket $ticket)
     {
+        $this->authorizeAdmin();
         $user = Auth::user();
-        $isAdmin = $user->admin;
-        
-        if ($isAdmin === 'yes') {
-             $request->validate([
+
+        // Check if ticket belongs to user's library
+        if ($ticket->library_uid !== $user->library_uid) {
+            abort(403, 'Unauthorized');
+        }
+
+        $request->validate([
             'status' => 'required|in:new,in_progress,resolved,closed',
         ]);
-        
+
         $oldStatus = $ticket->status;
         $newStatus = $request->status;
-        
+
         $ticket->update([
             'status' => $newStatus,
             'end_time' => $newStatus === 'resolved' || $newStatus === 'closed' ? now() : null,
         ]);
-        
+
         try {
             if ($oldStatus !== 'in_progress' && $newStatus === 'in_progress') {
                 \Mail::to($ticket->from_email)->send(new \App\Mail\TicketInProgress($ticket));
             }
-            
+
             if ($oldStatus !== 'resolved' && $newStatus === 'resolved') {
                 \Mail::to($ticket->from_email)->send(new \App\Mail\TicketResolved($ticket));
             }
         } catch (\Exception $e) {
             \Log::error('Failed to send ticket status email: ' . $e->getMessage());
         }
-        
-        return redirect()->back()->with('success', 'Ticket status updated successfully!');
-           
-        }
 
-        else {
-            return view('errors.403');
-        }
-        
-       
+        return redirect()->back()->with('success', 'Ticket status updated successfully!');
     }
     
     
-     //Add a comment to the ticket
-     
+    /**
+     * Add a comment to the ticket
+     */
     public function addComment(Request $request, Ticket $ticket)
     {
+        $this->authorizeAdmin();
         $user = Auth::user();
-        $isAdmin = $user->admin;
-        
-        
-         if ($isAdmin === 'yes') {        
+
+        // Check if ticket belongs to user's library
+        if ($ticket->library_uid !== $user->library_uid) {
+            abort(403, 'Unauthorized');
+        }
+
         $request->validate([
             'comment' => 'required|string',
         ]);
-        
+
         $existingComment = $ticket->comment ?? '';
         $newComment = "[" . now()->format('Y-m-d H:i:s') . "] " . $user->name . ": " . $request->comment . "\n\n";
-        
+
         $ticket->update([
             'comment' => $newComment . $existingComment,
         ]);
-        
+
         return redirect()->back()->with('success', 'Comment added successfully!');
     }
-
-    else {
-         return view('errors.403');
-    }
     
-}
-    
-     //Update ticket details
-     
+    /**
+     * Update ticket details
+     */
     public function update(Request $request, Ticket $ticket)
     {
+        $this->authorizeAdmin();
         $user = Auth::user();
-        $isAdmin = $user->admin;
-        
-       
-        if ($isAdmin === 'yes') {
-            $request->validate([
+
+        // Check if ticket belongs to user's library
+        if ($ticket->library_uid !== $user->library_uid) {
+            abort(403, 'Unauthorized');
+        }
+
+        $request->validate([
             'problem_type' => 'nullable|string|max:255',
             'device_name' => 'nullable|string|max:255',
             'software_name' => 'nullable|string|max:255',
             'network_name' => 'nullable|string|max:255',
             'website_name' => 'nullable|string|max:255',
+            'security_name' => 'nullable|string|max:255',
         ]);
-        
+
         $ticket->update($request->only([
             'problem_type',
             'device_name',
             'software_name',
             'network_name',
             'website_name',
+            'security_name',
         ]));
-        
+
         return redirect()->back()->with('success', 'Ticket details updated successfully!');
-
-        }
-
-        else {
-            return view('errors.403');
-        }
-        
-     
     }
 }
 
