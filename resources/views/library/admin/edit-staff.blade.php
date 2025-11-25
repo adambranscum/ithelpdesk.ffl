@@ -41,6 +41,25 @@
             </div>
 
             <hr class="my-4">
+
+            <h5 class="fw-semibold mb-3">Change Password <span class="text-muted fw-normal">(Optional)</span></h5>
+
+            <div class="mb-3">
+                <label for="password" class="form-label">New Password</label>
+                <input type="password" id="password" name="password"
+                    class="form-control"
+                    placeholder="Leave blank to keep current password">
+                <small class="text-muted d-block mt-2">Minimum 8 characters, include uppercase, lowercase, number, and symbol</small>
+            </div>
+
+            <div class="mb-4">
+                <label for="password_confirmation" class="form-label">Confirm New Password</label>
+                <input type="password" id="password_confirmation" name="password_confirmation"
+                    class="form-control"
+                    placeholder="Leave blank to keep current password">
+            </div>
+
+            <hr class="my-4">
             <div class="d-flex justify-content-end gap-2">
                 <a href="{{ route('library.admin.staff') }}" class="btn btn-outline-secondary">
                     Cancel

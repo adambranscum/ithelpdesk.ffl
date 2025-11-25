@@ -164,10 +164,22 @@ class LibraryAdminController extends Controller
         abort_if($staff->library_uid !== $user->library_uid, 403, 'Unauthorized');
         abort_if($staff->role !== 'staff', 400, 'Can only edit staff members');
 
-        $validated = $request->validate([
+        $rules = [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email', 'max:255', 'unique:users,email,' . $id],
-        ]);
+        ];
+
+        // Add password validation only if password is provided
+        if ($request->filled('password')) {
+            $rules['password'] = ['required', 'confirmed', Password::defaults()];
+        }
+
+        $validated = $request->validate($rules);
+
+        // Only update password if provided
+        if (isset($validated['password'])) {
+            $validated['password'] = Hash::make($validated['password']);
+        }
 
         $staff->update($validated);
 
