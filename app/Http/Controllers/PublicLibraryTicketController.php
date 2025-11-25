@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Helpers\TenantHelper;
 use App\Models\Ticket;
+use App\Models\Category;
 use Illuminate\Http\Request;
 
 class PublicLibraryTicketController extends Controller
@@ -19,7 +20,13 @@ class PublicLibraryTicketController extends Controller
             abort(404, 'Library not found or not approved');
         }
 
-        return view('library.public.create-ticket', compact('library'));
+        // Fetch active categories for this library grouped by type
+        $categories = Category::where('library_uid', $library->uid)
+            ->where('is_active', true)
+            ->get()
+            ->groupBy('type');
+
+        return view('library.public.create-ticket', compact('library', 'categories'));
     }
 
     /**
@@ -38,18 +45,24 @@ class PublicLibraryTicketController extends Controller
             'email' => ['required', 'email', 'max:255'],
             'subject' => ['required', 'string', 'max:500'],
             'description' => ['required', 'string', 'max:5000'],
-            'office' => ['nullable', 'string', 'max:255'],
+            'branch' => ['nullable', 'string', 'max:255'],
             'department' => ['nullable', 'string', 'max:255'],
+            'network' => ['nullable', 'string', 'max:255'],
+            'website' => ['nullable', 'string', 'max:255'],
+            'security' => ['nullable', 'string', 'max:255'],
         ]);
 
         Ticket::create([
             'library_uid' => $library->uid,
-            'name' => $validated['name'],
-            'email' => $validated['email'],
+            'from_name' => $validated['name'],
+            'from_email' => $validated['email'],
             'subject' => $validated['subject'],
             'body' => $validated['description'],
-            'office_location' => $validated['office'] ?? null,
+            'branch' => $validated['branch'] ?? null,
             'department' => $validated['department'] ?? null,
+            'network_name' => $validated['network'] ?? null,
+            'website_name' => $validated['website'] ?? null,
+            'security_name' => $validated['security'] ?? null,
             'status' => 'new',
             'received_time' => now(),
         ]);
