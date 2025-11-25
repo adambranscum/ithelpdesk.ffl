@@ -2,7 +2,7 @@
 
 <div class="container shadow mt-4 pt-4 pb-4">
     <div class="d-flex">
-    <h2 class="mb-4 fw-bolder me-auto">Tickets at {{ Auth::user()->library->name }}</h2>
+    <h2 class="mb-4 fw-bolder me-auto text-gradient-primary">Tickets at {{ Auth::user()->library->name }}</h2>
     <a class="ms-auto btn btn-outline-info mb-4" href="{{ route('tickets.create') }}">New Ticket</a>
     </div>
 
