@@ -8,8 +8,8 @@
                     <div class="card-body p-4 p-md-5">
                         <!-- Header -->
                         <div class="text-center mb-4">
-                            <div class="bg-primary bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 100px; height: 100px;">
-                               <img width="80" height="80" src="../images/logo.png" style="border-radius: 50%;">
+                            <div class="bg-primary bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 120px; height: 120px;">
+                               <img width="100" height="100" src="../images/logo.png" style="border-radius: 50%;">
                             </div>
                             <h2 class="fw-bold mb-2">Welcome Back</h2>
                             <p class="text-muted">Sign in to The Community Helpdesk</p>
