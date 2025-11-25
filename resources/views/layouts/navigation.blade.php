@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
     <div class="container-fluid">
-        <a class="navbar-brand fw-bold d-flex align-items-center" href="https://ithelpdesk.thecommunityhelpdesk.org">
+        <a class="navbar-brand fw-bold d-flex align-items-center text-gradient-primary" href="https://ithelpdesk.thecommunityhelpdesk.org">
             The Community Helpdesk
         </a>
 
