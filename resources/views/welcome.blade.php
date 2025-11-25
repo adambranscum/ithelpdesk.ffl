@@ -38,7 +38,7 @@
             <div class="hero-content">
                 <h1>Library IT Support Made Simple</h1>
                 <p class="lead">
-                    A powerful, free ticketing system designed for libraries to manage IT support efficiently, organize staff, and keep patrons happy.
+                    Enterprise-grade IT support ticketing system for libraries, offered at no cost by Freeware for Libraries.
                 </p>
                 <div class="d-flex gap-3 justify-content-center flex-wrap mt-4">
                     @auth
