@@ -7,72 +7,60 @@ use App\Models\Ticket;
 use App\Models\Device;
 use App\Models\User;
 use App\Models\Software;
+use App\Models\Category;
 use Illuminate\Support\Facades\Auth;
 use App\Mail\TicketResolved;
 use App\Mail\TicketInProgress;
-use App\Services\MicrosoftGraphService;
 use Mail;
 
 class CreateTicketController extends Controller
 {
-            // create new ticket
-public function create(MicrosoftGraphService $graph)
-{
-    $devices = Device::orderBy('device_name', 'asc')->get();
-    $users   = User::orderBy('usertype', 'asc')->get();
-    $softwares =Software::orderBy('software', 'asc')->get();
-    $departments = $graph->getDepartmentLocations();
+    // Create new ticket
+    public function create()
+    {
+        $user = Auth::user();
 
-    return view('tickets.create', compact('devices', 'users', 'softwares', 'departments'));
-}
+        $devices = Device::where('library_uid', $user->library_uid)->orderBy('device_name', 'asc')->get();
+        $users = User::where('library_uid', $user->library_uid)->orderBy('name', 'asc')->get();
+        $softwares = Software::where('library_uid', $user->library_uid)->orderBy('software', 'asc')->get();
+
+        // Fetch active categories for this library grouped by type
+        $categories = Category::where('library_uid', $user->library_uid)
+            ->where('is_active', true)
+            ->get()
+            ->groupBy('type');
+
+        return view('tickets.create', compact('devices', 'users', 'softwares', 'categories'));
+    }
 
 
     public function store(Request $request)
-{
-    $validated = $request->validate([
-        'subject' => 'required|string',
-        'body' => 'required|string',
-        'from_name' => 'required|string|max:255',
-        'from_email' => 'required|email|max:255',
-        'office_location' => 'nullable|string|max:255',
-        'department' => 'nullable|string|max:255',
-        'problem_type' => 'nullable|string|max:255',
-        'device_name' => 'nullable|string|max:255',
-        'software_name' => 'nullable|string|max:255',
-        'network_name' => 'nullable|string|max:255',
-        'website_name' => 'nullable|string|max:255',
-        'security_name' => 'nullable|string|max:255',
-    ]);
+    {
+        $user = Auth::user();
 
-    // Set default values
-    $validated['status'] = 'new';
-    $validated['received_time'] = now();
-    
-  // Assign to appropriate tech based on office location
-    $validated['assigned_to'] = $this->assignTicket($request->office_location);
+        $validated = $request->validate([
+            'subject' => 'required|string',
+            'body' => 'required|string',
+            'from_name' => 'required|string|max:255',
+            'from_email' => 'required|email|max:255',
+            'branch' => 'nullable|string|max:255',
+            'department' => 'nullable|string|max:255',
+            'problem_type' => 'nullable|string|max:255',
+            'device_name' => 'nullable|string|max:255',
+            'software_name' => 'nullable|string|max:255',
+            'network_name' => 'nullable|string|max:255',
+            'website_name' => 'nullable|string|max:255',
+            'security_name' => 'nullable|string|max:255',
+        ]);
 
-    Ticket::create($validated);
+        // Set default values
+        $validated['library_uid'] = $user->library_uid;
+        $validated['status'] = 'new';
+        $validated['received_time'] = now();
 
-    return redirect()->route('tickets.index')
-        ->with('success', 'Ticket created successfully!');
-}
+        Ticket::create($validated);
 
-/**
- * Assign ticket based on office location.
- */
-private function assignTicket($office_location)
-{
-    switch (trim($office_location)) {
-        case 'Argenta Branch':
-        case 'The Hub':
-            return 'ETHAN';
-
-        case 'Laman Branch':
-        case 'Rover Branch':
-            return 'ROBERT';
-
-        default:
-            return 'ADAM'; // fallback if no match
+        return redirect()->route('tickets.index')
+            ->with('success', 'Ticket created successfully!');
     }
-}
 }

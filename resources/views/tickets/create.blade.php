@@ -97,8 +97,8 @@
                                 <label for="office_location" class="form-label fw-semibold">
                                     Office Location <span class="text-danger">*</span>
                                 </label>
-                                <select class="form-select @error('office_location') is-invalid @enderror" 
-                                        id="office_location" 
+                                <select class="form-select @error('office_location') is-invalid @enderror"
+                                        id="office_location"
                                         name="office_location"
                                         required>
                                     <option value="">Select office location...</option>
@@ -112,16 +112,33 @@
                                 @enderror
                             </div>
 
-                           
+
                            <div class="col-md-6">
-                            <label class="form-label small">Department <span class="text-danger">*</span></label>
+                            <label class="form-label small">Branch</label>
+                            <select name="branch" class="form-select">
+                                <option value="">Select branch...</option>
+                                @forelse($categories['branch'] ?? [] as $category)
+                                    <option value="{{ $category->name }}">
+                                        {{ $category->name }}
+                                    </option>
+                                @empty
+                                    <option disabled>No branches available</option>
+                                @endforelse
+                            </select>
+                            </div>
+
+
+                           <div class="col-md-6">
+                            <label class="form-label small">Department</label>
                             <select name="department" class="form-select">
                                 <option value="">Select department...</option>
-                                @foreach($departments as $dept)
-                                    <option value="{{ $dept['department'] }}">
-                                        {{ $dept['department'] }} ({{ $dept['location'] }})
+                                @forelse($categories['department'] ?? [] as $category)
+                                    <option value="{{ $category->name }}">
+                                        {{ $category->name }}
                                     </option>
-                                @endforeach
+                                @empty
+                                    <option disabled>No departments available</option>
+                                @endforelse
                             </select>
                         </div>
 
@@ -187,32 +204,31 @@
                             <label class="form-label small">Network Name</label>
                             <select name="network_name" class="form-select">
                                 <option value="">Select network...</option>
-                                <option value="Staff WiFi">Staff WiFi</option>
-                                <option value="Public WiFi">Public WiFi</option>
-                                <option value="Guest WiFi">Guest WiFi</option>
-                                <option value="Wired Network">Wired Network</option>
-                                <option value="VPN Connection">VPN Connection</option>
-                                <option value="Printer Network">Printer Network</option>
-                                <option value="Fax Network">Fax Network</option>
-                                <option value="Other">Other</option>
+                                @forelse($categories['network'] ?? [] as $category)
+                                    <option value="{{ $category->name }}">
+                                        {{ $category->name }}
+                                    </option>
+                                @empty
+                                    <option disabled>No networks available</option>
+                                @endforelse
                             </select>
                             <small class="text-muted">If issue is network related</small>
                             </div>
 
                             <div class="col-md-6">
-                               
+
                             <label class="form-label">Website Name</label>
                             <select name="website_name" class="form-select">
                                 <option value="">Select website...</option>
-                                <option value="nlrlibrary.org">nlrlibrary.org</option>
-                                <option value="blog.nlrlibrary.org">blog.nlrlibrary.org</option>
-                                <option value="selaonline.org">selaonline.org</option>
-                                <option value="hub.nlrlibrary.org">hub.nlrlibrary.org</option>
-								<option value="ms365-conn.nlrlibrary.org">ms365-conn.nlrlibrary.org</option>
-                                <option value="ithelpdesk.nlrlibrary.org">ithelpdesk.nlrlibrary.org</option>
-                                <option value="arhub.org">arhub.org</option>
+                                @forelse($categories['website'] ?? [] as $category)
+                                    <option value="{{ $category->name }}">
+                                        {{ $category->name }}
+                                    </option>
+                                @empty
+                                    <option disabled>No websites available</option>
+                                @endforelse
                             </select>
-                      
+
                                 @error('website_name')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -223,11 +239,13 @@
                                  <label class="form-label">Security</label>
                             <select name="security_name" class="form-select">
                                 <option value="">Select issue...</option>
-                                <option value="PHISHING">Phishing</option>
-                                <option value="ALLOWLIST">Allow List</option>
-                                <option value="DENYLIST">Deny List</option>
-                                <option value="EMAIL ALLOWLIST">Email Allow List</option>
-                                <option value="EMAIL DENYLIST">Email Deny List</option>
+                                @forelse($categories['security'] ?? [] as $category)
+                                    <option value="{{ $category->name }}">
+                                        {{ $category->name }}
+                                    </option>
+                                @empty
+                                    <option disabled>No security issues available</option>
+                                @endforelse
                             </select>
                                 @error('security_name')
                                     <div class="invalid-feedback">{{ $message }}</div>
