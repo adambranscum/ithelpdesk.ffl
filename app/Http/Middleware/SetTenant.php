@@ -25,20 +25,12 @@ class SetTenant
                 session(['tenant_library' => $library]);
                 app()->bind('tenant_library', fn() => $library);
 
-                // On a library subdomain, only allow access to public ticket routes
+                // On a library subdomain, only allow access to root and submit-ticket
                 $path = $request->getPathInfo();
-                $allowedRoutes = ['/', '/submit-ticket'];
 
-                $isAllowedRoute = false;
-                foreach ($allowedRoutes as $route) {
-                    if ($path === $route || strpos($path, $route) === 0) {
-                        $isAllowedRoute = true;
-                        break;
-                    }
-                }
-
-                if (!$isAllowedRoute) {
-                    return redirect()->route('library.public.submit');
+                // Allow root and submit-ticket paths
+                if ($path !== '/' && $path !== '/submit-ticket' && strpos($path, '/submit-ticket/') !== 0) {
+                    return redirect('/submit-ticket');
                 }
             }
         } else {
