@@ -15,26 +15,38 @@ class SetTenant
         $host = $request->getHost();
         $parts = explode('.', $host);
 
-        // Get subdomain (first part before the domain)
-        $subdomain = $parts[0] ?? null;
+        // Only treat as subdomain if there are at least 2 parts (subdomain.domain.ext)
+        if (count($parts) >= 2) {
+            // Get subdomain (first part before the domain)
+            $subdomain = $parts[0];
 
-        if ($subdomain && $subdomain !== 'www' && $subdomain !== 'localhost') {
-            $library = Library::bySubdomain($subdomain)->first();
+            if ($subdomain && $subdomain !== 'www' && $subdomain !== 'localhost') {
+                $library = Library::bySubdomain($subdomain)->first();
 
-            if ($library) {
-                session(['tenant_library' => $library]);
-                app()->bind('tenant_library', fn() => $library);
+                if ($library) {
+                    session(['tenant_library' => $library]);
+                    app()->bind('tenant_library', fn() => $library);
 
-                // On a library subdomain, only allow access to root and submit-ticket
-                $path = $request->getPathInfo();
+                    // On a library subdomain, only allow access to root and submit-ticket
+                    $path = $request->getPathInfo();
 
-                // Allow root and submit-ticket paths
-                if ($path !== '/' && $path !== '/submit-ticket' && strpos($path, '/submit-ticket/') !== 0) {
-                    return redirect('/submit-ticket');
+                    // Allow root and submit-ticket paths
+                    if ($path !== '/' && $path !== '/submit-ticket' && strpos($path, '/submit-ticket/') !== 0) {
+                        return redirect('/submit-ticket');
+                    }
+                }
+            } else {
+                // On main domain, if authenticated, ensure user's library matches tenant
+                if (Auth::check()) {
+                    $user = Auth::user();
+                    if ($user->library_uid) {
+                        session(['tenant_library' => $user->library]);
+                        app()->bind('tenant_library', fn() => $user->library);
+                    }
                 }
             }
         } else {
-            // On main domain, if authenticated, ensure user's library matches tenant
+            // Single part domain (localhost, etc) - just handle auth tenant if needed
             if (Auth::check()) {
                 $user = Auth::user();
                 if ($user->library_uid) {
