@@ -32,7 +32,7 @@
 
   {{-- Update Status --}}
 <div class="card shadow-sm mb-4">
-    <div class="card-header" style="background: linear-gradient(90deg, #a855f7, #7c3aed); color: white;" class="fw-bold">Update Status</div>
+    <div class="card-header" style="background: white; border: 2px solid black; background: linear-gradient(90deg, #a855f7, #7c3aed); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;" class="fw-bold">Update Status</div>
     <div class="card-body">
         <form method="POST" action="{{ route('tickets.updateStatus', $ticket->id) }}" class="row g-3 align-items-end">
             @csrf
@@ -55,7 +55,7 @@
 
 {{-- Update Tech --}}
 <div class="card shadow-sm mb-4">
-    <div class="card-header" style="background: linear-gradient(90deg, #a855f7, #7c3aed); color: white;" class="fw-bold">Change Tech</div>
+    <div class="card-header" style="background: white; border: 2px solid black; background: linear-gradient(90deg, #a855f7, #7c3aed); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;" class="fw-bold">Change Tech</div>
     <div class="card-body">
         <form method="POST" action="{{ route('tickets.transfer', $ticket->id) }}" class="row g-3 align-items-end">
             @csrf
@@ -85,7 +85,7 @@
 
     {{-- Update Ticket Details --}}
     <div class="card shadow-sm mb-4">
-        <div class="card-header" style="background: linear-gradient(90deg, #a855f7, #7c3aed); color: white;" class="fw-bold">Update Ticket Details</div>
+        <div class="card-header" style="background: white; border: 2px solid black; background: linear-gradient(90deg, #a855f7, #7c3aed); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;" class="fw-bold">Update Ticket Details</div>
         <div class="card-body">
             <form method="POST" action="{{ route('tickets.update', $ticket->id) }}" class="row g-3">
                 @csrf
@@ -181,7 +181,7 @@
 
     {{-- Comments Section --}}
     <div class="card shadow-sm">
-        <div class="card-header" style="background: linear-gradient(90deg, #a855f7, #7c3aed); color: white;" class="fw-bold">Comments</div>
+        <div class="card-header" style="background: white; border: 2px solid black; background: linear-gradient(90deg, #a855f7, #7c3aed); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;" class="fw-bold">Comments</div>
         <div class="card-body">
             @if($ticket->comment)
                 <div class="bg-light p-3 rounded mb-3" style="white-space: pre-wrap; font-family: monospace;">
