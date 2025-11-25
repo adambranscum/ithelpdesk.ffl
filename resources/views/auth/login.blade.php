@@ -11,7 +11,7 @@
                             <div class="bg-primary bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 120px; height: 120px;">
                                <img width="100" height="100" src="../images/logo.png" style="border-radius: 50%;">
                             </div>
-                            <h2 class="fw-bold mb-2">Welcome Back</h2>
+                            <h2 class="fw-bold mb-2" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Welcome Back</h2>
                             <p class="text-muted">Sign in to The Community Helpdesk</p>
                         </div>
 
