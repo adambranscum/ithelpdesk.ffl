@@ -100,7 +100,7 @@
                 <div class="card-body">
                     <!-- Category Badge -->
                     @if($sop->category)
-                    <span class="badge bg-primary mb-2">{{ $sop->category }}</span>
+                    <span class="badge logout-btn mb-2">{{ $sop->category }}</span>
                     @endif
                     
                     <!-- Title -->
@@ -152,7 +152,7 @@
                     @if($sop->tags)
                     <div class="mb-3">
                         @foreach($sop->tags_array as $tag)
-                        <span class="badge bg-light text-dark me-1">{{ $tag }}</span>
+                        <span class="badge bg-secondary text-light me-1">{{ $tag }}</span>
                         @endforeach
                     </div>
                     @endif
