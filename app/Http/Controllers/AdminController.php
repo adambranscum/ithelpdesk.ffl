@@ -79,7 +79,13 @@ class AdminController extends Controller
             ->get();
         $softwares = Software::where('library_uid', $user->library_uid)->orderBy('software', 'asc')->get();
 
-        return view('admin.show', compact('ticket', 'devices', 'users', 'softwares'));
+        // Fetch active categories for this library grouped by type
+        $categories = Category::where('library_uid', $user->library_uid)
+            ->where('is_active', true)
+            ->get()
+            ->groupBy('type');
+
+        return view('admin.show', compact('ticket', 'devices', 'users', 'softwares', 'categories'));
     }
     
     /**

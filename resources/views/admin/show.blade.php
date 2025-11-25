@@ -66,13 +66,15 @@
 
             <div class="col-md-6">
                 <label class="form-label">Change Tech</label>
-                <select name="transfer_to" class="form-select form-select-sm selectpicker" data-live-search="true" required>
-                    
-                    @foreach ($users as $user)
-                        <option value="{{ $user->usertype }}" {{ $ticket->assigned_to == $user->usertype ? 'selected' : '' }}>
-                            {{ $user->usertype}}
+                <select name="assigned_to" class="form-select form-select-sm selectpicker" data-live-search="true" required>
+                    <option value="">Select a technician...</option>
+                    @forelse ($users as $user)
+                        <option value="{{ $user->id }}" {{ $ticket->assigned_to == $user->id ? 'selected' : '' }}>
+                            {{ $user->name }}
                         </option>
-                    @endforeach
+                    @empty
+                        <option disabled>No technicians available</option>
+                    @endforelse
                 </select>
             </div>
 
@@ -88,88 +90,94 @@
     <div class="card shadow-sm mb-4">
         <div class="card-header bg-warning text-dark fw-bold">Update Ticket Details</div>
         <div class="card-body">
-            <form method="POST" action="{{ route('tickets.update', $ticket->id) }}" class="row g-3">
+            <form method="POST" action="{{ route('admin.update', $ticket->id) }}" class="row g-3">
                 @csrf
                 @method('PATCH')
-                   <div class="col-md-6">
-                            <label class="form-label small">Problem Type</label>
-                            <select name="problem_type" class="form-select form-select-sm">
-                                <option value="">Select problem type...</option>
-                                <option value="Hardware" {{ $ticket->problem_type == 'Hardware' ? 'selected' : '' }}>Hardware</option>
-                                <option value="Software" {{ $ticket->problem_type == 'Software' ? 'selected' : '' }}>Software</option>
-                                <option value="Network" {{ $ticket->problem_type == 'Network' ? 'selected' : '' }}>Network</option>
-                                <option value="Email" {{ $ticket->problem_type == 'Email' ? 'selected' : '' }}>Email</option>
-                                <option value="Printer" {{ $ticket->problem_type == 'Printer' ? 'selected' : '' }}>Printer</option>
-                                <option value="Fax" {{ $ticket->problem_type == 'Fax' ? 'selected' : '' }}>Fax</option>
-                                <option value="Phone" {{ $ticket->problem_type == 'Phone' ? 'selected' : '' }}>Phone</option>
-                                <option value="Website" {{ $ticket->problem_type == 'Website' ? 'selected' : '' }}>Website</option>
-                                <option value="Account Access" {{ $ticket->problem_type == 'Account Access' ? 'selected' : '' }}>Account Access</option>
-                                <option value="Security" {{ $ticket->problem_type == 'Security' ? 'selected' : '' }}>Security</option>
-                                <option value="Other" {{ $ticket->problem_type == 'Other' ? 'selected' : '' }}>Other</option>
-                            </select>
-                        </div>
-
-                               <div class="col-md-6">
-                            <label class="form-label small">Network Name</label>
-                            <select name="network_name" class="form-select form-select-sm">
-                                <option value="">Select network...</option>
-                                <option value="Staff WiFi" {{ $ticket->network_name == 'Staff WiFi' ? 'selected' : '' }}>Staff WiFi</option>
-                                <option value="Public WiFi" {{ $ticket->network_name == 'Public WiFi' ? 'selected' : '' }}>Public WiFi</option>
-                                <option value="Guest WiFi" {{ $ticket->network_name == 'Guest WiFi' ? 'selected' : '' }}>Guest WiFi</option>
-                                <option value="Wired Network" {{ $ticket->network_name == 'Wired Network' ? 'selected' : '' }}>Wired Network</option>
-                                <option value="VPN Connection" {{ $ticket->network_name == 'VPN Connection' ? 'selected' : '' }}>VPN Connection</option>
-                                <option value="Printer Network" {{ $ticket->network_name == 'Printer Network' ? 'selected' : '' }}>Printer Network</option>
-                                <option value="Fax Network" {{ $ticket->network_name == 'Fax Network' ? 'selected' : '' }}>Fax Network</option>
-                                <option value="Other" {{ $ticket->network_name == 'Other' ? 'selected' : '' }}>Other</option>
-                            </select>
-                        </div>
-
-          <div class="col-md-6">
-    <label class="form-label small">Device Name</label>
-    <select name="device_name" class="form-select form-select-sm selectpicker" data-live-search="true">
-        <option value="">-- Choose a device --</option>
-        @foreach ($devices as $device)
-           <option value="{{ $device->device_name }}" 
-                {{ $ticket->device_name == $device->device_name ? 'selected' : '' }}>
-                {{ $device->device_name }}
-            </option>
-        @endforeach
-    </select>
-</div>
-
-                          <div class="col-md-6">
-                                <label for="device_name" class="form-label small">Software</label>
-                                <select class="form-select form-select-sm" id="software_name" name="software_name">
-                                    <option value="">Select Software</option>
-                                    @foreach($softwares as $software)
-                                        <option value="{{ $software->software }}">
-                                            {{ $software->software }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
                 <div class="col-md-6">
-                            <label class="form-label small">Security</label>
-                            <select name="security_name" class="form-select form-select-sm">
-                                <option value="">Select issue...</option>
-                                <option value="PHISHING" {{ $ticket->security_name == 'PHISHING' ? 'selected' : '' }}>Phishing</option>
-                                <option value="ALLOWLIST" {{ $ticket->security_name == 'ALLOWLIST' ? 'selected' : '' }}>Allow List</option>
-                                <option value="DENYLIST" {{ $ticket->security_name == 'DENYLIST' ? 'selected' : '' }}>Deny List</option>
-                                <option value="EMAIL ALLOWLIST" {{ $ticket->security_name == 'EMAIL ALLOWLIST' ? 'selected' : '' }}>Email Allow List</option>
-                                <option value="EMAIL DENYLIST" {{ $ticket->security_name == 'EMAIL DENYLIST' ? 'selected' : '' }}>Email Deny List</option>
-                            </select>
-                        </div>
-                 <div class="col-md-6">
-                            <label class="form-label small">Website Name</label>
-                            <select name="website_name" class="form-select form-select-sm">
-                                <option value="">Select website...</option>
-                                <option value="nlrlibrary.org" {{ $ticket->website_name == 'nlrlibrary.org' ? 'selected' : '' }}>nlrlibrary.org</option>
-                                <option value="blog.nlrlibrary.org" {{ $ticket->website_name == 'blog.nlrlibrary.org' ? 'selected' : '' }}>blog.nlrlibrary.org</option>
-                                <option value="selaonline.org" {{ $ticket->website_name == 'selaonline.org' ? 'selected' : '' }}>selaonline.org</option>
-                                <option value="hub.nlrlibrary.org" {{ $ticket->website_name == 'hub.nlrlibrary.org' ? 'selected' : '' }}>hub.nlrlibrary.org</option>
-                                <option value="arhub.org" {{ $ticket->website_name == 'arhub.org' ? 'selected' : '' }}>arhub.org</option>
-                            </select>
-                        </div>
+                    <label class="form-label small">Problem Type</label>
+                    <select name="problem_type" class="form-select form-select-sm">
+                        <option value="">Select problem type...</option>
+                        <option value="Hardware" {{ $ticket->problem_type == 'Hardware' ? 'selected' : '' }}>Hardware</option>
+                        <option value="Software" {{ $ticket->problem_type == 'Software' ? 'selected' : '' }}>Software</option>
+                        <option value="Network" {{ $ticket->problem_type == 'Network' ? 'selected' : '' }}>Network</option>
+                        <option value="Email" {{ $ticket->problem_type == 'Email' ? 'selected' : '' }}>Email</option>
+                        <option value="Printer" {{ $ticket->problem_type == 'Printer' ? 'selected' : '' }}>Printer</option>
+                        <option value="Fax" {{ $ticket->problem_type == 'Fax' ? 'selected' : '' }}>Fax</option>
+                        <option value="Phone" {{ $ticket->problem_type == 'Phone' ? 'selected' : '' }}>Phone</option>
+                        <option value="Website" {{ $ticket->problem_type == 'Website' ? 'selected' : '' }}>Website</option>
+                        <option value="Account Access" {{ $ticket->problem_type == 'Account Access' ? 'selected' : '' }}>Account Access</option>
+                        <option value="Security" {{ $ticket->problem_type == 'Security' ? 'selected' : '' }}>Security</option>
+                        <option value="Other" {{ $ticket->problem_type == 'Other' ? 'selected' : '' }}>Other</option>
+                    </select>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label small">Network Name</label>
+                    <select name="network_name" class="form-select form-select-sm">
+                        <option value="">Select network...</option>
+                        @forelse($categories['network'] ?? [] as $category)
+                            <option value="{{ $category->name }}" {{ $ticket->network_name == $category->name ? 'selected' : '' }}>
+                                {{ $category->name }}
+                            </option>
+                        @empty
+                            <option disabled>No networks available</option>
+                        @endforelse
+                    </select>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label small">Device Name</label>
+                    <select name="device_name" class="form-select form-select-sm selectpicker" data-live-search="true">
+                        <option value="">-- Choose a device --</option>
+                        @foreach ($devices as $device)
+                           <option value="{{ $device->device_name }}"
+                                {{ $ticket->device_name == $device->device_name ? 'selected' : '' }}>
+                                {{ $device->device_name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="software_name" class="form-label small">Software</label>
+                    <select class="form-select form-select-sm" id="software_name" name="software_name">
+                        <option value="">Select Software</option>
+                        @foreach($softwares as $software)
+                            <option value="{{ $software->software }}" {{ $ticket->software_name == $software->software ? 'selected' : '' }}>
+                                {{ $software->software }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label small">Security</label>
+                    <select name="security_name" class="form-select form-select-sm">
+                        <option value="">Select issue...</option>
+                        @forelse($categories['security'] ?? [] as $category)
+                            <option value="{{ $category->name }}" {{ $ticket->security_name == $category->name ? 'selected' : '' }}>
+                                {{ $category->name }}
+                            </option>
+                        @empty
+                            <option disabled>No security issues available</option>
+                        @endforelse
+                    </select>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label small">Website Name</label>
+                    <select name="website_name" class="form-select form-select-sm">
+                        <option value="">Select website...</option>
+                        @forelse($categories['website'] ?? [] as $category)
+                            <option value="{{ $category->name }}" {{ $ticket->website_name == $category->name ? 'selected' : '' }}>
+                                {{ $category->name }}
+                            </option>
+                        @empty
+                            <option disabled>No websites available</option>
+                        @endforelse
+                    </select>
+                </div>
+
                 <div class="col-md-3">
                     <button type="submit" class="btn btn-warning w-100 mt-2">Save Details</button>
                 </div>
