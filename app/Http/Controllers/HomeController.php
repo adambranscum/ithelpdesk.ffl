@@ -8,7 +8,7 @@ use App\Models\Ticket;
 
 class HomeController extends Controller
 {
-     public function index()
+    public function index()
     {
         // If on a subdomain with a library, redirect to public ticket submission
         $library = TenantHelper::current();

@@ -24,15 +24,31 @@ class SetTenant
             if ($library) {
                 session(['tenant_library' => $library]);
                 app()->bind('tenant_library', fn() => $library);
-            }
-        }
 
-        // If authenticated, ensure user's library matches tenant
-        if (Auth::check()) {
-            $user = Auth::user();
-            if ($user->library_uid) {
-                session(['tenant_library' => $user->library]);
-                app()->bind('tenant_library', fn() => $user->library);
+                // On a library subdomain, only allow access to public ticket routes
+                $path = $request->getPathInfo();
+                $allowedRoutes = ['/', '/submit-ticket'];
+
+                $isAllowedRoute = false;
+                foreach ($allowedRoutes as $route) {
+                    if ($path === $route || strpos($path, $route) === 0) {
+                        $isAllowedRoute = true;
+                        break;
+                    }
+                }
+
+                if (!$isAllowedRoute) {
+                    return redirect()->route('library.public.submit');
+                }
+            }
+        } else {
+            // On main domain, if authenticated, ensure user's library matches tenant
+            if (Auth::check()) {
+                $user = Auth::user();
+                if ($user->library_uid) {
+                    session(['tenant_library' => $user->library]);
+                    app()->bind('tenant_library', fn() => $user->library);
+                }
             }
         }
 
