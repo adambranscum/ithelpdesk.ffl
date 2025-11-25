@@ -17,18 +17,14 @@ class TicketController extends Controller
    //Index for tickets.index
     public function index(Request $request)
 {
-    $user = Auth::user();        
-    
-    $userType = $user->usertype;        
-    
-    $query = Ticket::where('status', '!=', 'resolved');
+    $user = Auth::user();
 
-    $query->where('assigned_to', $userType);
-    
+    $query = Ticket::where('library_uid', $user->library_uid)->where('status', '!=', 'resolved');
+
     if ($request->filled('status')) {
         $query->where('status', $request->status);
     }
-    
+
     if ($request->filled('search')) {
         $search = $request->search;
         $query->where(function($q) use ($search) {
@@ -39,98 +35,91 @@ class TicketController extends Controller
     }
 
     $tickets = $query->recent()->paginate(15)->appends($request->except('page'));
-   
+
     $stats = [
-        'total' => Ticket::where('assigned_to', $userType)->count(),
-        'new' => Ticket::where('assigned_to', $userType)->where('status', 'new')->count(),
-        'in_progress' => Ticket::where('assigned_to', $userType)->where('status', 'in_progress')->count(),
-        'resolved' => Ticket::where('assigned_to', $userType)->where('status', 'resolved')->count(),
+        'total' => Ticket::where('library_uid', $user->library_uid)->count(),
+        'new' => Ticket::where('library_uid', $user->library_uid)->where('status', 'new')->count(),
+        'in_progress' => Ticket::where('library_uid', $user->library_uid)->where('status', 'in_progress')->count(),
+        'resolved' => Ticket::where('library_uid', $user->library_uid)->where('status', 'resolved')->count(),
     ];
-    
-    return view('tickets.index', compact('tickets', 'stats', 'userType'));
+
+    return view('tickets.index', compact('tickets', 'stats'));
 }
     
     // show individual ticket
     public function show(Ticket $ticket)
     {
         $user = Auth::user();
-        $userType = $user->usertype;
-        $devices = Device::orderBy('device_name', 'asc')->get();
-        $users = User::orderBy('usertype', 'asc')->get();
-        $softwares =Software::orderBy('software', 'asc')->get();
-        
-        if ($ticket->assigned_to !== $userType) {
-            return view('errors.403');
 
+        // Check if ticket belongs to user's library
+        if ($ticket->library_uid !== $user->library_uid) {
+            return view('errors.403');
         }
-        
+
+        $devices = Device::where('library_uid', $user->library_uid)->orderBy('device_name', 'asc')->get();
+        $users = User::where('library_uid', $user->library_uid)->orderBy('name', 'asc')->get();
+        $softwares = Software::where('library_uid', $user->library_uid)->orderBy('software', 'asc')->get();
+
         return view('tickets.show', compact('ticket', 'devices', 'users', 'softwares'));
     }
     
 
     //Transfer ticket from one assigned tech to another
     public function transfer(Request $request, Ticket $ticket)
-{
-    $user = Auth::user();
+    {
+        $user = Auth::user();
 
-    
-    if ($ticket->assigned_to !== $user->usertype) {
-        return view('errors.403');
+        // Check if ticket belongs to user's library
+        if ($ticket->library_uid !== $user->library_uid) {
+            return view('errors.403');
+        }
+
+        $request->validate([
+            'assigned_to' => 'required|exists:users,id',
+        ]);
+
+        $ticket->update([
+            'assigned_to' => $request->assigned_to,
+        ]);
+
+        return redirect()->route('tickets.index')->with('success', 'Ticket transferred successfully.');
     }
-
-    $request->validate([
-        'transfer_to' => 'required',
-    ]);
-
-    $oldAssignee = $ticket->assigned_to;
-    $newAssignee = $request->transfer_to;
-
-    if ($oldAssignee == $newAssignee) {
-        return view('errors.403');
-    }
-
-    $ticket->update([
-        'assigned_to' => $newAssignee,
-    ]);
-
-       return redirect()->route('tickets.index')->with('success', 'Ticket transferred successfully.');
-}
 
   
-    // Update status of ticket 
+    // Update status of ticket
     public function updateStatus(Request $request, Ticket $ticket)
     {
         $user = Auth::user();
-        $userType = $user->usertype;
-        
-        if ($ticket->assigned_to !== $userType) {
+
+        // Check if ticket belongs to user's library
+        if ($ticket->library_uid !== $user->library_uid) {
             return view('errors.403');
         }
-        
+
         $request->validate([
             'status' => 'required|in:new,in_progress,resolved,closed',
         ]);
-        
+
         $oldStatus = $ticket->status;
         $newStatus = $request->status;
-        
+
         $ticket->update([
             'status' => $newStatus,
             'end_time' => $newStatus === 'resolved' || $newStatus === 'closed' ? now() : null,
         ]);
-        
+
         try {
             if ($oldStatus !== 'in_progress' && $newStatus === 'in_progress') {
                 \Mail::to($ticket->from_email)->send(new \App\Mail\TicketInProgress($ticket));
             }
-            
+
             if ($oldStatus !== 'resolved' && $newStatus === 'resolved') {
                 \Mail::to($ticket->from_email)->send(new \App\Mail\TicketResolved($ticket));
             }
         } catch (\Exception $e) {
             \Log::error('Failed to send ticket status email: ' . $e->getMessage());
         }
-        
+
         return redirect()->back()->with('success', 'Ticket status updated successfully!');
     }
     
@@ -138,23 +127,23 @@ class TicketController extends Controller
     public function addComment(Request $request, Ticket $ticket)
     {
         $user = Auth::user();
-        $userType = $user->usertype;
-        
-        if ($ticket->assigned_to !== $userType) {
+
+        // Check if ticket belongs to user's library
+        if ($ticket->library_uid !== $user->library_uid) {
             return view('errors.403');
         }
-        
+
         $request->validate([
             'comment' => 'required|string',
         ]);
-        
+
         $existingComment = $ticket->comment ?? '';
         $newComment = "[" . now()->format('Y-m-d H:i:s') . "] " . $user->name . ": " . $request->comment . "\n\n";
-        
+
         $ticket->update([
             'comment' => $newComment . $existingComment,
         ]);
-        
+
         return redirect()->back()->with('success', 'Comment added successfully!');
     }
     
@@ -163,13 +152,12 @@ class TicketController extends Controller
     public function update(Request $request, Ticket $ticket)
     {
         $user = Auth::user();
-        $userType = $user->usertype;
-        
-        // Check if user is assigned to this ticket
-        if ($ticket->assigned_to !== $userType) {
+
+        // Check if ticket belongs to user's library
+        if ($ticket->library_uid !== $user->library_uid) {
             return view('errors.403');
         }
-        
+
         $request->validate([
             'problem_type' => 'nullable|string|max:255',
             'device_name' => 'nullable|string|max:255',
@@ -178,7 +166,7 @@ class TicketController extends Controller
             'website_name' => 'nullable|string|max:255',
             'security_name' => 'nullable|string|max:255',
         ]);
-        
+
         $ticket->update($request->only([
             'problem_type',
             'device_name',
@@ -187,7 +175,7 @@ class TicketController extends Controller
             'website_name',
             'security_name',
         ]));
-        
+
         return redirect()->back()->with('success', 'Ticket details updated successfully!');
     }
     
