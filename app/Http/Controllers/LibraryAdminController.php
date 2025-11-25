@@ -140,14 +140,14 @@ class LibraryAdminController extends Controller
     /**
      * Deactivate a staff member
      */
-    public function deactivateStaff(Request $request, User $staffUser)
+    public function deactivateStaff(Request $request, User $member)
     {
         $user = Auth::user();
         abort_if($user->role !== 'admin', 403, 'Unauthorized');
-        abort_if($staffUser->library_uid !== $user->library_uid, 403, 'Unauthorized');
-        abort_if($staffUser->role !== 'staff', 400, 'Can only deactivate staff members');
+        abort_if($member->library_uid !== $user->library_uid, 403, 'Unauthorized');
+        abort_if($member->role !== 'staff', 400, 'Can only deactivate staff members');
 
-        $staffUser->update(['is_active' => false]);
+        $member->update(['is_active' => false]);
 
         return back()->with('success', 'Staff member deactivated successfully!');
     }

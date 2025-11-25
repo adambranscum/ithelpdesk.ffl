@@ -23,8 +23,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('admin/staff', [LibraryAdminController::class, 'manageStaff'])->name('library.admin.staff');
     Route::get('admin/staff/create', [LibraryAdminController::class, 'showCreateStaff'])->name('library.admin.staff.create');
     Route::post('admin/staff', [LibraryAdminController::class, 'createStaff'])->name('library.admin.staff.store');
-    Route::post('admin/staff/{user}/deactivate', [LibraryAdminController::class, 'deactivateStaff'])->name('library.admin.staff.deactivate');
-    Route::post('admin/staff/{user}/reactivate', [LibraryAdminController::class, 'reactivateStaff'])->name('library.admin.staff.reactivate');
+    Route::post('admin/staff/{member}/deactivate', [LibraryAdminController::class, 'deactivateStaff'])->name('library.admin.staff.deactivate');
+    Route::post('admin/staff/{member}/reactivate', [LibraryAdminController::class, 'reactivateStaff'])->name('library.admin.staff.reactivate');
 
     // Branding preview
     Route::get('admin/branding-preview', [LibraryAdminController::class, 'brandingPreview'])->name('library.admin.branding-preview');
