@@ -3,7 +3,7 @@
 <div class="container shadow mt-4 pt-4 pb-4">
     <div class="d-flex">
         <h2 class="mb-4 fw-bolder me-auto text-gradient-primary">Create New Ticket</h2>
-        <a class="ms-auto btn btn-outline-info mb-4" href="{{ route('tickets.index') }}">Back to Tickets</a>
+        <a class="ms-auto btn btn-sm d-flex align-items-center logout-btn mb-4" href="{{ route('tickets.index') }}">Back to Tickets</a>
     </div>
 
     <div class="card shadow-sm">
@@ -51,7 +51,7 @@
 
                             
                             <div class="col-12">
-                                <h5 class="text-primary border-bottom pb-2 mb-3">Staff Information</h5>
+                                <h5 style="background: linear-gradient(90deg, #a855f7, #7c3aed); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;" class="border-bottom pb-2 mb-3">Staff Information</h5>
                             </div>
 
                            
@@ -118,7 +118,7 @@
 
                             
                             <div class="col-12 mt-4">
-                                <h5 class="text-primary border-bottom pb-2 mb-3">Ticket Details</h5>
+                                <h5 style="background: linear-gradient(90deg, #a855f7, #7c3aed); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;" class="border-bottom pb-2 mb-3">Ticket Details</h5>
                             </div>
 
                             <div class="col-md-6">
