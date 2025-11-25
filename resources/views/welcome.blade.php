@@ -46,7 +46,7 @@
                             Go to Dashboard
                         </a>
                     @else
-                        <a href="/library/register" class="btn btn-hero btn-primary-light">
+                        <a href="/library/register" class="btn btn-hero btn-primary-light btn-register-library">
                             Register Your Library
                         </a>
                         <a href="{{ route('login') }}" class="btn btn-hero btn-outline-light">
