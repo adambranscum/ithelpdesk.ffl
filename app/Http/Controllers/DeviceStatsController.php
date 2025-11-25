@@ -134,7 +134,7 @@ class DeviceStatsController extends Controller
         $devicesWithWarranty = Device::where('library_uid', $user->library_uid)->whereNotNull('warranty_end')->count();
         $avgDeviceAge = Device::where('library_uid', $user->library_uid)
             ->whereNotNull('purchased')
-            ->selectRaw('AVG(TIMESTAMPDIFF(YEAR, purchased, NOW())) as avg')
+            ->AVG(TIMESTAMPDIFF(DAY, purchased, NOW()) / 365.25) as avg
             ->value('avg');
 
         // Oldest and newest devices
