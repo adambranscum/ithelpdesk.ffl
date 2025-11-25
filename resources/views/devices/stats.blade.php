@@ -4,46 +4,44 @@
     <div class="row justify-content-center">
         <div class="col-12">
             <!-- Header -->
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <h2 class="fw-bold">
-                    Device Inventory Statistics
-                </h2>
-                <a href="{{ route('devices.index') }}" class="btn btn-outline-secondary">
+            <div class="d-flex">
+                <h2 class="mb-4 fw-bolder me-auto text-gradient-primary">Device Inventory Statistics</h2>
+                <a href="{{ route('devices.index') }}" class="ms-auto btn logout-btn mb-4">
                     Back to Devices
                 </a>
             </div>
 
             <!-- Summary Cards -->
-            <div class="row g-3 mb-4">
-                <div class="col-md-3">
-                    <div class="card border-0 shadow-sm h-100">
-                        <div class="card-body text-center">
-                            <h3 class="display-4 fw-bold text-primary mb-2">{{ $totalDevices }}</h3>
-                            <p class="text-muted mb-0">Total Devices</p>
+            <div class="row mb-4 text-center">
+                <div class="col-md-3 mb-3">
+                    <div class="card shadow-sm border-primary">
+                        <div class="card-body">
+                            <h5 class="card-title text-primary">Total</h5>
+                            <h3>{{ $totalDevices }}</h3>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3">
-                    <div class="card border-0 shadow-sm h-100 bg-success bg-opacity-10">
-                        <div class="card-body text-center">
-                            <h3 class="display-4 fw-bold text-success mb-2">{{ $warrantyActive }}</h3>
-                            <p class="text-muted mb-0">Active Warranties</p>
+                <div class="col-md-3 mb-3">
+                    <div class="card shadow-sm border-success">
+                        <div class="card-body">
+                            <h5 class="card-title text-success">Active Warranties</h5>
+                            <h3>{{ $warrantyActive }}</h3>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3">
-                    <div class="card border-0 shadow-sm h-100 bg-warning bg-opacity-10">
-                        <div class="card-body text-center">
-                            <h3 class="display-4 fw-bold text-warning mb-2">{{ $warrantyExpiringSoon }}</h3>
-                            <p class="text-muted mb-0">Expiring Soon</p>
+                <div class="col-md-3 mb-3">
+                    <div class="card shadow-sm border-warning">
+                        <div class="card-body">
+                            <h5 class="card-title text-warning">Expiring Soon</h5>
+                            <h3>{{ $warrantyExpiringSoon }}</h3>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3">
-                    <div class="card border-0 shadow-sm h-100 bg-danger bg-opacity-10">
-                        <div class="card-body text-center">
-                            <h3 class="display-4 fw-bold text-danger mb-2">{{ $warrantyExpired }}</h3>
-                            <p class="text-muted mb-0">Expired Warranties</p>
+                <div class="col-md-3 mb-3">
+                    <div class="card shadow-sm border-danger">
+                        <div class="card-body">
+                            <h5 class="card-title text-danger">Expired</h5>
+                            <h3>{{ $warrantyExpired }}</h3>
                         </div>
                     </div>
                 </div>
