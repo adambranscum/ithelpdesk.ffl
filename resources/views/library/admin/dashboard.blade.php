@@ -106,7 +106,7 @@
                         </div>
                         <div class="col-12">
                             <p class="text-muted small mb-1">Subdomain</p>
-                            <p class="text-primary fw-semibold">{{ $library->subdomain }}.{{ config('app.domain', 'domain.com') }}</p>
+                            <p class="text-primary fw-semibold">{{ $library->subdomain }}.{{ config('app.domain') }}</p>
                         </div>
                         <div class="col-12">
                             <p class="text-muted small mb-1">Email</p>
@@ -129,9 +129,9 @@
                 <div class="card-body">
                     <p class="text-muted small mb-2">Share this URL with your patrons:</p>
                     <div class="bg-light p-3 rounded border mb-3">
-                        <p class="font-monospace small text-break mb-0">https://{{ $library->getUrl() }}</p>
+                        <p class="font-monospace small text-break mb-0">https://{{ $library->subdomain }}.{{ config('app.domain') }}</p>
                     </div>
-                    <button onclick="navigator.clipboard.writeText('https://{{ $library->getUrl() }}')" class="btn btn-sm btn-outline-primary">
+                    <button onclick="navigator.clipboard.writeText('https://{{ $library->subdomain }}.{{ config('app.domain') }}')" class="btn btn-sm btn-outline-primary">
                         Copy URL
                     </button>
                 </div>
