@@ -5,7 +5,7 @@
         <div class="col-md-10">
             <!-- Back Button -->
             <div class="mb-4">
-                <a href="{{ route('devices.index') }}" class="btn btn-sm logout-btn">
+                <a href="{{ route('devices.index') }}" class="btn btn-outline-secondary">
                     Back to Devices
                 </a>
             </div>
@@ -150,7 +150,7 @@
                             <button type="submit" class="btn btn-sm d-flex align-items-center logout-btn">
                                 Save Device
                             </button>
-                            <a href="{{ route('devices.index') }}" class="btn btn-outline-danger btn-sm">
+                            <a href="{{ route('devices.index') }}" class="btn btn-outline-secondary btn-lg px-4">
                                 Cancel
                             </a>
                         </div>
