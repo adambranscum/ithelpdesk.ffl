@@ -532,23 +532,12 @@ html body {
 }
 
 /* Welcome Page Styles */
-:root {
+body {
   --primary: #667eea;
   --secondary: #764ba2;
   --accent: #f093fb;
   --dark: #1a1a2e;
   --light: #f8f9fa;
-}
-
-* {
-  margin: 0;
-  padding: 0;
-}
-
-body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: #fff;
-  color: #333;
 }
 
 /* Navbar Styling */
