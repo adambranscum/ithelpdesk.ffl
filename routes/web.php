@@ -11,11 +11,16 @@ use App\Http\Controllers\TicketStatsController;
 use App\Http\Controllers\DeviceStatsController;
 use App\Http\Controllers\SoftwareStatsController;
 use App\Http\Controllers\CreateTicketController;
+use App\Http\Controllers\PublicLibraryTicketController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 // Homepage (public)
 Route::get('/', [HomeController::class, 'index'])->name('home');
+
+// Public library ticket submission (for subdomains)
+Route::get('/submit-ticket', [PublicLibraryTicketController::class, 'create'])->name('library.public.submit');
+Route::post('/submit-ticket', [PublicLibraryTicketController::class, 'store'])->name('library.public.store');
 
 Route::middleware(['auth'])->group(function () {
     // Profile Routes
