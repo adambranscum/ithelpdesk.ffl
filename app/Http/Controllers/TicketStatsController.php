@@ -35,11 +35,11 @@ class TicketStatsController extends Controller
             ->get();
 
 
-        $ticketsByUsertype = Ticket::where('library_uid', $user->library_uid)
+        $ticketsByUsertype = Ticket::where('tickets.library_uid', $user->library_uid)
             ->join('users', 'tickets.assigned_to', '=', 'users.id')
             ->select('users.name as assigned_to', DB::raw('COUNT(*) as count'))
-            ->whereBetween('received_time', [$startDate, $endDate])
-            ->whereNotNull('assigned_to')
+            ->whereBetween('tickets.received_time', [$startDate, $endDate])
+            ->whereNotNull('tickets.assigned_to')
             ->groupBy('users.id', 'users.name')
             ->orderBy('count', 'desc')
             ->get();
@@ -91,16 +91,16 @@ class TicketStatsController extends Controller
             ->value('avg_hours');
 
 
-        $monthlyByUsertype = Ticket::where('library_uid', $user->library_uid)
+        $monthlyByUsertype = Ticket::where('tickets.library_uid', $user->library_uid)
             ->join('users', 'tickets.assigned_to', '=', 'users.id')
             ->select(
-                DB::raw('DATE_FORMAT(received_time, "%Y-%m") as month'),
+                DB::raw('DATE_FORMAT(tickets.received_time, "%Y-%m") as month'),
                 'users.name as assigned_to',
                 DB::raw('COUNT(*) as count')
             )
-            ->whereBetween('received_time', [$startDate, $endDate])
-            ->whereNotNull('assigned_to')
-            ->groupBy(DB::raw('DATE_FORMAT(received_time, "%Y-%m")'), 'users.id', 'users.name')
+            ->whereBetween('tickets.received_time', [$startDate, $endDate])
+            ->whereNotNull('tickets.assigned_to')
+            ->groupBy(DB::raw('DATE_FORMAT(tickets.received_time, "%Y-%m")'), 'users.id', 'users.name')
             ->orderBy('month', 'asc')
             ->get();
 
