@@ -63,6 +63,14 @@
                         Admin Tools
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="inventoryDropdown">
+                        @if(Auth::user() && Auth::user()->role === 'admin')
+                            <li>
+                                <a class="nav-link text-white d-flex align-items-center" href="{{ route('library.admin.dashboard') }}">
+                            Library Admin
+                        </a>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                        @endif
                         <li>
                             <a class="nav-link text-white d-flex align-items-center" href="{{ route('admin.index') }}">
                         Admin Ticket Db
