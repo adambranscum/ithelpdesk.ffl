@@ -201,7 +201,7 @@
 
                             <!-- Submit Button -->
                             <div class="d-grid gap-2 mb-3">
-                                <button type="submit" class="btn btn-primary btn-lg py-3">
+                                <button type="submit" class="btn btn-lg py-3" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; font-weight: 600; transition: all 0.3s ease;">
                                     Complete Registration
                                 </button>
                             </div>
