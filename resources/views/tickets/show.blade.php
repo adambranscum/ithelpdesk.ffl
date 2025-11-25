@@ -70,7 +70,7 @@
                     <option value="">Select a technician...</option>
                     @forelse ($users as $user)
                         <option value="{{ $user->id }}" {{ $ticket->assigned_to == $user->id ? 'selected' : '' }}>
-                            {{ $user->name }} ({{ ucfirst($user->usertype) }})
+                            {{ $user->name }}
                         </option>
                     @empty
                         <option disabled>No technicians available</option>
