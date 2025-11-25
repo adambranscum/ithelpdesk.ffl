@@ -93,7 +93,7 @@ class DeviceStatsController extends Controller
 
         // Average device age by make
         $avgAgeByMake = Device::where('library_uid', $user->library_uid)
-            ->selectRaw('make, AVG(TIMESTAMPDIFF(YEAR, purchased, NOW())) as avg_age, COUNT(*) as count')
+            ->selectRaw('make, AVG(TIMESTAMPDIFF(DAY, purchased, NOW()) / 365.25) as avg_age, COUNT(*) as count')
             ->whereNotNull('purchased')
             ->whereNotNull('make')
             ->where('make', '!=', '')

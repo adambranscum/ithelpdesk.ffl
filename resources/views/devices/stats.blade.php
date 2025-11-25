@@ -430,7 +430,7 @@
             labels: avgAgeData.map(d => d.make),
             datasets: [{
                 label: 'Average Age (Years)',
-                data: avgAgeData.map(d => d.avg_age ? parseFloat(d.avg_age).toFixed(1) : 0),
+                data: avgAgeData.map(d => d.avg_age ? parseFloat(d.avg_age) : 0),
                 backgroundColor: colors[3]
             }]
         },
@@ -439,11 +439,23 @@
             maintainAspectRatio: true,
             indexAxis: 'y',
             plugins: {
-                legend: { display: false }
+                legend: { display: false },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return context.parsed.x.toFixed(1) + ' years';
+                        }
+                    }
+                }
             },
             scales: {
                 x: {
-                    beginAtZero: true
+                    beginAtZero: true,
+                    ticks: {
+                        callback: function(value) {
+                            return value.toFixed(1);
+                        }
+                    }
                 }
             }
         }
