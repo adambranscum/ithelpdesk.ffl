@@ -1,9 +1,10 @@
 <x-app-layout>
 
-<div class="container shadow mt-4 mb-5 pb-3 pt-2">
-    <a href="{{ route('tickets.index') }}" class="btn btn-outline-secondary mb-3 mt-2">
-        &larr; Back to Tickets
-    </a>
+<div class="container shadow mt-4 pt-4 pb-4">
+    <div class="d-flex">
+        <h2 class="mb-4 fw-bolder me-auto text-gradient-primary">Ticket #{{ $ticket->id }} — {{ $ticket->subject }}</h2>
+        <a class="ms-auto btn btn-outline-info mb-4" href="{{ route('tickets.index') }}">Back to Tickets</a>
+    </div>
 
     {{-- Flash Messages --}}
     @if(session('success'))
@@ -15,10 +16,6 @@
 
     {{-- Ticket Header --}}
     <div class="card shadow-sm mb-4">
-        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-            <h4 class="mb-0">Ticket #{{ $ticket->id }} — {{ $ticket->subject }}</h4>
-            <span class="badge bg-light text-dark">{{ ucfirst($ticket->status) }}</span>
-        </div>
         <div class="card-body">
             <p><strong>From:</strong> {{ $ticket->from_name }} ({{ $ticket->from_email }})</p>
             <p><strong>Assigned To:</strong> {{ $ticket->assigned_to }}</p>

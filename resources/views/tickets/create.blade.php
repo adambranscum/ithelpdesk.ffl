@@ -1,21 +1,15 @@
 <x-app-layout>
 
-<div class="container mt-4 shadow py-4">
-    <div class="row justify-content-center">
-        <div class="col-md-10">
-            
-            <div class="mb-4">
-                <a href="{{ route('tickets.index') }}" class="btn btn-outline-secondary">
-                    Back to Tickets
-                </a>
-            </div>
+<div class="container shadow mt-4 pt-4 pb-4">
+    <div class="d-flex">
+        <h2 class="mb-4 fw-bolder me-auto text-gradient-primary">Create New Ticket</h2>
+        <a class="ms-auto btn btn-outline-info mb-4" href="{{ route('tickets.index') }}">Back to Tickets</a>
+    </div>
 
-            <div class="card border-0 shadow-sm">
-                <div class="card-header bg-primary text-white">
-                    <h4 class="mb-0">
-                        Create New Ticket
-                    </h4>
-                </div>
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">Ticket Information</h4>
+        </div>
 
                 <div class="card-body p-4">
                     <form action="{{ route('tickets.store') }}" method="POST">
@@ -238,7 +232,7 @@
                             <input type="hidden" name="received_time" value="{{ now() }}">
                         </div>
 
-                        
+
                         <div class="mt-4 d-flex gap-2">
                             <button type="submit" class="btn btn-primary btn-lg px-4">
                                 Submit Ticket
@@ -248,9 +242,8 @@
                             </a>
                         </div>
                     </form>
-                </div>
-            </div>
         </div>
     </div>
 </div>
+
 </x-app-layout>
