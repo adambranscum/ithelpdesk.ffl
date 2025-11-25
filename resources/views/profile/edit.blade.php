@@ -1,7 +1,7 @@
 <x-app-layout>
 
 <div class="container shadow mt-4 mb-5 pb-3 pt-2">
-    <a href="{{ route('dashboard') }}" class="btn btn-outline-secondary mb-3 mt-2">
+    <a href="/tickets" class="btn btn-outline-secondary mb-3 mt-2">
         &larr; Back
     </a>
 
