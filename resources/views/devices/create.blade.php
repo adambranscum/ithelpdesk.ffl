@@ -10,12 +10,10 @@
                 </a>
             </div>
 
-            <div class="card border-0 shadow-sm">
-                <div class="card-header" style="background: white; background: linear-gradient(90deg, #a855f7, #7c3aed); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;" class="fw-bold">
-                    <h4 class="mb-0">
-                        Add New Device
-                    </h4>
-                </div>
+  <div class="d-flex">
+        <h2 class="mb-4 fw-bolder me-auto text-gradient-primary">Add New Device</h2>
+        <a class="ms-auto btn btn-sm d-flex align-items-center logout-btn mb-4" href="{{ route('tickets.index') }}">Back to Tickets</a>
+    </div>
 
                 <div class="card-body p-4">
                     <form action="{{ route('devices.store') }}" method="POST">
