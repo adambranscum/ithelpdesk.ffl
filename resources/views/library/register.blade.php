@@ -1,152 +1,226 @@
 <x-guest-layout>
 
-<div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-    <div class="max-w-2xl w-full bg-white rounded-lg shadow-md p-8">
-        <h1 class="text-3xl font-bold text-gray-900 mb-2">Library Account Registration</h1>
-        <p class="text-gray-600 mb-8">Register your library to use our IT helpdesk system. Your account will require approval before activation.</p>
-
-        @if ($errors->any())
-            <div class="mb-4 p-4 bg-red-50 border border-red-200 rounded-md">
-                <h3 class="font-semibold text-red-800 mb-2">Please fix the following errors:</h3>
-                <ul class="text-red-700 text-sm list-disc list-inside">
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
-
-        <form method="POST" action="/library/register" class="space-y-8">
-            @csrf
-
-            <!-- Library Information -->
-            <div class="border-t pt-6">
-                <h2 class="text-lg font-semibold text-gray-900 mb-4">Library Information</h2>
-
-                <div class="space-y-4">
-                    <div>
-                        <label for="library_name" class="block text-sm font-medium text-gray-700 mb-1">Library Name *</label>
-                        <input type="text" id="library_name" name="library_name" value="{{ old('library_name') }}" required
-                            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                            placeholder="Main Public Library">
-                    </div>
-
-                    <div>
-                        <label for="subdomain" class="block text-sm font-medium text-gray-700 mb-1">Subdomain *</label>
-                        <div class="flex items-center gap-2">
-                            <input type="text" id="subdomain" name="subdomain" value="{{ old('subdomain') }}" required
-                                class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                placeholder="mainlib"
-                                pattern="^[a-z0-9-]+$"
-                                title="Lowercase letters, numbers, and hyphens only">
-                            <span class="text-gray-600">.yourdomain.com</span>
-                        </div>
-                        <p class="text-xs text-gray-500 mt-1">Lowercase letters, numbers, and hyphens only</p>
-                    </div>
-
-                    <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Library Email *</label>
-                            <input type="email" id="email" name="email" value="{{ old('email') }}" required
-                                class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                placeholder="contact@library.org">
+<div class="min-vh-100 d-flex align-items-center justify-content-center" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6 col-xl-5">
+                <div class="card border-0 shadow-lg">
+                    <div class="card-body p-4 p-md-5">
+                        <!-- Header -->
+                        <div class="text-center mb-4">
+                            <div class="bg-primary bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 100px; height: 100px;">
+                               <img width="80" height="80" src="../images/logo.png" style="border-radius: 50%;">
+                            </div>
+                            <h2 class="fw-bold mb-2">Register Your Library</h2>
+                            <p class="text-muted">Join The Community Helpdesk</p>
                         </div>
 
-                        <div>
-                            <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
-                            <input type="tel" id="phone" name="phone" value="{{ old('phone') }}"
-                                class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                placeholder="(555) 123-4567">
-                        </div>
-                    </div>
+                        <!-- Error Messages -->
+                        @if ($errors->any())
+                            <div class="alert alert-danger alert-dismissible fade show mb-4" role="alert">
+                                <h5 class="alert-heading">Please fix the following errors:</h5>
+                                <ul class="mb-0">
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                        @endif
 
-                    <div>
-                        <label for="address" class="block text-sm font-medium text-gray-700 mb-1">Address</label>
-                        <input type="text" id="address" name="address" value="{{ old('address') }}"
-                            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                            placeholder="123 Library Lane">
-                    </div>
+                        <form method="POST" action="/library/register">
+                            @csrf
 
-                    <div class="grid grid-cols-3 gap-4">
-                        <div>
-                            <label for="city" class="block text-sm font-medium text-gray-700 mb-1">City</label>
-                            <input type="text" id="city" name="city" value="{{ old('city') }}"
-                                class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                        </div>
+                            <!-- Library Name -->
+                            <div class="mb-3">
+                                <label for="library_name" class="form-label fw-semibold">
+                                    Library Name <span class="text-danger">*</span>
+                                </label>
+                                <input type="text" id="library_name" name="library_name" class="form-control form-control-lg @error('library_name') is-invalid @enderror"
+                                       value="{{ old('library_name') }}" required
+                                       placeholder="Main Public Library">
+                                @error('library_name')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
 
-                        <div>
-                            <label for="state" class="block text-sm font-medium text-gray-700 mb-1">State</label>
-                            <input type="text" id="state" name="state" value="{{ old('state') }}"
-                                class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                        </div>
+                            <!-- Subdomain -->
+                            <div class="mb-3">
+                                <label for="subdomain" class="form-label fw-semibold">
+                                    Subdomain <span class="text-danger">*</span>
+                                </label>
+                                <div class="input-group input-group-lg">
+                                    <input type="text" id="subdomain" name="subdomain" class="form-control @error('subdomain') is-invalid @enderror"
+                                           value="{{ old('subdomain') }}" required
+                                           placeholder="mainlib"
+                                           pattern="^[a-z0-9-]+$"
+                                           title="Lowercase letters, numbers, and hyphens only">
+                                    <span class="input-group-text">.yourdomain.com</span>
+                                </div>
+                                <small class="form-text text-muted">Lowercase letters, numbers, and hyphens only</small>
+                                @error('subdomain')
+                                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                                @enderror
+                            </div>
 
-                        <div>
-                            <label for="zip" class="block text-sm font-medium text-gray-700 mb-1">ZIP Code</label>
-                            <input type="text" id="zip" name="zip" value="{{ old('zip') }}"
-                                class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                        </div>
+                            <!-- Email -->
+                            <div class="mb-3">
+                                <label for="email" class="form-label fw-semibold">
+                                    Library Email <span class="text-danger">*</span>
+                                </label>
+                                <input type="email" id="email" name="email" class="form-control form-control-lg @error('email') is-invalid @enderror"
+                                       value="{{ old('email') }}" required
+                                       placeholder="contact@library.org">
+                                @error('email')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <!-- Phone -->
+                            <div class="mb-3">
+                                <label for="phone" class="form-label fw-semibold">
+                                    Phone Number
+                                </label>
+                                <input type="tel" id="phone" name="phone" class="form-control form-control-lg @error('phone') is-invalid @enderror"
+                                       value="{{ old('phone') }}"
+                                       placeholder="(555) 123-4567">
+                                @error('phone')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <!-- Address -->
+                            <div class="mb-3">
+                                <label for="address" class="form-label fw-semibold">
+                                    Address
+                                </label>
+                                <input type="text" id="address" name="address" class="form-control form-control-lg @error('address') is-invalid @enderror"
+                                       value="{{ old('address') }}"
+                                       placeholder="123 Library Lane">
+                                @error('address')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <!-- City, State, ZIP -->
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="city" class="form-label fw-semibold">City</label>
+                                    <input type="text" id="city" name="city" class="form-control form-control-lg @error('city') is-invalid @enderror"
+                                           value="{{ old('city') }}">
+                                    @error('city')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="state" class="form-label fw-semibold">State</label>
+                                    <input type="text" id="state" name="state" class="form-control form-control-lg @error('state') is-invalid @enderror"
+                                           value="{{ old('state') }}">
+                                    @error('state')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="zip" class="form-label fw-semibold">ZIP Code</label>
+                                    <input type="text" id="zip" name="zip" class="form-control form-control-lg @error('zip') is-invalid @enderror"
+                                           value="{{ old('zip') }}">
+                                    @error('zip')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <!-- Divider -->
+                            <hr class="my-4">
+
+                            <!-- Admin Name -->
+                            <div class="mb-3">
+                                <label for="admin_name" class="form-label fw-semibold">
+                                    Administrator Name <span class="text-danger">*</span>
+                                </label>
+                                <input type="text" id="admin_name" name="admin_name" class="form-control form-control-lg @error('admin_name') is-invalid @enderror"
+                                       value="{{ old('admin_name') }}" required
+                                       placeholder="John Doe">
+                                @error('admin_name')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <!-- Admin Email -->
+                            <div class="mb-3">
+                                <label for="admin_email" class="form-label fw-semibold">
+                                    Administrator Email <span class="text-danger">*</span>
+                                </label>
+                                <input type="email" id="admin_email" name="admin_email" class="form-control form-control-lg @error('admin_email') is-invalid @enderror"
+                                       value="{{ old('admin_email') }}" required
+                                       placeholder="admin@library.org">
+                                @error('admin_email')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <!-- Admin Password -->
+                            <div class="mb-3">
+                                <label for="admin_password" class="form-label fw-semibold">
+                                    Password <span class="text-danger">*</span>
+                                </label>
+                                <input type="password" id="admin_password" name="admin_password" class="form-control form-control-lg @error('admin_password') is-invalid @enderror"
+                                       required
+                                       placeholder="••••••••">
+                                <small class="form-text text-muted">Minimum 8 characters, include uppercase, lowercase, number, and symbol</small>
+                                @error('admin_password')
+                                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <!-- Confirm Password -->
+                            <div class="mb-3">
+                                <label for="admin_password_confirmation" class="form-label fw-semibold">
+                                    Confirm Password <span class="text-danger">*</span>
+                                </label>
+                                <input type="password" id="admin_password_confirmation" name="admin_password_confirmation" class="form-control form-control-lg @error('admin_password_confirmation') is-invalid @enderror"
+                                       required
+                                       placeholder="••••••••">
+                                @error('admin_password_confirmation')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <!-- Terms Checkbox -->
+                            <div class="mb-4">
+                                <div class="form-check">
+                                    <input class="form-check-input @error('agree_terms') is-invalid @enderror" type="checkbox" name="agree_terms" id="agree_terms" required {{ old('agree_terms') ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="agree_terms">
+                                        I agree to the Terms of Service and understand that my library account will be reviewed and must be approved before it becomes active.
+                                    </label>
+                                    @error('agree_terms')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <!-- Submit Button -->
+                            <div class="d-grid gap-2 mb-3">
+                                <button type="submit" class="btn btn-primary btn-lg py-3">
+                                    Complete Registration
+                                </button>
+                            </div>
+
+                            <!-- Back to Home Link -->
+                            <div class="text-center">
+                                <p class="text-muted mb-0">
+                                    Already have an account?
+                                    <a href="{{ route('login') }}" class="text-decoration-none fw-semibold">
+                                        Sign in here
+                                    </a>
+                                </p>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
-
-            <!-- Admin User Information -->
-            <div class="border-t pt-6">
-                <h2 class="text-lg font-semibold text-gray-900 mb-4">Admin Account</h2>
-                <p class="text-sm text-gray-600 mb-4">Create the primary administrator account for your library</p>
-
-                <div class="space-y-4">
-                    <div>
-                        <label for="admin_name" class="block text-sm font-medium text-gray-700 mb-1">Administrator Name *</label>
-                        <input type="text" id="admin_name" name="admin_name" value="{{ old('admin_name') }}" required
-                            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                            placeholder="John Doe">
-                    </div>
-
-                    <div>
-                        <label for="admin_email" class="block text-sm font-medium text-gray-700 mb-1">Administrator Email *</label>
-                        <input type="email" id="admin_email" name="admin_email" value="{{ old('admin_email') }}" required
-                            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                            placeholder="admin@library.org">
-                    </div>
-
-                    <div>
-                        <label for="admin_password" class="block text-sm font-medium text-gray-700 mb-1">Password *</label>
-                        <input type="password" id="admin_password" name="admin_password" required
-                            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                            placeholder="••••••••">
-                        <p class="text-xs text-gray-500 mt-1">Minimum 8 characters, include uppercase, lowercase, number, and symbol</p>
-                    </div>
-
-                    <div>
-                        <label for="admin_password_confirmation" class="block text-sm font-medium text-gray-700 mb-1">Confirm Password *</label>
-                        <input type="password" id="admin_password_confirmation" name="admin_password_confirmation" required
-                            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                            placeholder="••••••••">
-                    </div>
-                </div>
-            </div>
-
-            <!-- Terms -->
-            <div class="border-t pt-6">
-                <label class="flex items-start gap-3">
-                    <input type="checkbox" name="agree_terms" required class="mt-1"
-                        {{ old('agree_terms') ? 'checked' : '' }}>
-                    <span class="text-sm text-gray-700">
-                        I agree to the Terms of Service and understand that my library account will be reviewed and must be approved before it becomes active.
-                    </span>
-                </label>
-            </div>
-
-            <!-- Submit -->
-            <div class="border-t pt-6 flex gap-4">
-                <a href="/" class="flex-1 px-6 py-2 border border-gray-300 rounded-md text-center font-medium text-gray-700 hover:bg-gray-50">
-                    Cancel
-                </a>
-                <button type="submit" class="flex-1 px-6 py-2 bg-blue-600 text-white rounded-md font-medium hover:bg-blue-700">
-                    Submit Registration
-                </button>
-            </div>
-        </form>
+        </div>
     </div>
 </div>
+
 </x-guest-layout>

@@ -24,7 +24,7 @@
                     <a href="{{ route('login') }}" class="btn btn-sm btn-outline-primary">
                         Login
                     </a>
-                    <a href="/library/register" class="btn btn-sm btn-primary">
+                    <a href="/library/register" class="btn btn-sm btn-outline-primary">
                         Register
                     </a>
                 @endauth
