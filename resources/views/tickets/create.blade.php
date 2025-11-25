@@ -92,26 +92,6 @@
                                 @enderror
                             </div>
 
-                           
-                            <div class="col-md-6">
-                                <label for="office_location" class="form-label fw-semibold">
-                                    Office Location <span class="text-danger">*</span>
-                                </label>
-                                <select class="form-select @error('office_location') is-invalid @enderror"
-                                        id="office_location"
-                                        name="office_location"
-                                        required>
-                                    <option value="">Select office location...</option>
-                                    <option value="Argenta Branch">Argenta Branch</option>
-                                    <option value="Laman Branch">Laman Branch</option>
-                                    <option value="The Hub">The Hub</option>
-                                    <option value="Rover Branch">Rover Branch</option>
-                                </select>
-                                @error('office_location')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-
 
                            <div class="col-md-6">
                             <label class="form-label small">Branch</label>
