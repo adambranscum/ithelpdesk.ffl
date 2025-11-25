@@ -47,8 +47,11 @@
                             </td>
                             <td>{{ $member->created_at->format('M d, Y') }}</td>
                             <td>
+                                <a href="{{ route('library.admin.staff.edit', $member->id) }}" class="btn btn-sm btn-link text-primary">
+                                    Edit
+                                </a>
                                 @if($member->is_active)
-                                    <form action="{{ route('library.admin.staff.deactivate', $member) }}" method="POST" class="d-inline">
+                                    <form action="{{ route('library.admin.staff.deactivate', $member->id) }}" method="POST" class="d-inline">
                                         @csrf
                                         <button type="submit" class="btn btn-sm btn-link text-danger"
                                             onclick="return confirm('Are you sure you want to deactivate this staff member?');">
@@ -56,7 +59,7 @@
                                         </button>
                                     </form>
                                 @else
-                                    <form action="{{ route('library.admin.staff.reactivate', $member) }}" method="POST" class="d-inline">
+                                    <form action="{{ route('library.admin.staff.reactivate', $member->id) }}" method="POST" class="d-inline">
                                         @csrf
                                         <button type="submit" class="btn btn-sm btn-link text-primary">
                                             Reactivate

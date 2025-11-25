@@ -23,6 +23,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('admin/staff', [LibraryAdminController::class, 'manageStaff'])->name('library.admin.staff');
     Route::get('admin/staff/create', [LibraryAdminController::class, 'showCreateStaff'])->name('library.admin.staff.create');
     Route::post('admin/staff', [LibraryAdminController::class, 'createStaff'])->name('library.admin.staff.store');
+    Route::get('admin/staff/{id}/edit', [LibraryAdminController::class, 'editStaff'])->name('library.admin.staff.edit')->where('id', '[0-9]+');
+    Route::post('admin/staff/{id}/update', [LibraryAdminController::class, 'updateStaff'])->name('library.admin.staff.update')->where('id', '[0-9]+');
     Route::post('admin/staff/{member}/deactivate', [LibraryAdminController::class, 'deactivateStaff'])->name('library.admin.staff.deactivate')->where('member', '[0-9]+');
     Route::post('admin/staff/{member}/reactivate', [LibraryAdminController::class, 'reactivateStaff'])->name('library.admin.staff.reactivate')->where('member', '[0-9]+');
 

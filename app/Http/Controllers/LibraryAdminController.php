@@ -138,6 +138,43 @@ class LibraryAdminController extends Controller
     }
 
     /**
+     * Show edit staff form
+     */
+    public function editStaff($id)
+    {
+        $user = Auth::user();
+        abort_if($user->role !== 'admin', 403, 'Unauthorized');
+
+        $staff = User::findOrFail($id);
+        abort_if($staff->library_uid !== $user->library_uid, 403, 'Unauthorized');
+        abort_if($staff->role !== 'staff', 400, 'Can only edit staff members');
+
+        return view('library.admin.edit-staff', compact('staff'));
+    }
+
+    /**
+     * Update staff member
+     */
+    public function updateStaff(Request $request, $id)
+    {
+        $user = Auth::user();
+        abort_if($user->role !== 'admin', 403, 'Unauthorized');
+
+        $staff = User::findOrFail($id);
+        abort_if($staff->library_uid !== $user->library_uid, 403, 'Unauthorized');
+        abort_if($staff->role !== 'staff', 400, 'Can only edit staff members');
+
+        $validated = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'email', 'max:255', 'unique:users,email,' . $id],
+        ]);
+
+        $staff->update($validated);
+
+        return redirect()->route('library.admin.staff')->with('success', 'Staff member updated successfully!');
+    }
+
+    /**
      * Deactivate a staff member
      */
     public function deactivateStaff(Request $request, $memberId)
