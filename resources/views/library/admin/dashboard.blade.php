@@ -1,4 +1,4 @@
-@include('layouts.navigation')
+<x-app-layout>
 
 <div class="container-fluid mt-5">
     <div class="row mb-4">
@@ -162,3 +162,5 @@
         </div>
     </div>
 </div>
+
+</x-app-layout>
