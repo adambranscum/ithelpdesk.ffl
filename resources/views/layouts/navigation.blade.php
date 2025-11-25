@@ -101,7 +101,7 @@
                         @csrf
                         <a href="{{ route('logout') }}"
                             onclick="event.preventDefault(); this.closest('form').submit();"
-                            class="btn btn-outline-light btn-sm d-flex align-items-center"
+                            class="btn btn-sm d-flex align-items-center logout-btn"
                             style="cursor: pointer;">
                             Logout
                         </a>
