@@ -15,8 +15,9 @@ class SetTenant
         $host = $request->getHost();
         $parts = explode('.', $host);
 
-        // Only treat as subdomain if there are at least 2 parts (subdomain.domain.ext)
-        if (count($parts) >= 2) {
+        // Only treat as subdomain if there are at least 3 parts (subdomain.domain.ext)
+        // This avoids treating localhost or single domain as a subdomain
+        if (count($parts) >= 3) {
             // Get subdomain (first part before the domain)
             $subdomain = $parts[0];
 
