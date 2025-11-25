@@ -6,15 +6,6 @@
     </a>
 
     <div class="card border-0 shadow-sm mb-4">
-        <div class="card-header bg-primary text-white">
-            <h4 class="mb-0">Profile Information</h4>
-        </div>
-        <div class="card-body p-4">
-            @include('profile.partials.update-profile-information-form')
-        </div>
-    </div>
-
-    <div class="card border-0 shadow-sm mb-4">
         <div class="card-header bg-info text-dark fw-bold">Change Password</div>
         <div class="card-body p-4">
             @include('profile.partials.update-password-form')
