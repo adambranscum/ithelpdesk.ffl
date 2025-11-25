@@ -1,6 +1,6 @@
 <x-app-layout>
 
-<div class="container shadow mt-4 mb-5 p-4">
+<div class="container shadow mt-4 mb-5 p-4 my-5">
     <div class="row justify-content-center">
         <div class="col-md-8">
             <!-- Back Button -->

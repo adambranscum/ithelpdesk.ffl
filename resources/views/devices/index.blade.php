@@ -1,19 +1,14 @@
 <x-app-layout>
     
-<div class="container mt-4 shadow p-4 mb-5">
+<div class="container mt-4 shadow p-4 mb-5 my-5">
     <!-- Page Header -->
     <div class="row mb-4">
         <div class="col-md-8">
-            <h1 class="display-6 fw-bold">Device Management</h1>
+            <h1 class="display-6 fw-bold text-gradient-primary">Device Management</h1>
             <p class="text-muted">Track hardware devices and warranty information</p>
         </div>
         <div class="col-md-4 text-end">
-            <a href="{{ route('devices.create') }}" class="btn btn-primary">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="me-1" viewBox="0 0 16 16">
-                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
-                </svg>
-                Add Device
-            </a>
+            <a href="{{ route('devices.create') }}" class="ms-auto btn btn-outline-info mb-4">Add Device</a>
         </div>
     </div>
 

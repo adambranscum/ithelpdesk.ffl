@@ -1,6 +1,6 @@
 <x-app-layout>
 
-<div class="container shadow mt-4 py-4">
+<div class="container shadow mt-4 py-4 my-5">
     <div class="row justify-content-center">
         <div class="col-12">
             <!-- Header -->

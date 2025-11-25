@@ -1,6 +1,6 @@
 <x-app-layout>
 
-<div class="container mt-4 mb-5 shadow p-4">
+<div class="container mt-4 mb-5 shadow p-4 my-5">
     <!-- Page Header -->
     <div class="row mb-4 mt-4">
         <div class="col-md-8">

@@ -1,20 +1,17 @@
 <x-app-layout>
     
-<div class="container mt-4 shadow p-4">
+<div class="container mt-4 shadow p-4 my-5">
     <div class="row justify-content-center">
         <div class="col-md-10">
             <!-- Back Button -->
             <div class="mb-4">
                 <a href="{{ route('devices.index') }}" class="btn btn-outline-secondary">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
-                    </svg>
                     Back to Devices
                 </a>
             </div>
 
             <div class="card border-0 shadow-sm">
-                <div class="card-header bg-primary text-white">
+                <div class="card-header" style="background: white; background: linear-gradient(90deg, #a855f7, #7c3aed); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;" class="fw-bold">
                     <h4 class="mb-0">
                         Edit Device
                     </h4>
@@ -151,10 +148,7 @@
 
                         <!-- Submit Buttons -->
                         <div class="mt-4 d-flex gap-2">
-                            <button type="submit" class="btn btn-primary btn-lg px-4">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="me-1" viewBox="0 0 16 16">
-                                    <path d="M2 1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H9.5a1 1 0 0 0-1 1v7.293l2.646-2.647a.5.5 0 0 1 .708.708l-3.5 3.5a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L7.5 9.293V2a2 2 0 0 1 2-2H14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h2.5a.5.5 0 0 1 0 1H2z"/>
-                                </svg>
+                            <button type="submit" class="btn btn-sm d-flex align-items-center logout-btn">
                                 Update Device
                             </button>
                             <a href="{{ route('devices.index') }}" class="btn btn-outline-secondary btn-lg px-4">
@@ -171,10 +165,6 @@
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-danger">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="me-1" viewBox="0 0 16 16">
-                                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
-                                    <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
-                                </svg>
                                 Delete Device
                             </button>
                         </form>
