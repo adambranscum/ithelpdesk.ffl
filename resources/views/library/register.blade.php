@@ -201,7 +201,7 @@
 
                             <!-- Submit Button -->
                             <div class="d-grid gap-2 mb-3">
-                                <button type="submit" class="btn btn-lg py-3" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; font-weight: 600; transition: all 0.3s ease;">
+                                <button type="submit" class="btn btn-lg py-3 login-submit-btn" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; font-weight: 600; transition: all 0.3s ease;">
                                     Complete Registration
                                 </button>
                             </div>
@@ -210,7 +210,7 @@
                             <div class="text-center">
                                 <p class="text-muted mb-0">
                                     Already have an account?
-                                    <a href="{{ route('login') }}" class="text-decoration-none fw-semibold">
+                                    <a href="{{ route('login') }}" class="text-decoration-none fw-semibold" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
                                         Sign in here
                                     </a>
                                 </p>
