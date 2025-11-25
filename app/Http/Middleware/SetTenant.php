@@ -15,6 +15,8 @@ class SetTenant
         $host = $request->getHost();
         $parts = explode('.', $host);
 
+        $isLibrarySubdomain = false;
+
         // Only treat as subdomain if there are at least 3 parts (subdomain.domain.ext)
         // This avoids treating localhost or single domain as a subdomain
         if (count($parts) >= 3) {
@@ -26,6 +28,7 @@ class SetTenant
                 $library = Library::bySubdomain($subdomain)->first();
 
                 if ($library) {
+                    $isLibrarySubdomain = true;
                     session(['tenant_library' => $library]);
                     app()->bind('tenant_library', fn() => $library);
 
@@ -50,7 +53,7 @@ class SetTenant
 
         // For non-subdomain requests, redirect /submit-ticket to home
         // /submit-ticket is only for library subdomains
-        if ($request->getPathInfo() === '/submit-ticket') {
+        if (!$isLibrarySubdomain && $request->getPathInfo() === '/submit-ticket') {
             return redirect('/');
         }
 
