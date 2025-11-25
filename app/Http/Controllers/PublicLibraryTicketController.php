@@ -47,9 +47,6 @@ class PublicLibraryTicketController extends Controller
             'description' => ['required', 'string', 'max:5000'],
             'branch' => ['nullable', 'string', 'max:255'],
             'department' => ['nullable', 'string', 'max:255'],
-            'network' => ['nullable', 'string', 'max:255'],
-            'website' => ['nullable', 'string', 'max:255'],
-            'security' => ['nullable', 'string', 'max:255'],
         ]);
 
         Ticket::create([
@@ -60,9 +57,6 @@ class PublicLibraryTicketController extends Controller
             'body' => $validated['description'],
             'branch' => $validated['branch'] ?? null,
             'department' => $validated['department'] ?? null,
-            'network_name' => $validated['network'] ?? null,
-            'website_name' => $validated['website'] ?? null,
-            'security_name' => $validated['security'] ?? null,
             'status' => 'new',
             'received_time' => now(),
         ]);

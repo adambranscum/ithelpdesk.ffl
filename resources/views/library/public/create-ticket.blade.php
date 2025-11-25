@@ -198,65 +198,6 @@
                         <div class="form-section-title">Issue Details</div>
 
                         <div class="row">
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="network" class="form-label">Network <span class="text-secondary">(Optional)</span></label>
-                                    <select id="network" name="network"
-                                        class="form-select @error('network') is-invalid @enderror">
-                                        <option value="">Select a network...</option>
-                                        @forelse($categories['network'] ?? [] as $category)
-                                            <option value="{{ $category->name }}" {{ old('network') === $category->name ? 'selected' : '' }}>
-                                                {{ $category->name }}
-                                            </option>
-                                        @empty
-                                            <option disabled>No networks available</option>
-                                        @endforelse
-                                    </select>
-                                    @error('network')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="website" class="form-label">Website <span class="text-secondary">(Optional)</span></label>
-                                    <select id="website" name="website"
-                                        class="form-select @error('website') is-invalid @enderror">
-                                        <option value="">Select a website...</option>
-                                        @forelse($categories['website'] ?? [] as $category)
-                                            <option value="{{ $category->name }}" {{ old('website') === $category->name ? 'selected' : '' }}>
-                                                {{ $category->name }}
-                                            </option>
-                                        @empty
-                                            <option disabled>No websites available</option>
-                                        @endforelse
-                                    </select>
-                                    @error('website')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="security" class="form-label">Security Issue <span class="text-secondary">(Optional)</span></label>
-                            <select id="security" name="security"
-                                class="form-select @error('security') is-invalid @enderror">
-                                <option value="">Select a security issue type...</option>
-                                @forelse($categories['security'] ?? [] as $category)
-                                    <option value="{{ $category->name }}" {{ old('security') === $category->name ? 'selected' : '' }}>
-                                        {{ $category->name }}
-                                    </option>
-                                @empty
-                                    <option disabled>No security issues available</option>
-                                @endforelse
-                            </select>
-                            @error('security')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
-
                         <div class="mb-3">
                             <label for="subject" class="form-label">Subject <span class="text-danger">*</span></label>
                             <input type="text" id="subject" name="subject" value="{{ old('subject') }}" required
