@@ -168,8 +168,7 @@
     <!-- Footer -->
     <footer>
         <div class="container">
-            <p>&copy; 2024 The Community Helpdesk. Powering IT support for libraries everywhere.</p>
-            <p style="margin-top: 0.5rem; font-size: 0.9rem;">www.thecommunityhelpdesk.org</p>
+            <p>&copy; 2024 www.thecommunityhelpdesk.org</p>
         </div>
     </footer>
 
