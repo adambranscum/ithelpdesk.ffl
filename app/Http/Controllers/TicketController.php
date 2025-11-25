@@ -58,7 +58,10 @@ class TicketController extends Controller
         }
 
         $devices = Device::where('library_uid', $user->library_uid)->orderBy('device_name', 'asc')->get();
-        $users = User::where('library_uid', $user->library_uid)->orderBy('name', 'asc')->get();
+        $users = User::where('library_uid', $user->library_uid)
+            ->whereIn('usertype', ['staff', 'admin'])
+            ->orderBy('name', 'asc')
+            ->get();
         $softwares = Software::where('library_uid', $user->library_uid)->orderBy('software', 'asc')->get();
 
         // Fetch active categories for this library grouped by type
@@ -85,11 +88,17 @@ class TicketController extends Controller
             'assigned_to' => 'required|exists:users,id',
         ]);
 
+        // Get the assigned user to verify they belong to this library
+        $assignedUser = User::findOrFail($request->assigned_to);
+        if ($assignedUser->library_uid !== $user->library_uid) {
+            return view('errors.403');
+        }
+
         $ticket->update([
             'assigned_to' => $request->assigned_to,
         ]);
 
-        return redirect()->route('tickets.index')->with('success', 'Ticket transferred successfully.');
+        return redirect()->back()->with('success', 'Ticket transferred successfully.');
     }
 
   

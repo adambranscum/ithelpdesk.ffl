@@ -66,13 +66,15 @@
 
             <div class="col-md-6">
                 <label class="form-label">Change Tech</label>
-                <select name="transfer_to" class="form-select form-select-sm selectpicker" data-live-search="true" required>
-                    
-                    @foreach ($users as $user)
-                        <option value="{{ $user->usertype }}" {{ $ticket->assigned_to == $user->usertype ? 'selected' : '' }}>
-                            {{ $user->usertype}}
+                <select name="assigned_to" class="form-select form-select-sm selectpicker" data-live-search="true" required>
+                    <option value="">Select a technician...</option>
+                    @forelse ($users as $user)
+                        <option value="{{ $user->id }}" {{ $ticket->assigned_to == $user->id ? 'selected' : '' }}>
+                            {{ $user->name }} ({{ ucfirst($user->usertype) }})
                         </option>
-                    @endforeach
+                    @empty
+                        <option disabled>No technicians available</option>
+                    @endforelse
                 </select>
             </div>
 
