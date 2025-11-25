@@ -1,6 +1,6 @@
 <x-app-layout>
 
-<div class="container shadow mt-4 pt-4 pb-4">
+<div class="container shadow mt-4 pt-4 pb-4 my-5">
     <div class="d-flex">
         <h2 class="mb-4 fw-bolder me-auto text-gradient-primary">Ticket #{{ $ticket->id }} — {{ $ticket->subject }}</h2>
         <a class="ms-auto btn btn-sm d-flex align-items-center logout-btn mb-4" href="{{ route('tickets.index') }}">Back to Tickets</a>
