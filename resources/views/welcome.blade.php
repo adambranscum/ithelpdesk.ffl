@@ -119,6 +119,69 @@
         </div>
     </section>
 
+    <!-- Freeware vs Hosted Section -->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 mb-4 mb-lg-0">
+                    <h2 class="fw-bold mb-4">About This Version</h2>
+                    <p class="text-muted mb-3">
+                        You're currently using the <strong>Community Helpdesk Freeware</strong> – a powerful, open-source ticketing system designed to help libraries manage IT support efficiently.
+                    </p>
+                    <p class="text-muted mb-4">
+                        While the freeware version provides all the core ticketing features you need, we also offer a <strong>privately hosted version</strong> with additional enterprise features.
+                    </p>
+                </div>
+                <div class="col-lg-6">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-body p-4">
+                            <h5 class="card-title fw-bold mb-3">Upgrade to Private Hosting</h5>
+                            <p class="card-text text-muted mb-3">
+                                Get advanced features including:
+                            </p>
+                            <ul class="list-unstyled mb-4">
+                                <li class="mb-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="#667eea" class="me-2" viewBox="0 0 16 16">
+                                        <path d="M10.854 7.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 9.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
+                                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0z"/>
+                                    </svg>
+                                    Office 365 Integration
+                                </li>
+                                <li class="mb-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="#667eea" class="me-2" viewBox="0 0 16 16">
+                                        <path d="M10.854 7.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 9.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
+                                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0z"/>
+                                    </svg>
+                                    Email-to-Ticket Conversion (Staff can email tickets directly)
+                                </li>
+                                <li class="mb-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="#667eea" class="me-2" viewBox="0 0 16 16">
+                                        <path d="M10.854 7.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 9.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
+                                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0z"/>
+                                    </svg>
+                                    Priority Support & Hosting
+                                </li>
+                                <li>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="#667eea" class="me-2" viewBox="0 0 16 16">
+                                        <path d="M10.854 7.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 9.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
+                                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0z"/>
+                                    </svg>
+                                    Custom Features & Integrations
+                                </li>
+                            </ul>
+                            <p class="text-muted small mb-3">
+                                Interested in learning more? We'd love to discuss how we can help your library!
+                            </p>
+                            <a href="mailto:webmaster@freewareforlibraries.org" class="btn btn-primary btn-sm">
+                                Contact Us About Hosting
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Footer -->
     <footer class="bg-dark text-white py-4">
         <div class="container text-center">
