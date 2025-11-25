@@ -27,10 +27,10 @@
     </div>
 
     <div class="d-flex gap-2 align-items-center">
-        <button type="submit" class="btn btn-primary">Update Password</button>
+        <button type="submit" class="btn btn-primary fw-semibold">Update Password</button>
 
         @if (session('status') === 'password-updated')
-            <p class="text-success small mb-0">Password updated successfully!</p>
+            <p class="text-success small mb-0">✓ Password updated successfully!</p>
         @endif
     </div>
 </form>

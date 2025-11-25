@@ -9,7 +9,7 @@
     </div>
 
     <div class="card border-0 shadow-sm mb-4">
-        <div class="card-header bg-primary text-white fw-bold">Change Password</div>
+        <div class="card-header bg-gradient-primary text-white fw-bold">Change Password</div>
         <div class="card-body p-4">
             @include('profile.partials.update-password-form')
         </div>

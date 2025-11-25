@@ -924,3 +924,8 @@ footer p {
   color: white;
   border-color: #a855f7;
 }
+
+/* Gradient Primary Background */
+.bg-gradient-primary {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%) !important;
+}
