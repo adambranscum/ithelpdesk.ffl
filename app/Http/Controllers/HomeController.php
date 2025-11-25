@@ -10,12 +10,6 @@ class HomeController extends Controller
 {
     public function index()
     {
-        // If on a subdomain with a library, redirect to public ticket submission
-        $library = TenantHelper::current();
-        if ($library && $library->is_approved) {
-            return redirect('/submit-ticket');
-        }
-
         // Get overall statistics for all tickets for home page
         $stats = [
             'total' => Ticket::count(),

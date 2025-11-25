@@ -20,6 +20,7 @@ class SetTenant
             // Get subdomain (first part before the domain)
             $subdomain = $parts[0];
 
+            // Only process library subdomains (not www or localhost)
             if ($subdomain && $subdomain !== 'www' && $subdomain !== 'localhost') {
                 $library = Library::bySubdomain($subdomain)->first();
 
@@ -35,24 +36,15 @@ class SetTenant
                         return redirect('/submit-ticket');
                     }
                 }
-            } else {
-                // On main domain, if authenticated, ensure user's library matches tenant
-                if (Auth::check()) {
-                    $user = Auth::user();
-                    if ($user->library_uid) {
-                        session(['tenant_library' => $user->library]);
-                        app()->bind('tenant_library', fn() => $user->library);
-                    }
-                }
             }
-        } else {
-            // Single part domain (localhost, etc) - just handle auth tenant if needed
-            if (Auth::check()) {
-                $user = Auth::user();
-                if ($user->library_uid) {
-                    session(['tenant_library' => $user->library]);
-                    app()->bind('tenant_library', fn() => $user->library);
-                }
+        }
+
+        // For non-subdomain requests or main domain, if authenticated, ensure user's library matches tenant
+        if (Auth::check()) {
+            $user = Auth::user();
+            if ($user->library_uid) {
+                session(['tenant_library' => $user->library]);
+                app()->bind('tenant_library', fn() => $user->library);
             }
         }
 
