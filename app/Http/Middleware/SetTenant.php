@@ -44,6 +44,12 @@ class SetTenant
             }
         }
 
+        // For non-subdomain requests, redirect /submit-ticket to home
+        // /submit-ticket is only for library subdomains
+        if ($request->getPathInfo() === '/submit-ticket') {
+            return redirect('/');
+        }
+
         // For non-subdomain requests or main domain, if authenticated, ensure user's library matches tenant
         if (Auth::check()) {
             $user = Auth::user();
