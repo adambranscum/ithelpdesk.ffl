@@ -17,6 +17,12 @@ class LibraryApproved
     {
         // Check if the user is approved (is_active)
         if ($request->user() && !$request->user()->is_active) {
+            // Allow access only to the pending approval page
+            if ($request->routeIs('library.pending')) {
+                return $next($request);
+            }
+
+            // Redirect all other requests to pending approval page
             return redirect()->route('library.pending');
         }
 

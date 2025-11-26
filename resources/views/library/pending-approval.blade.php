@@ -12,7 +12,7 @@
 <body>
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-light sticky-top">
-        <div class="container-fluid">
+        <div class="container">
             <a class="navbar-brand fw-bold" href="/">
                 The Community Helpdesk
             </a>
