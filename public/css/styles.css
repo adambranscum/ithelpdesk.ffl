@@ -930,6 +930,10 @@ footer p {
   background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%) !important;
 }
 
+.navbar-toggler {
+  border: none;
+  padding: 0.5rem;
+}
 
 .grad-icon-nav {
   display: inline-block;
