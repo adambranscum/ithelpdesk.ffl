@@ -929,3 +929,8 @@ footer p {
 .bg-gradient-primary {
   background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%) !important;
 }
+
+/* Hamburger Menu Gradient */
+.navbar-toggler .navbar-toggler-icon {
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30"><defs><linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:%239333ea;stop-opacity:1" /><stop offset="100%" style="stop-color:%23a855f7;stop-opacity:1" /></linearGradient></defs><line x1="5" y1="7" x2="25" y2="7" stroke="url(%23grad)" stroke-width="2" stroke-linecap="round"/><line x1="5" y1="15" x2="25" y2="15" stroke="url(%23grad)" stroke-width="2" stroke-linecap="round"/><line x1="5" y1="23" x2="25" y2="23" stroke="url(%23grad)" stroke-width="2" stroke-linecap="round"/></svg>');
+}
