@@ -63,7 +63,7 @@ class LibraryRegistrationController extends Controller
                 ]);
             });
 
-            return redirect('/')->with('success', 'Library registration submitted successfully! Your account will be reviewed and activated shortly.');
+            return redirect()->route('library.pending')->with('success', 'Library registration submitted successfully! Your account will be reviewed and activated shortly.');
         } catch (\Exception $e) {
             return back()->with('error', 'Registration failed. Please try again.')->withInput();
         }

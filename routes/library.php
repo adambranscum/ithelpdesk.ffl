@@ -11,8 +11,11 @@ Route::middleware('guest')->group(function () {
     Route::post('register', [LibraryRegistrationController::class, 'register'])->name('library.register');
 });
 
+// Pending approval route (for users after registration)
+Route::get('pending', [LibraryRegistrationController::class, 'pending'])->name('library.pending')->middleware('auth');
+
 // Protected library admin routes
-Route::middleware(['auth', 'verified'])->group(function () {
+Route::middleware(['auth', 'verified', 'library.approved'])->group(function () {
     // Admin dashboard
     Route::get('admin/dashboard', [LibraryAdminController::class, 'dashboard'])->name('library.admin.dashboard');
 
