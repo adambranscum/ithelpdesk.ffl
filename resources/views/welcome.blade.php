@@ -130,7 +130,7 @@
             <div class="hosting-content">
                 <div class="hosting-text">
                     <h2>Ready for More?</h2>
-                    <p>You're using the free Community Helpdesk freeware edition – great for getting started! We also offer a privately hosted version with advanced features.</p>
+                    <p>You're using the Community Helpdesk freeware edition – great for getting started! We also offer a privately hosted version with advanced features.</p>
                     <p>Get professional hosting, advanced integrations, and dedicated support to take your IT operations to the next level.</p>
                     <p style="color: var(--dark); font-weight: 600;">Perfect for libraries wanting enterprise-level features without the complexity.</p>
                 </div>
@@ -143,9 +143,6 @@
                         </li>
                         <li>
                             <span>Email-to-Ticket Conversion</span>
-                        </li>
-                        <li>
-                            <span>Dedicated Support Team</span>
                         </li>
                         <li>
                             <span>Custom Integrations</span>
