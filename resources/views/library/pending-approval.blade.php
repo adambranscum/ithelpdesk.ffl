@@ -1,29 +1,105 @@
-<x-guest-layout>
-    
-<div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-    <div class="max-w-md w-full bg-white rounded-lg shadow-md p-8 text-center">
-        <div class="mb-6">
-            <svg class="mx-auto h-12 w-12 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4v.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-            </svg>
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Registration Pending - Community Helpdesk</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('css/styles.css') }}?v={{ time() }}">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light sticky-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="/">
+                The Community Helpdesk
+            </a>
+
+            <div class="ms-auto d-flex gap-2">
+                @auth
+                    <a href="{{ url('/tickets') }}" class="btn btn-sm btn-primary">Dashboard</a>
+                @else
+                    <a href="{{ route('login') }}" class="btn btn-sm btn-outline-primary">
+                        Login
+                    </a>
+                    <a href="/library/register" class="btn btn-sm btn-outline-primary">
+                        Register
+                    </a>
+                @endauth
+            </div>
         </div>
+    </nav>
 
-        <h1 class="text-2xl font-bold text-gray-900 mb-2">Registration Pending Approval</h1>
-        <p class="text-gray-600 mb-6">
-            Thank you for registering! Your library account is currently pending manual approval.
-            You will receive an email notification once your account has been approved and is ready to use.
-        </p>
+    <!-- Hero Section with Pending Status -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="hero-content">
+                <div class="mb-4">
+                    <svg class="mx-auto d-block" width="80" height="80" fill="none" stroke="white" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4m0 4v.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
 
-        <div class="bg-blue-50 border border-blue-200 rounded-md p-4 mb-6">
-            <p class="text-sm text-blue-800">
-                <strong>What happens next?</strong> Our team will review your registration and contact you if we need any additional information.
-                Once approved, you'll receive login credentials to access your library's dashboard.
-            </p>
+                <h1>Registration Pending Approval</h1>
+                <p class="lead">
+                    Thank you for registering with the Community Helpdesk! Your library account is currently pending manual approval.
+                </p>
+
+                <div class="mt-5 p-4 bg-white bg-opacity-95 rounded-3 shadow-sm" style="max-width: 700px; margin: 2rem auto; text-align: left;">
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <h5 class="text-gradient-primary mb-3">
+                                <i class="bi bi-hourglass-split"></i> What's Happening
+                            </h5>
+                            <p class="text-dark">
+                                Our team is reviewing your library's registration and verifying all the information you provided. This usually takes 1-2 business days.
+                            </p>
+                        </div>
+                        <div class="col-md-6">
+                            <h5 class="text-gradient-primary mb-3">
+                                <i class="bi bi-bell"></i> Stay Informed
+                            </h5>
+                            <p class="text-dark">
+                                You'll receive an email notification as soon as your account has been approved. We may also reach out if we need any additional information.
+                            </p>
+                        </div>
+                    </div>
+
+                    <hr class="my-4">
+
+                    <h5 class="text-gradient-primary mb-3">
+                        <i class="bi bi-bookmark-check"></i> Once Approved
+                    </h5>
+                    <ul class="list-unstyled text-dark" style="line-height: 1.8;">
+                        <li><i class="bi bi-check-circle-fill" style="color: #667eea;"></i> Full access to the library dashboard</li>
+                        <li><i class="bi bi-check-circle-fill" style="color: #667eea;"></i> Ability to create and manage IT support tickets</li>
+                        <li><i class="bi bi-check-circle-fill" style="color: #667eea;"></i> Staff and device management features</li>
+                        <li><i class="bi bi-check-circle-fill" style="color: #667eea;"></i> Analytics and reporting tools</li>
+                    </ul>
+                </div>
+
+                <div class="d-flex gap-3 justify-content-center flex-wrap mt-4">
+                    <a href="/" class="btn btn-hero btn-primary-light">
+                        Return to Home
+                    </a>
+                    <a href="mailto:webmaster@freewareforlibraries.org" class="btn btn-hero btn-outline-light">
+                        Contact Support
+                    </a>
+                </div>
+            </div>
         </div>
+    </section>
 
-        <a href="/" class="inline-block px-6 py-2 bg-blue-600 text-white rounded-md font-medium hover:bg-blue-700">
-            Return to Home
-        </a>
-    </div>
-</div>
-</x-guest-layout>
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 www.thecommunityhelpdesk.org</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
