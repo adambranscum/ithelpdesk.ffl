@@ -930,10 +930,6 @@ footer p {
   background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%) !important;
 }
 
-/* Hamburger Menu Gradient */
-.navbar-toggler {
-  border: none;
-}
 
 .grad-icon-nav {
   width: 1.5em;
