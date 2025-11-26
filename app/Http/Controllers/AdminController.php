@@ -23,6 +23,9 @@ class AdminController extends Controller
         if ($user->role !== 'admin') {
             abort(403, 'Unauthorized');
         }
+        if (!$user->is_active) {
+            return redirect()->route('library.pending');
+        }
     }
 
     /**
