@@ -932,14 +932,12 @@ footer p {
 
 
 .grad-icon-nav {
+  display: inline-block;
   width: 1.5em;
   height: 1.5em;
-  position: relative;
-  display: inline-block;
-  border-top: 0.25em solid #a855f7;
-  border-bottom: 0.25em solid #a855f7;
-  background-image: linear-gradient(to right, #9333ea 0%, #a855f7 100%);
-  background-position: center center;
-  background-size: 100% 0.25em;
-  background-repeat: no-repeat;
+  vertical-align: middle;
+  border-top: 3px solid #a855f7;
+  border-bottom: 3px solid #a855f7;
+  background: linear-gradient(to right, #9333ea, #a855f7) center / 100% 3px no-repeat;
+  background-position: center;
 }
