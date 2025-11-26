@@ -19,7 +19,15 @@
 
             <div class="ms-auto d-flex gap-2">
                 @auth
-                    <a href="{{ url('/tickets') }}" class="btn btn-sm btn-primary">Dashboard</a>
+                    <form method="POST" action="{{ route('logout') }}" class="d-inline">
+                        @csrf
+                        <a href="{{ route('logout') }}"
+                            onclick="event.preventDefault(); this.closest('form').submit();"
+                            class="btn btn-sm btn-primary"
+                            style="cursor: pointer;">
+                            Logout
+                        </a>
+                    </form>
                 @else
                     <a href="{{ route('login') }}" class="btn btn-sm btn-outline-primary">
                         Login

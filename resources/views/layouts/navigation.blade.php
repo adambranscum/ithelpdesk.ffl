@@ -11,90 +11,92 @@
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ms-auto align-items-lg-center">
-                <li class="nav-item">
-                    <a class="nav-link text-dark d-flex align-items-center" href="{{ route('tickets.index') }}">
-                        Home
-                    </a>
-                </li>
-
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle text-dark d-flex align-items-center" href="#" id="inventoryDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Inventory
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="inventoryDropdown">
-                        <li>
-                            <a class="dropdown-item d-flex align-items-center" href="{{ route('devices.index') }}">
-                                Device Inventory
-                            </a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item d-flex align-items-center" href="{{ route('software.index') }}">
-                                Software Inventory
-                            </a>
-                        </li>
-                    </ul>
-                </li>
+                @if(Auth::user() && Auth::user()->is_active)
+                    <li class="nav-item">
+                        <a class="nav-link text-dark d-flex align-items-center" href="{{ route('tickets.index') }}">
+                            Home
+                        </a>
+                    </li>
 
                     <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle text-dark d-flex align-items-center" href="#" id="inventoryDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Statistics
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="inventoryDropdown">
-                        <li>
-                            <a class="dropdown-item d-flex align-items-center" href="{{ route('tickets.stats') }}">
-                                Ticket Statistics
-                            </a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item d-flex align-items-center" href="{{ route('software.stats') }}">
-                                Software Statistics
-                            </a>
-                        </li>
-                            <li>
-                            <a class="dropdown-item d-flex align-items-center" href="{{ route('devices.stats') }}">
-                                Device Statistics
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-
-                @if(Auth::user() && Auth::user()->role === 'admin')
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle text-dark d-flex align-items-center" href="#" id="adminToolsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Admin Tools
+                        <a class="nav-link dropdown-toggle text-dark d-flex align-items-center" href="#" id="inventoryDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Inventory
                         </a>
-                        <ul class="dropdown-menu" aria-labelledby="adminToolsDropdown">
+                        <ul class="dropdown-menu" aria-labelledby="inventoryDropdown">
                             <li>
-                                <a class="nav-link text-dark d-flex align-items-center" href="{{ route('library.admin.dashboard') }}">
-                            Library Admin
-                        </a>
-                            </li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li>
-                                <a class="nav-link text-dark d-flex align-items-center" href="{{ route('admin.index') }}">
-                            Admin Ticket Db
-                        </a>
+                                <a class="dropdown-item d-flex align-items-center" href="{{ route('devices.index') }}">
+                                    Device Inventory
+                                </a>
                             </li>
                             <li>
-                                <a class="nav-link text-dark d-flex align-items-center" href="{{ route('profile.edit') }}">
-                            Change Password
-                        </a>
+                                <a class="dropdown-item d-flex align-items-center" href="{{ route('software.index') }}">
+                                    Software Inventory
+                                </a>
                             </li>
                         </ul>
                     </li>
-                @else
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-dark d-flex align-items-center" href="#" id="inventoryDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Statistics
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="inventoryDropdown">
+                            <li>
+                                <a class="dropdown-item d-flex align-items-center" href="{{ route('tickets.stats') }}">
+                                    Ticket Statistics
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item d-flex align-items-center" href="{{ route('software.stats') }}">
+                                    Software Statistics
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item d-flex align-items-center" href="{{ route('devices.stats') }}">
+                                    Device Statistics
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    @if(Auth::user() && Auth::user()->role === 'admin')
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-dark d-flex align-items-center" href="#" id="adminToolsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Admin Tools
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="adminToolsDropdown">
+                                <li>
+                                    <a class="nav-link text-dark d-flex align-items-center" href="{{ route('library.admin.dashboard') }}">
+                                        Library Admin
+                                    </a>
+                                </li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <a class="nav-link text-dark d-flex align-items-center" href="{{ route('admin.index') }}">
+                                        Admin Ticket Db
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="nav-link text-dark d-flex align-items-center" href="{{ route('profile.edit') }}">
+                                        Change Password
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    @else
+                        <li class="nav-item">
+                            <a class="nav-link text-dark d-flex align-items-center" href="{{ route('profile.edit') }}">
+                                Change Password
+                            </a>
+                        </li>
+                    @endif
+
                     <li class="nav-item">
-                        <a class="nav-link text-dark d-flex align-items-center" href="{{ route('profile.edit') }}">
-                            Change Password
+                        <a class="nav-link text-dark d-flex align-items-center" href="{{ route('sops.index') }}">
+                            SOPs
                         </a>
                     </li>
                 @endif
-
-                <li class="nav-item">
-                    <a class="nav-link text-dark d-flex align-items-center" href="{{ route('sops.index') }}">
-                        SOPs
-                    </a>
-                </li>
 
                 <li class="nav-item ms-lg-2">
                     <form method="POST" action="{{ route('logout') }}" class="d-inline">
