@@ -22,7 +22,7 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/submit-ticket', [PublicLibraryTicketController::class, 'create'])->name('library.public.submit');
 Route::post('/submit-ticket', [PublicLibraryTicketController::class, 'store'])->name('library.public.store');
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth', 'library.approved'])->group(function () {
     // Profile Routes
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -36,7 +36,7 @@ Route::middleware(['auth'])->group(function () {
     Route::patch('/tickets/{ticket}/transfer', [TicketController::class, 'transfer'])->name('tickets.transfer');
     Route::patch('/tickets/{ticket}', [TicketController::class, 'update'])->name('tickets.update');
     Route::post('/tickets/{ticket}/comment', [TicketController::class, 'addComment'])->name('tickets.addComment');
-  
+
 
      // Admin Ticket Routes
     Route::get('/admin/tickets', [AdminController::class, 'index'])->name('admin.index');
@@ -47,24 +47,24 @@ Route::middleware(['auth'])->group(function () {
     Route::patch('/admin/tickets/{ticket}/transfer', [AdminController::class, 'transfer'])->name('admin.transfer');
 
     // Redirects
-	
+
 	Route::get('/dashboard', function () {return redirect('/tickets');});
 });
 
  // Device CRUD routes
-    Route::middleware(['auth'])->group(function () {
+    Route::middleware(['auth', 'library.approved'])->group(function () {
     Route::get('/devices/statistics', [DeviceStatsController::class, 'index'])->name('devices.stats');
     Route::get('/software/statistics', [SoftwareStatsController::class, 'index'])->name('software.stats');
     Route::resource('software', SoftwareController::class);
     Route::resource('devices', DeviceController::class);
     });
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth', 'library.approved'])->group(function () {
     Route::resource('sops', SopController::class);
     Route::post('sops/{sop}/link-ticket', [SopController::class, 'linkToTicket'])->name('sops.linkTicket');
 });
 
-   Route::middleware(['auth'])->group(function () {
+   Route::middleware(['auth', 'library.approved'])->group(function () {
    Route::get('/create', [CreateTicketController::class, 'create'])->name('tickets.create');
    Route::post('/store', [CreateTicketController::class, 'store'])->name('tickets.store');
   });

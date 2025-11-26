@@ -23,7 +23,9 @@ class LibraryApproved
             }
 
             // Redirect all other requests to pending approval page
-            return redirect()->route('library.pending');
+            // If in library context, use library.pending; otherwise redirect to home
+            $pendingRoute = $request->is('library/*') ? 'library.pending' : 'home';
+            return redirect()->route($pendingRoute);
         }
 
         return $next($request);
