@@ -12,7 +12,7 @@
 <body>
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-light sticky-top">
-        <div class="container">
+        <div class="container-fluid">
             <a class="navbar-brand fw-bold" href="/">
                 The Community Helpdesk
             </a>
@@ -33,15 +33,9 @@
     </nav>
 
     <!-- Hero Section with Pending Status -->
-    <section class="hero-section">
+    <section class="hero-section min-vh-100">
         <div class="container">
             <div class="hero-content">
-                <div class="mb-4">
-                    <svg class="mx-auto d-block" width="80" height="80" fill="none" stroke="white" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4m0 4v.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                    </svg>
-                </div>
-
                 <h1>Registration Pending Approval</h1>
                 <p class="lead">
                     Thank you for registering with the Community Helpdesk! Your library account is currently pending manual approval.
@@ -51,7 +45,7 @@
                     <div class="row g-4">
                         <div class="col-md-6">
                             <h5 class="text-gradient-primary mb-3">
-                                <i class="bi bi-hourglass-split"></i> What's Happening
+                                What's Happening
                             </h5>
                             <p class="text-dark">
                                 Our team is reviewing your library's registration and verifying all the information you provided. This usually takes 1-2 business days.
@@ -59,7 +53,7 @@
                         </div>
                         <div class="col-md-6">
                             <h5 class="text-gradient-primary mb-3">
-                                <i class="bi bi-bell"></i> Stay Informed
+                                Stay Informed
                             </h5>
                             <p class="text-dark">
                                 You'll receive an email notification as soon as your account has been approved. We may also reach out if we need any additional information.
@@ -70,13 +64,13 @@
                     <hr class="my-4">
 
                     <h5 class="text-gradient-primary mb-3">
-                        <i class="bi bi-bookmark-check"></i> Once Approved
+                        Once Approved
                     </h5>
                     <ul class="list-unstyled text-dark" style="line-height: 1.8;">
-                        <li><i class="bi bi-check-circle-fill" style="color: #667eea;"></i> Full access to the library dashboard</li>
-                        <li><i class="bi bi-check-circle-fill" style="color: #667eea;"></i> Ability to create and manage IT support tickets</li>
-                        <li><i class="bi bi-check-circle-fill" style="color: #667eea;"></i> Staff and device management features</li>
-                        <li><i class="bi bi-check-circle-fill" style="color: #667eea;"></i> Analytics and reporting tools</li>
+                        <li>Full access to the library dashboard</li>
+                        <li>Ability to create and manage IT support tickets</li>
+                        <li>Staff and device management features</li>
+                        <li>Analytics and reporting tools</li>
                     </ul>
                 </div>
 
